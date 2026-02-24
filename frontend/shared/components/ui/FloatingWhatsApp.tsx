@@ -5,7 +5,7 @@ import { CONTACT_INFO } from '@/shared/constants';
 
 export function FloatingWhatsApp() {
   const whatsappMessage = encodeURIComponent(
-    '¡Hola! Me interesa saber más sobre sus soluciones de IA para mi negocio.'
+    '¡Hola! Me interesa conocer más sobre las soluciones de IA y desarrollo de software que ofrecen.'
   );
   const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${whatsappMessage}`;
 
