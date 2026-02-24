@@ -1,0 +1,18 @@
+# https://www.robotstxt.org/robotstxt.html
+# Optimized for SEO - Allow all search engines
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/static/
+Disallow: /admin/
+
+# Crawl-delay for specific bots (optional)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemaps
+Sitemap: https://aiworks.dev/sitemap.xml
