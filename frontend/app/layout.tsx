@@ -1,20 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
+import { SITE_URL } from "@/shared/constants/site";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  metadataBase: new URL('https://aiworks.dev'),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
     template: "%s | AIworks"
@@ -50,7 +44,7 @@ export const metadata: Metadata = {
     "AI development",
     "custom AI solutions"
   ],
-  authors: [{ name: "AIworks", url: "https://aiworks.dev" }],
+  authors: [{ name: "AIworks", url: SITE_URL }],
   creator: "AIworks",
   publisher: "AIworks",
   formatDetection: {
@@ -61,7 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://aiworks.dev",
+    url: SITE_URL,
     title: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
     description: "Empresa líder en desarrollo de software con IA, chatbots inteligentes y automatización empresarial. Soluciones personalizadas con machine learning para tu negocio.",
     siteName: "AIworks",
@@ -94,7 +88,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://aiworks.dev",
+    canonical: SITE_URL,
   },
   category: 'technology',
 };
@@ -107,13 +101,15 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* DNS prefetch for WhatsApp */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className={`${inter.variable} antialiased font-sans`}>
+      <body className="antialiased font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
         <StoreRehydrate />
         <StructuredData />
         <Header />

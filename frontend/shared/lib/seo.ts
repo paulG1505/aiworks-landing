@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { SITE_URL } from '@/shared/constants/site';
 
 interface SEOProps {
   title?: string;
@@ -18,7 +19,7 @@ export function generateSEO({
   description,
   keywords = [],
   image = '/og-image.png',
-  url = 'https://aiworks.dev',
+  url = SITE_URL,
   type = 'website'
 }: SEOProps = {}): Metadata {
   const siteTitle = title

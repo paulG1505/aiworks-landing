@@ -15,4 +15,4 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemaps
-Sitemap: https://aiworks.dev/sitemap.xml
+Sitemap: https://aiworks.lat/sitemap.xml

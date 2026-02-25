@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/shared/constants/site';
+
+export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://aiworks.dev';
+  const baseUrl = SITE_URL;
   const currentDate = new Date();
 
   return [

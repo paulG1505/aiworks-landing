@@ -1,12 +1,13 @@
 import Script from 'next/script';
+import { SITE_URL } from '@/shared/constants/site';
 
 export function StructuredData() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "AIworks",
-    "url": "https://aiworks.dev",
-    "logo": "https://aiworks.dev/logo.png",
+    "url": SITE_URL,
+    "logo": `${SITE_URL}/logo.png`,
     "description": "Empresa líder en desarrollo de software con inteligencia artificial, chatbots IA y automatización empresarial",
     "address": {
       "@type": "PostalAddress",
@@ -31,7 +32,7 @@ export function StructuredData() {
     "provider": {
       "@type": "Organization",
       "name": "AIworks",
-      "url": "https://aiworks.dev"
+      "url": SITE_URL
     },
     "areaServed": {
       "@type": "Country",
@@ -85,25 +86,25 @@ export function StructuredData() {
         "@type": "ListItem",
         "position": 1,
         "name": "Inicio",
-        "item": "https://aiworks.dev"
+        "item": SITE_URL
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Servicios",
-        "item": "https://aiworks.dev/#servicios"
+        "item": `${SITE_URL}/#servicios`
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Proyectos",
-        "item": "https://aiworks.dev/#proyectos"
+        "item": `${SITE_URL}/#proyectos`
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": "Contacto",
-        "item": "https://aiworks.dev/#contacto"
+        "item": `${SITE_URL}/#contacto`
       }
     ]
   };

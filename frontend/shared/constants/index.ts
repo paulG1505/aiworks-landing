@@ -147,7 +147,7 @@ export const WHY_US_BENEFITS: Benefit[] = [
 
 // Contact Info
 export const CONTACT_INFO: ContactInfo = {
-  email: 'contacto@aiworks.dev',
+  email: 'contacto@aiworks.lat',
   phone: '+593 99 509 0170',
   whatsapp: '593995090170',
   address: 'Ciudad de México, México',
