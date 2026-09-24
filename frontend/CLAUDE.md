@@ -1,7 +1,7 @@
 # Landing Page Project
 
 ## 📋 Project Overview
-Modern landing page built with Next.js 15, TypeScript, and Tailwind CSS following Screaming Architecture principles.
+Modern landing page built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4 following Screaming Architecture principles.
 
 ## 🏗️ Architecture: Screaming Architecture
 
@@ -73,9 +73,9 @@ frontend/
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS 4
 - **State Management**: Zustand
 - **Linting**: ESLint
 - **Package Manager**: npm
