@@ -8,8 +8,7 @@ import { useTranslation } from '@/shared/hooks/useTranslation';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 
 export function Header() {
-  // Optimize Zustand subscriptions (rerender-defer-reads)
-  // Use selective subscriptions to avoid unnecessary re-renders
+  // Suscripciones selectivas a Zustand para no re-renderizar de más.
   const isMenuOpen = useUIStore((state) => state.isMenuOpen);
   const toggleMenu = useUIStore((state) => state.toggleMenu);
   const closeMenu = useUIStore((state) => state.closeMenu);
@@ -25,107 +24,98 @@ export function Header() {
 
   const handleNavClick = (href: string) => {
     closeMenu();
-    // Smooth scroll to section
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // El export estático no tiene backend donde recibir envíos de formulario,
-  // así que el CTA del header lleva directo a WhatsApp, igual que el CTA final.
+  // El export estático no tiene backend: el CTA del header lleva directo a WhatsApp.
   const whatsappUrl = enlaceWhatsApp(locale);
   const whatsappAriaLabel = `${t.header.cta} ${avisoPestanaNueva(locale)}`;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--papel)] border-b border-[var(--regla)]">
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-regla bg-papel">
       <Container>
-        <nav className="py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <a href="#" className="text-[length:var(--paso-1)] font-semibold text-[var(--tinta)]">
+        <nav aria-label={locale === 'en' ? 'Main' : 'Principal'} className="py-3.5 lg:py-[18px]">
+          <div className="flex items-center justify-between gap-4">
+            {/* Wordmark tipográfico: placeholder hasta que exista un logo. */}
+            <a href="#" className="text-base font-semibold tracking-[-0.02em] text-tinta lg:text-[1.1875rem]">
               {t.header.logo}
             </a>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNavClick(link.href);
-                    }}
-                    className="text-[var(--tinta-media)] hover:text-[var(--tinta)] transition-colors duration-150"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="flex items-center gap-7">
+              <ul className="hidden items-center gap-7 text-sm lg:flex">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavClick(link.href);
+                      }}
+                      className="text-tinta transition-colors duration-150 hover:text-marca"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
 
-            {/* Language Selector & CTA */}
-            <div className="hidden lg:flex items-center gap-4">
-              <LanguageSelector />
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={whatsappAriaLabel}
-                className="accion accion-whatsapp"
-              >
-                {t.header.cta}
-              </a>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMenu}
-              className="lg:hidden text-[var(--tinta)] p-2 hover:bg-[var(--papel-hundido)] rounded-lg transition-colors duration-150"
-              aria-expanded={isMenuOpen}
-              aria-controls="menu-movil"
-              aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-
-          {/* Mobile Menu */}
-          {/*
-            Accesibilidad: cuando el menú está cerrado se saca del árbol con
-            `hidden` (no max-h/overflow), así no queda alcanzable con Tab ni
-            legible para un lector de pantalla. Por eso no se anima el
-            despliegue: display:none no es animable y un truco de altura
-            reintroduciría el problema que `hidden` resuelve (ver
-            features/preguntas/components/Pregunta.tsx, mismo criterio).
-          */}
-          <div id="menu-movil" hidden={!isMenuOpen} className="lg:hidden mt-6">
-            <ul className="flex flex-col gap-4 pb-4">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNavClick(link.href);
-                    }}
-                    className="block text-[var(--tinta-media)] hover:text-[var(--tinta)] transition-colors duration-150 py-2"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li className="pt-2 border-t border-[var(--regla)]">
+              <div className="flex items-center gap-3 lg:gap-7">
                 <LanguageSelector />
-              </li>
-              <li>
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={whatsappAriaLabel}
-                  className="accion accion-whatsapp w-full"
+                  className="accion accion-contorno hidden lg:inline-flex"
+                >
+                  {t.header.cta}
+                </a>
+
+                <button
+                  type="button"
+                  onClick={toggleMenu}
+                  className="-mr-2 cursor-pointer rounded-full p-2 text-tinta transition-colors duration-150 hover:bg-arena lg:hidden"
+                  aria-expanded={isMenuOpen}
+                  aria-controls="menu-movil"
+                  aria-label={
+                    locale === 'en'
+                      ? isMenuOpen ? 'Close menu' : 'Open menu'
+                      : isMenuOpen ? 'Cerrar menú' : 'Abrir menú'
+                  }
+                >
+                  {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/*
+            Accesibilidad: cerrado, el menú sale del árbol con `hidden`, así no queda
+            alcanzable con Tab ni legible para un lector de pantalla.
+          */}
+          <div id="menu-movil" hidden={!isMenuOpen} className="lg:hidden">
+            <ul className="mt-4 flex flex-col border-t border-regla pb-2 pt-2">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(link.href);
+                    }}
+                    className="block py-3 font-serif text-2xl text-tinta"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li className="pt-4">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={whatsappAriaLabel}
+                  className="accion accion-primaria w-full"
                 >
                   {t.header.cta}
                 </a>

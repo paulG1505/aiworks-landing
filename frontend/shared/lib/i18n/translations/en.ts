@@ -11,32 +11,32 @@ export const en = {
     cta: "Message us on WhatsApp",
   },
   hero: {
-    headline: "Your team copies data from one spreadsheet into another. That has a cost, and it shows up in no report.",
+    eyebrow: "Quito, Ecuador · For SMEs",
+    categoria: { antes: "", clave: "AI-powered", despues: " software." },
+    beneficio: "Built for the work your team still does by hand.",
     subtitle:
-      "We build the software that does that work on its own, and we leave every decision it makes in plain view.",
+      "We are a consultancy: we build the software that does that work on its own, and we leave every decision it makes in plain view.",
     trayectoria: "Over 7 years solving processes.",
     cta: {
       primary: "Message us on WhatsApp",
-      secondary: "How we work",
-    },
-    sectores: {
-      label: "We work with",
-      items: ["Fintech", "Credit unions", "Retail", "Logistics", "Healthcare"],
+      correo: "or by email",
     },
   },
   registro: {
-    etiqueta: "sample flow",
+    titulo: "Operations log",
+    etiqueta: "Sample flow · illustrative",
     lineas: [
-      { hora: "09:42:11", texto: "signal received" },
-      { hora: "09:42:11", texto: "classified" },
-      { hora: "09:42:12", texto: "automated decision" },
-      { hora: "09:42:14", texto: "human review" },
-      { hora: "09:42:15", texto: "recorded" },
+      { hora: "09:42", tipo: "entrada", etiqueta: "INPUT", texto: "The day's bank statement arrives." },
+      { hora: "09:42", tipo: "ia", etiqueta: "AI", texto: "Matches every entry on reference and amount." },
+      { hora: "09:42", tipo: "sistema", etiqueta: "DECISION", texto: "Reconciles the entries that add up on its own." },
+      { hora: "09:43", tipo: "ia", etiqueta: "REVIEW", texto: "One does not add up: it goes to a person first." },
+      { hora: "09:43", tipo: "sistema", etiqueta: "LOG", texto: "Recorded with its timestamp and owner." },
     ],
     pie: "Every decision is stored with its timestamp, its owner and its record. That is what makes an automation auditable instead of something you have to take on trust.",
   },
   procesos: {
-    title: "Processes that can be automated",
+    eyebrow: "Processes that can be automated",
+    titulo: { antes: "What still gets done by hand", clave: "and shouldn't." },
     subtitle:
       "If you recognise any of these in your company, you already know where the hours that show up in no report are going.",
     ctaItem: "Talk about this",
@@ -65,7 +65,9 @@ export const en = {
     ],
   },
   proceso: {
-    title: "How we work",
+    eyebrow: "How we work",
+    titulo: { antes: "Three phases.", clave: "No surprises." },
+    faseLabel: "Phase",
     subtitle:
       "Three phases, each ending with something concrete you receive. If the first one finds nothing worth automating, we tell you and it stops there.",
     entregableLabel: "You receive",
@@ -96,7 +98,8 @@ export const en = {
     stack: "Python · FastAPI · PostgreSQL · Next.js · TypeScript · Docker",
   },
   porque: {
-    title: "Why AIworks",
+    eyebrow: "Why AIworks",
+    titulo: { antes: "No inflated promises.", clave: "Just sound judgement." },
     items: [
       {
         titulo: "Over 7 years solving processes",
@@ -119,9 +122,27 @@ export const en = {
           "Tested, documented code, and it is yours. If you decide tomorrow to hand it to another team, you can.",
       },
     ],
+    casos: {
+      rotulo: "Illustrative case · not a client",
+      hoyLabel: "Today",
+      conIaLabel: "With AI",
+      items: [
+        {
+          titulo: "An accounting team that reconciles the bank by hand",
+          hoy: "Someone matches the statement against the system line by line, and the close waits until they finish.",
+          conIa: "The system matches on reference and amount; the person reviews only the entries that do not add up.",
+        },
+        {
+          titulo: "A company that receives PDF invoices by email",
+          hoy: "Every invoice is typed into the system again, and the mistakes surface at the next close.",
+          conIa: "Invoices are read as they arrive and the data is entered once, with a person reviewing anything doubtful.",
+        },
+      ],
+    },
   },
   preguntas: {
-    title: "Questions we get",
+    eyebrow: "Frequently asked questions",
+    titulo: { antes: "What people", clave: "usually ask us." },
     items: [
       {
         pregunta: "What does it cost?",
@@ -146,24 +167,15 @@ export const en = {
     ],
   },
   cta: {
-    title: "Start by finding out what is costing you most",
+    eyebrow: "Contact",
+    titulo: { antes: "Start by finding out", clave: "what is costing you most." },
     description:
       "In 15 minutes you will know which process is costing you the most and whether it can be automated. No cost, no obligation.",
     whatsapp: "Message us on WhatsApp",
-    correoLabel: "Or email us at",
+    correoLabel: "or email us at",
   },
   footer: {
-    brand: {
-      name: "AIworks",
-      description: "Software with artificial intelligence for companies that want to stop typing. Quito, Ecuador.",
-    },
-    navegacion: {
-      title: "The page",
-    },
-    contacto: {
-      title: "Contact",
-      whatsapp: "WhatsApp",
-    },
-    copyright: "© 2026 AIworks. Quito, Ecuador.",
+    navegacion: "Footer navigation",
+    copyright: "© 2026 AIworks · Quito, Ecuador",
   },
 } as const;

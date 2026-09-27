@@ -2,6 +2,7 @@ import type { Locale } from '@/shared/lib/i18n/translations';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 
 interface ProcesoFilaProps {
+  indice: number;
   numero: string;
   titulo: string;
   hoy: string;
@@ -10,10 +11,11 @@ interface ProcesoFilaProps {
   locale: Locale;
 }
 
-export function ProcesoFila({ numero, titulo, hoy, resuelve, ctaLabel, locale }: ProcesoFilaProps) {
-  // Etiqueta de "así se resuelve": no existe una clave de i18n para esto (están
-  // congeladas), así que se deriva del locale activo aquí mismo. Sentence case,
-  // nunca versalitas — se distingue con peso y color, no con mayúsculas.
+const STAGGER_MS = 70;
+
+/** Número · nombre (serif) · descripción. En móvil las tres columnas se apilan. */
+export function ProcesoFila({ indice, numero, titulo, hoy, resuelve, ctaLabel, locale }: ProcesoFilaProps) {
+  // Etiqueta de "así se resuelve": se deriva del locale activo aquí mismo.
   const resuelveLabel = locale === 'en' ? "How it's solved" : 'Así se resuelve';
 
   const whatsappUrl = enlaceWhatsApp(locale, titulo);
@@ -22,37 +24,37 @@ export function ProcesoFila({ numero, titulo, hoy, resuelve, ctaLabel, locale }:
       ? `Talk about ${titulo} on WhatsApp ${avisoPestanaNueva(locale)}`
       : `Hablar por WhatsApp sobre ${titulo} ${avisoPestanaNueva(locale)}`;
 
+  const retardo = indice * STAGGER_MS;
+
   return (
-    <div className="fila grid grid-cols-1 gap-y-4 sm:grid-cols-[3.5rem_1fr] sm:gap-x-8">
-      <div
-        className="tabular text-tinta-media"
-        style={{ fontSize: 'var(--paso--1)' }}
-      >
+    <li
+      className="revelar-regla grid grid-cols-1 gap-y-4 py-7 md:grid-cols-[64px_minmax(0,1fr)_minmax(0,1fr)] md:items-baseline md:gap-x-6"
+      style={{ '--d': `${retardo}ms` } as React.CSSProperties}
+    >
+      <span className="revelar tabular text-xs font-medium text-tinta-media" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
         {numero}
-      </div>
+      </span>
 
-      <div className="flex flex-col items-start gap-4">
-        <h3 className="text-tinta" style={{ fontSize: 'var(--paso-2)' }}>
-          {titulo}
-        </h3>
+      <h3 className="revelar titular-3 md:text-[2rem] md:leading-[1.1]" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
+        {titulo}
+      </h3>
 
-        <p className="medida text-tinta">{hoy}</p>
-
-        <p className="medida text-tinta">
-          <span className="font-medium text-tinta-media">{resuelveLabel}: </span>
+      <div className="revelar flex flex-col items-start gap-4 text-base" style={{ '--d': `${retardo + 160}ms` } as React.CSSProperties}>
+        <p className="text-tinta-media">{hoy}</p>
+        <p className="text-tinta-media">
+          <span className="font-medium text-tinta">{resuelveLabel}: </span>
           {resuelve}
         </p>
-
         <a
           href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={whatsappAriaLabel}
-          className="enlace"
+          className="enlace text-[0.9375rem] font-medium text-tinta"
         >
           {ctaLabel}
         </a>
       </div>
-    </div>
+    </li>
   );
 }

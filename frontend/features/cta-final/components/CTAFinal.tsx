@@ -2,50 +2,76 @@
 
 import { Container } from '@/shared/components/ui/Container';
 import { useTranslation } from '@/shared/hooks/useTranslation';
+import { useRevelado } from '@/shared/hooks/useRevelado';
 import { CONTACT_INFO } from '@/shared/constants';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 
+type Retardo = React.CSSProperties & { '--d': string };
+const retardo = (ms: number): Retardo => ({ '--d': `${ms}ms` });
+
+/**
+ * Cierre: banda oscura con un solo CTA. El correo es texto secundario, no un segundo
+ * botón, y el número queda visible para quien prefiera llamar o guardarlo.
+ *
+ * Segundo y último momento cinemático: el fondo sube desde abajo como cortina
+ * (clip-path, 800ms), luego el titular por líneas y el botón al final.
+ *
+ * El export estático no tiene backend: el CTA lleva directo a WhatsApp, con el mensaje
+ * prellenado según el idioma, y el correo es un mailto.
+ */
 export function CTAFinal() {
   const { t, locale } = useTranslation();
-
-  // El export estático no tiene backend donde recibir envíos de formulario,
-  // así que el CTA lleva directo a los canales reales: WhatsApp (donde
-  // llegan las campañas) y correo como alternativa.
-  const whatsappUrl = enlaceWhatsApp(locale);
-  const whatsappAriaLabel = `${t.cta.whatsapp} ${avisoPestanaNueva(locale)}`;
+  const revelado = useRevelado<HTMLElement>();
 
   return (
-    <section id="contacto" className="py-20 lg:py-32 bg-[var(--papel-hundido)]">
-      <Container>
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-[length:var(--paso-3)] lg:text-[length:var(--paso-4)] text-[var(--tinta)]">
-              {t.cta.title}
-            </h2>
-            <p className="medida text-[length:var(--paso-1)] text-[var(--tinta-media)]">
-              {t.cta.description}
-            </p>
-          </div>
+    <section id="contacto" {...revelado} className="oscuro cortina">
+      <Container className="flex flex-col items-start gap-6 pb-24 pt-32 lg:pb-40 lg:pt-[200px]">
+        <p className="eyebrow revelar" style={retardo(300)}>
+          <span>
+            <span className="tabular">05</span> — {t.cta.eyebrow}
+          </span>
+        </p>
 
-          <div className="space-y-4">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={whatsappAriaLabel}
-              className="accion accion-whatsapp"
-            >
-              {t.cta.whatsapp}
+        <h2 className="max-w-[14ch] text-[clamp(2.625rem,1.4rem+5vw,5rem)] leading-[0.98] tracking-[-0.015em]">
+          <span className="linea-mascara revelar-mascara">
+            <span className="linea" style={retardo(400)}>
+              {t.cta.titulo.antes}
+            </span>
+          </span>
+          <span className="linea-mascara revelar-mascara">
+            <span className="linea clave" style={retardo(520)}>
+              {t.cta.titulo.clave}
+            </span>
+          </span>
+        </h2>
+
+        <p className="medida revelar text-[var(--hueso-tenue)]" style={retardo(640)}>
+          {t.cta.description}
+        </p>
+
+        <a
+          href={enlaceWhatsApp(locale)}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${t.cta.whatsapp} ${avisoPestanaNueva(locale)}`}
+          className="accion accion-primaria revelar mt-4 w-full px-[30px] py-5 text-lg sm:mt-6 sm:w-auto"
+          style={retardo(800)}
+        >
+          {t.cta.whatsapp}
+        </a>
+
+        <p
+          className="revelar flex flex-col gap-2 font-mono text-sm text-hueso-medio sm:flex-row sm:flex-wrap sm:gap-6"
+          style={retardo(900)}
+        >
+          <span className="tabular">{CONTACT_INFO.phone}</span>
+          <span>
+            {t.cta.correoLabel}{' '}
+            <a href={`mailto:${CONTACT_INFO.email}`} className="enlace break-all text-hueso">
+              {CONTACT_INFO.email}
             </a>
-
-            <p className="text-[var(--tinta-media)]">
-              {t.cta.correoLabel}{' '}
-              <a href={`mailto:${CONTACT_INFO.email}`} className="enlace">
-                {CONTACT_INFO.email}
-              </a>
-            </p>
-          </div>
-        </div>
+          </span>
+        </p>
       </Container>
     </section>
   );

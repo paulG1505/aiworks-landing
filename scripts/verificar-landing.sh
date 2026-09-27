@@ -50,8 +50,8 @@ ausente "GDPR"           "sello GDPR retirado"
 ausente "Empresa líder"  "superlativo 'Empresa líder' retirado"
 
 head_ "Requirement: Idioma por defecto en español"
-ausente_visible "Your team copies data" "el HTML pre-renderizado no sale en ingles"
-presente        "Your team copies data" "el copy en ingles viaja en el bundle (el selector EN lo necesita)"
+ausente_visible "Built for the work your team" "el HTML pre-renderizado no sale en ingles"
+presente        "Built for the work your team" "el copy en ingles viaja en el bundle (el selector EN lo necesita)"
 
 head_ "Requirement: Identidad geográfica ecuatoriana"
 # "MX" solo aparecia por Mexico (addressCountry y es_MX): tras el cambio no debe quedar

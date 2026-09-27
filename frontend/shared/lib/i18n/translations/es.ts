@@ -11,32 +11,34 @@ export const es = {
     cta: "Hablar por WhatsApp",
   },
   hero: {
-    headline: "Su equipo copia datos de un Excel a otro. Eso tiene un precio y no está en ningún informe.",
+    eyebrow: "Quito, Ecuador · Para PYMEs",
+    // La categoría es la primera línea del titular: un visitante frío tiene que leer
+    // "software con IA" antes que cualquier beneficio.
+    categoria: { antes: "Software con ", clave: "inteligencia artificial", despues: "." },
+    beneficio: "Hecho para el trabajo que su equipo hoy hace a mano.",
     subtitle:
-      "Construimos el software que hace ese trabajo solo, y dejamos a la vista cada decisión que toma.",
+      "Somos una consultora: construimos el software que hace ese trabajo solo, y dejamos a la vista cada decisión que toma.",
     trayectoria: "Más de 7 años resolviendo procesos.",
     cta: {
-      primary: "Hablar por WhatsApp",
-      secondary: "Cómo trabajamos",
-    },
-    sectores: {
-      label: "Trabajamos con",
-      items: ["Fintech", "Cooperativas", "Retail", "Logística", "Salud"],
+      primary: "Escribir por WhatsApp",
+      correo: "o por correo",
     },
   },
   registro: {
-    etiqueta: "ejemplo de flujo",
+    titulo: "Registro operativo",
+    etiqueta: "Ejemplo de flujo · ilustrativo",
     lineas: [
-      { hora: "09:42:11", texto: "señal recibida" },
-      { hora: "09:42:11", texto: "clasificada" },
-      { hora: "09:42:12", texto: "decisión automática" },
-      { hora: "09:42:14", texto: "revisión humana" },
-      { hora: "09:42:15", texto: "registrado" },
+      { hora: "09:42", tipo: "entrada", etiqueta: "ENTRADA", texto: "Llega el extracto bancario del día." },
+      { hora: "09:42", tipo: "ia", etiqueta: "IA", texto: "Cruza cada movimiento por referencia y monto." },
+      { hora: "09:42", tipo: "sistema", etiqueta: "DECISIÓN", texto: "Concilia solos los movimientos que cuadran." },
+      { hora: "09:43", tipo: "ia", etiqueta: "REVISIÓN", texto: "Uno no cuadra: pasa a una persona antes de seguir." },
+      { hora: "09:43", tipo: "sistema", etiqueta: "REGISTRO", texto: "Queda anotado con hora y responsable." },
     ],
     pie: "Cada decisión queda con hora, con responsable y con registro. Eso es lo que hace que una automatización se pueda auditar en lugar de tener que creerle.",
   },
   procesos: {
-    title: "Procesos que se automatizan",
+    eyebrow: "Procesos que se automatizan",
+    titulo: { antes: "Lo que hoy se hace a mano", clave: "y no debería." },
     subtitle:
       "Si reconoce alguno de estos en su empresa, ya sabe de dónde salen las horas que no aparecen en ningún informe.",
     ctaItem: "Hablar de esto",
@@ -65,7 +67,9 @@ export const es = {
     ],
   },
   proceso: {
-    title: "Cómo trabajamos",
+    eyebrow: "Cómo trabajamos",
+    titulo: { antes: "Tres fases.", clave: "Sin sorpresas." },
+    faseLabel: "Fase",
     subtitle:
       "Tres fases, cada una con algo concreto que usted recibe al final. Si la primera no encuentra nada que valga la pena automatizar, se lo decimos y ahí queda.",
     entregableLabel: "Usted recibe",
@@ -96,7 +100,8 @@ export const es = {
     stack: "Python · FastAPI · PostgreSQL · Next.js · TypeScript · Docker",
   },
   porque: {
-    title: "Por qué AIworks",
+    eyebrow: "Por qué AIworks",
+    titulo: { antes: "Sin promesas infladas.", clave: "Con criterio." },
     items: [
       {
         titulo: "Más de 7 años resolviendo procesos",
@@ -119,9 +124,30 @@ export const es = {
           "Código probado, documentado y suyo. Si mañana decide llevárselo a otro equipo, puede hacerlo.",
       },
     ],
+    // Sustituyen a las "tarjetas de cifra grande": no hay clientes todavía, así que son
+    // casos ilustrativos y lo dicen antes que nada. Cuando exista el primer cliente con
+    // permiso, un caso real reemplaza a uno de estos.
+    casos: {
+      rotulo: "Caso ilustrativo · no es un cliente",
+      hoyLabel: "Hoy",
+      conIaLabel: "Con IA",
+      items: [
+        {
+          titulo: "Un área contable que concilia el banco a mano",
+          hoy: "Una persona cruza el extracto contra el sistema línea por línea, y el cierre espera a que termine.",
+          conIa: "El sistema cruza por referencia y monto; la persona revisa solo las partidas que no cuadran.",
+        },
+        {
+          titulo: "Una empresa que recibe facturas en PDF por correo",
+          hoy: "Cada factura se vuelve a digitar en el sistema, y los errores aparecen en el cierre siguiente.",
+          conIa: "Las facturas se leen al llegar y los datos entran una sola vez, con revisión humana de lo dudoso.",
+        },
+      ],
+    },
   },
   preguntas: {
-    title: "Preguntas que nos hacen",
+    eyebrow: "Preguntas frecuentes",
+    titulo: { antes: "Lo que suelen", clave: "preguntarnos." },
     items: [
       {
         pregunta: "¿Cuánto cuesta?",
@@ -146,24 +172,15 @@ export const es = {
     ],
   },
   cta: {
-    title: "Empiece por saber qué le está costando más",
+    eyebrow: "Contacto",
+    titulo: { antes: "Empiece por saber", clave: "qué le está costando más." },
     description:
       "En 15 minutos sabe qué proceso le está costando más y si se puede automatizar. Sin costo ni compromiso.",
     whatsapp: "Hablar por WhatsApp",
-    correoLabel: "O escríbanos a",
+    correoLabel: "o escríbanos a",
   },
   footer: {
-    brand: {
-      name: "AIworks",
-      description: "Software con inteligencia artificial para empresas que quieren dejar de digitar. Quito, Ecuador.",
-    },
-    navegacion: {
-      title: "La página",
-    },
-    contacto: {
-      title: "Contacto",
-      whatsapp: "WhatsApp",
-    },
-    copyright: "© 2026 AIworks. Quito, Ecuador.",
+    navegacion: "Navegación del pie",
+    copyright: "© 2026 AIworks · Quito, Ecuador",
   },
 } as const;

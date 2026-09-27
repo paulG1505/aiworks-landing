@@ -9,14 +9,14 @@ interface UseIntersectionObserverOptions {
   freezeOnceVisible?: boolean;
 }
 
-export function useIntersectionObserver({
+export function useIntersectionObserver<T extends Element = HTMLDivElement>({
   threshold = 0.1,
   root = null,
   rootMargin = '0px',
   freezeOnceVisible = true,
 }: UseIntersectionObserverOptions = {}) {
   const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
+  const elementRef = useRef<T>(null);
 
   // Store options in ref to avoid recreating observer (rerender-dependencies)
   // This prevents unnecessary re-renders when options objects change

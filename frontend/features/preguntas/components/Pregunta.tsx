@@ -9,17 +9,14 @@ interface PreguntaProps {
 }
 
 /**
- * Item de acordeón sin caja: la única separación visual es el border-bottom
- * heredado del contenedor (ver Preguntas.tsx). El disparador es un <button>
- * real; el indicador +/− usa .tabular para no mover el layout al cambiar.
+ * Item de acordeón sin caja: la única separación es el filete inferior. El disparador
+ * es un <button> real dentro de un <h3>, con aria-expanded y aria-controls, y el panel
+ * es una región etiquetada por el botón.
  *
- * Accesibilidad: cuando el panel está cerrado se saca del árbol con el
- * atributo `hidden` (no opacity/max-height), así no queda legible para un
- * lector de pantalla ni alcanzable con Tab. Por eso mismo no se anima la
- * apertura: animar algo que pasa por `display: none` obligaría a un truco
- * (max-height, clip) que reintroduce exactamente el problema de
- * accesibilidad que `hidden` resuelve. La spec permite prescindir del
- * efecto cuando complica el punto de accesibilidad.
+ * Apertura con altura (grid-template-rows 0fr → 1fr, 350ms; ver .respuesta en
+ * globals.css). El panel cerrado lleva visibility: hidden, que —igual que `hidden`— lo
+ * saca del árbol de accesibilidad y del orden de Tab, pero sí se puede animar. El "+"
+ * rota a "–". Con movimiento reducido no hay transición.
  */
 export function Pregunta({ pregunta, respuesta, defaultOpen = false }: PreguntaProps) {
   const [open, setOpen] = useState(defaultOpen);
@@ -28,29 +25,35 @@ export function Pregunta({ pregunta, respuesta, defaultOpen = false }: PreguntaP
   const panelId = `preguntas-panel-${reactId}`;
 
   return (
-    <div className="border-b border-regla">
-      <button
-        type="button"
-        id={buttonId}
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between gap-6 py-5 text-left text-[length:var(--paso-1)] font-medium text-tinta"
-      >
-        <span>{pregunta}</span>
-        <span className="tabular shrink-0" aria-hidden="true">
-          {open ? '−' : '+'}
-        </span>
-      </button>
+    <div className="border-b border-[var(--c-regla)]">
+      <h3>
+        <button
+          type="button"
+          id={buttonId}
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-serif text-[1.375rem] leading-[1.2] text-tinta sm:py-[26px] lg:text-[1.625rem]"
+        >
+          <span>{pregunta}</span>
+          <span aria-hidden="true" className="relative size-4 shrink-0">
+            <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
+            <span
+              className={`signo-barra absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current ${open ? '' : 'rotate-90'}`}
+            />
+          </span>
+        </button>
+      </h3>
       <div
         id={panelId}
         role="region"
         aria-labelledby={buttonId}
-        hidden={!open}
+        className="respuesta"
+        data-abierta={open ? '' : undefined}
       >
-        <p className="medida pb-5 text-[length:var(--paso-0)] text-tinta-media">
-          {respuesta}
-        </p>
+        <div>
+          <p className="medida pb-7 pr-0 text-base leading-[1.6] text-tinta-media sm:pr-12">{respuesta}</p>
+        </div>
       </div>
     </div>
   );

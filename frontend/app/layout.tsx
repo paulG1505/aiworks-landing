@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
@@ -6,6 +7,19 @@ import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
 import { SITE_URL } from "@/shared/constants/site";
 import "./globals.css";
+
+// Tres voces, una por función: serif para titulares, sans para cuerpo y UI, mono para
+// eyebrows y el registro operativo. next/font las sirve desde el propio dominio (sin
+// petición a Google en el navegador) y reserva su métrica para evitar saltos de layout.
+const serif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--fuente-serif",
+  display: "swap",
+});
+const sans = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -80,14 +94,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
+        {/*
+          * Marca que hay JavaScript antes del primer pintado. Los revelados al hacer scroll
+          * solo ocultan contenido bajo `html.js`: sin JS, o si el script falla, todo se ve.
+          */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
       <body className="antialiased font-sans">
@@ -98,7 +111,7 @@ export default function RootLayout({
           */}
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
         >
           Saltar al contenido
         </a>

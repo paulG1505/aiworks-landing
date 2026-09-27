@@ -2,59 +2,75 @@
 
 import { Container } from '@/shared/components/ui/Container';
 import { useTranslation } from '@/shared/hooks/useTranslation';
+import { CONTACT_INFO } from '@/shared/constants';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 import { RegistroOperativo } from './RegistroOperativo';
 
+type Retardo = React.CSSProperties & { '--d': string };
+const retardo = (ms: number): Retardo => ({ '--d': `${ms}ms` });
+
+/**
+ * Hero 1b de la dirección visual: la categoría ES la primera línea del titular (en
+ * tinta media, con "inteligencia artificial" en cursiva) y el beneficio la segunda, en
+ * tinta. El eyebrow queda libre para ubicación y público.
+ *
+ * Secuencia al cargar —la única cinemática sin scroll—: eyebrow en fundido → línea 1
+ * del titular sube desde su máscara → línea 2 a +120ms → cuerpo y CTA a +200ms → el
+ * registro escribe una línea cada 600ms (RegistroOperativo). Con movimiento reducido
+ * todo está visible desde el principio.
+ */
 export function Hero() {
   const { t, locale } = useTranslation();
-
-  const whatsappHref = enlaceWhatsApp(locale);
+  const { categoria } = t.hero;
 
   return (
-    <section className="pt-28 pb-12 sm:pt-32 sm:pb-16">
+    <section className="pt-28 pb-24 sm:pt-36 lg:pt-48 lg:pb-40">
       <Container>
-        <h1
-          className="medida text-[length:var(--paso-4)] sm:text-[length:var(--paso-5)]"
-        >
-          {t.hero.headline}
-        </h1>
+        <div className="flex max-w-[900px] flex-col gap-4 sm:gap-6">
+          <p className="eyebrow eyebrow-marcador entrada-fundido">{t.hero.eyebrow}</p>
 
-        <p className="medida mt-6" style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso-1)' }}>
-          {t.hero.subtitle}
-        </p>
+          <h1 className="titular-display">
+            <span className="linea-mascara entrada-mascara">
+              <span className="linea text-tinta-media" style={retardo(250)}>
+                {categoria.antes}
+                <i className="clave">{categoria.clave}</i>
+                {categoria.despues}
+              </span>
+            </span>
+            <span className="linea-mascara entrada-mascara">
+              <span className="linea" style={retardo(370)}>
+                {t.hero.beneficio}
+              </span>
+            </span>
+          </h1>
 
-        <p className="mt-4" style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso-0)' }}>
-          {t.hero.trayectoria}
-        </p>
+          <div className="entrada-revelar flex flex-col gap-6 sm:gap-10" style={retardo(570)}>
+            <p className="medida mt-2 text-tinta-media lg:text-[1.1875rem]">{t.hero.subtitle}</p>
 
-        <div className="mt-8 flex flex-col sm:flex-row gap-4">
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${t.hero.cta.primary} ${avisoPestanaNueva(locale)}`}
-            className="accion accion-whatsapp"
-          >
-            {t.hero.cta.primary}
-          </a>
-          <a href="#proceso" className="accion accion-secundaria">
-            {t.hero.cta.secondary}
-          </a>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+              <a
+                href={enlaceWhatsApp(locale)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.hero.cta.primary} ${avisoPestanaNueva(locale)}`}
+                className="accion accion-primaria"
+              >
+                {t.hero.cta.primary}
+              </a>
+              <a
+                href={`mailto:${CONTACT_INFO.email}`}
+                className="enlace self-center p-2 text-[0.9375rem] font-medium sm:self-auto sm:p-0 sm:text-base"
+              >
+                {t.hero.cta.correo}
+              </a>
+            </div>
+
+            <p className="text-[0.875rem] text-tinta-media">{t.hero.trayectoria}</p>
+          </div>
         </div>
 
-        <div className="mt-10 max-w-2xl">
-          <RegistroOperativo />
-        </div>
-
-        <div className="mt-10">
-          <p style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso--1)' }}>
-            {t.hero.sectores.label}
-          </p>
-          <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
-            {t.hero.sectores.items.map((sector) => (
-              <li key={sector}>{sector}</li>
-            ))}
-          </ul>
+        <div className="mt-12 max-w-[760px] lg:mt-16">
+          <RegistroOperativo inicioMs={900} />
         </div>
       </Container>
     </section>
