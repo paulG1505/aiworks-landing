@@ -10,39 +10,21 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
+    default: "AIworks | Automatización de procesos con IA en Quito",
     template: "%s | AIworks"
   },
-  description: "Empresa líder en desarrollo de software con inteligencia artificial, chatbots IA y automatización empresarial. Creamos soluciones personalizadas con IA para Fintech, Retail, Logística y Salud. Consultores expertos en machine learning y procesamiento de datos.",
+  description: "Su equipo copia datos de un Excel a otro. Construimos el software que hace ese trabajo solo, con revisión humana y registro auditable de cada decisión. Diagnóstico de 15 minutos sin costo.",
+  // Alineadas con los tres procesos que la página desarrolla de verdad. Antes
+  // apuntaban a "chatbots" como producto genérico, que ahora es solo uno de los tres.
   keywords: [
-    // Palabras clave principales
-    "desarrollo software inteligencia artificial",
-    "chatbots con IA",
-    "chatbot inteligente",
-    "desarrollo chatbot personalizado",
-    "software con inteligencia artificial",
-    "empresa desarrollo IA",
-    "automatización con IA",
-    "soluciones IA empresariales",
-    // Long-tail keywords
-    "desarrollo software IA México",
-    "crear chatbot con inteligencia artificial",
-    "empresa chatbots IA",
-    "desarrollo aplicaciones machine learning",
-    "automatización procesos IA",
-    "consultoría inteligencia artificial",
-    "integración IA empresas",
-    // Keywords por industria
-    "IA para fintech",
-    "IA para retail",
-    "IA para logística",
-    "IA para salud",
-    // Términos técnicos
-    "machine learning",
-    "procesamiento lenguaje natural",
-    "NLP español",
-    "AI development",
-    "custom AI solutions"
+    "automatización de procesos con IA",
+    "conciliación bancaria automática",
+    "automatizar cierre de mes",
+    "lectura automática de documentos",
+    "asistente de atención al cliente con IA",
+    "software con inteligencia artificial Ecuador",
+    "automatización para cooperativas",
+    "consultora de software Quito"
   ],
   authors: [{ name: "AIworks", url: SITE_URL }],
   creator: "AIworks",
@@ -54,25 +36,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "es_MX",
+    locale: "es_EC",
     url: SITE_URL,
-    title: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
-    description: "Empresa líder en desarrollo de software con IA, chatbots inteligentes y automatización empresarial. Soluciones personalizadas con machine learning para tu negocio.",
+    title: "AIworks | Automatización de procesos con IA en Quito",
+    description: "Construimos el software que hace el trabajo de digitar, con revisión humana y registro auditable. Diagnóstico de 15 minutos sin costo.",
     siteName: "AIworks",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "AIworks - Desarrollo de Software con Inteligencia Artificial"
+        alt: "AIworks — No vendemos software, resolvemos ineficiencia. Quito, Ecuador."
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
-    description: "Empresa líder en desarrollo de software con IA, chatbots y automatización empresarial",
-    creator: "@aiworks",
+    title: "AIworks | Automatización de procesos con IA en Quito",
+    description: "Construimos el software que hace el trabajo de digitar, con revisión humana y registro auditable. Diagnóstico de 15 minutos sin costo.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -104,16 +85,27 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className="antialiased font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <body className="antialiased font-sans">
+        {/*
+          * Saltar al contenido: con el header fijo, quien navega con teclado tenía que
+          * pasar por el logo, cinco enlaces, el selector de idioma y el CTA antes de
+          * llegar al contenido. Visible solo al recibir foco.
+          */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
+        >
+          Saltar al contenido
+        </a>
         <StoreRehydrate />
         <StructuredData />
         <Header />
-        <main>{children}</main>
+        <main id="main">{children}</main>
         <Footer />
         <FloatingWhatsApp />
       </body>

@@ -2,177 +2,168 @@ export const es = {
   header: {
     logo: "AIworks",
     nav: {
-      services: "Servicios",
-      technologies: "Tecnologías",
-      about: "Nosotros",
-      process: "Proceso",
-      contact: "Contacto",
+      procesos: "Procesos",
+      proceso: "Cómo trabajamos",
+      porque: "Por qué AIworks",
+      preguntas: "Preguntas",
+      contacto: "Contacto",
     },
-    cta: "Agendar consulta gratuita",
+    cta: "Hablar por WhatsApp",
   },
   hero: {
-    headline: "Transforma tus datos en decisiones automatizadas con IA",
-    subtitle: "Especialistas en software potenciado con IA para empresas que buscan ventaja competitiva",
+    headline: "Su equipo copia datos de un Excel a otro. Eso tiene un precio y no está en ningún informe.",
+    subtitle:
+      "Construimos el software que hace ese trabajo solo, y dejamos a la vista cada decisión que toma.",
+    trayectoria: "Más de 7 años resolviendo procesos.",
     cta: {
-      primary: "Agendar consulta gratuita",
-      secondary: "Conocer más",
+      primary: "Hablar por WhatsApp",
+      secondary: "Cómo trabajamos",
     },
-    industries: {
-      fintech: "Fintech",
-      retail: "Retail",
-      logistics: "Logística",
-      healthcare: "Salud",
+    sectores: {
+      label: "Trabajamos con",
+      items: ["Fintech", "Cooperativas", "Retail", "Logística", "Salud"],
     },
   },
-  services: {
-    title: "Soluciones IA que impulsan tu negocio",
-    subtitle: "Implementamos inteligencia artificial en procesos críticos de tu empresa",
-    cards: {
-      fintech: {
-        title: "Fintech: Detección de Fraude",
-        problem: "Problema: Pérdidas millonarias por transacciones fraudulentas",
-        solution: "Solución: Sistema ML que analiza patrones en tiempo real con 99.2% de precisión",
-        benefit: "85% reducción de fraude",
-      },
-      retail: {
-        title: "Retail: Predicción de Demanda",
-        problem: "Problema: Inventario obsoleto o faltantes en productos clave",
-        solution: "Solución: Forecasting con redes neuronales que predice demanda por SKU",
-        benefit: "40% menos desperdicio",
-      },
-      logistics: {
-        title: "Logística: Optimización de Rutas",
-        problem: "Problema: Altos costos de combustible y tiempos lentos de entrega",
-        solution: "Solución: Algoritmos de optimización que calculan rutas en tiempo real",
-        benefit: "30% ahorro en combustible",
-      },
-      healthcare: {
-        title: "Salud: Análisis de Imágenes Médicas",
-        problem: "Problema: Diagnósticos demorados en análisis de rayos X",
-        solution: "Solución: Computer Vision que detecta anomalías con precisión de especialista",
-        benefit: "95% precisión diagnóstica",
-      },
-    },
+  registro: {
+    etiqueta: "ejemplo de flujo",
+    lineas: [
+      { hora: "09:42:11", texto: "señal recibida" },
+      { hora: "09:42:11", texto: "clasificada" },
+      { hora: "09:42:12", texto: "decisión automática" },
+      { hora: "09:42:14", texto: "revisión humana" },
+      { hora: "09:42:15", texto: "registrado" },
+    ],
+    pie: "Cada decisión queda con hora, con responsable y con registro. Eso es lo que hace que una automatización se pueda auditar en lugar de tener que creerle.",
   },
-  technologies: {
-    title: "Tecnologías de Vanguardia",
-    subtitle: "Stack tecnológico moderno y escalable",
-    backend: {
-      title: "Backend",
-      items: ["FastAPI", "Python", "PostgreSQL", "Redis"],
-    },
-    frontend: {
-      title: "Frontend",
-      items: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    },
-    aiml: {
-      title: "IA/ML",
-      items: ["TensorFlow", "PyTorch", "scikit-learn", "LangChain"],
-    },
-    infrastructure: {
-      title: "Infraestructura",
-      items: ["AWS", "Docker", "Kubernetes", "GitHub Actions"],
-    },
+  procesos: {
+    title: "Procesos que se automatizan",
+    subtitle:
+      "Si reconoce alguno de estos en su empresa, ya sabe de dónde salen las horas que no aparecen en ningún informe.",
+    ctaItem: "Hablar de esto",
+    items: [
+      {
+        numero: "01",
+        titulo: "Conciliación bancaria",
+        hoy: "Alguien cruza el extracto contra el sistema, línea por línea. El cierre depende de cuántas alcance a revisar antes de que termine el día.",
+        resuelve:
+          "El sistema lee el extracto, cruza por referencia y monto, y deja en una cola aparte solo las que no cuadran. La persona revisa las excepciones, no las cinco mil filas.",
+      },
+      {
+        numero: "02",
+        titulo: "Cierre de mes y digitación",
+        hoy: "Los datos llegan en correos, PDF y hojas de cálculo, y alguien los vuelve a escribir en el sistema. Lo que se digita mal se descubre en el cierre siguiente.",
+        resuelve:
+          "Los documentos se leen al llegar y los datos entran una sola vez. El equipo deja de digitar y pasa a decidir sobre lo que el sistema marcó.",
+      },
+      {
+        numero: "03",
+        titulo: "Atención a clientes fuera de horario",
+        hoy: "Las consultas se acumulan de noche y el lunes hay cola. Las preguntas son casi siempre las mismas.",
+        resuelve:
+          "Un asistente responde las consultas repetidas con la información real de su negocio, y pasa a una persona lo que no sabe contestar. No improvisa.",
+      },
+    ],
   },
-  projects: {
-    title: "Inteligencia Artificial aplicada a tu negocio",
-    subtitle: "Implementamos modelos IA que resuelven problemas reales y generan ROI medible",
-    cards: {
-      dataAnalysis: {
-        title: "Análisis de Datos con IA",
-        description:
-          "Analizamos tus datos para identificar patrones y oportunidades. Seleccionamos e implementamos los modelos IA más adecuados según tus objetivos de negocio y tipo de datos.",
-        solutionsLabel: "Soluciones:",
-        solutions: "Análisis predictivo • Forecasting • Segmentación • Detección de anomalías",
-      },
-      aiIntegration: {
-        title: "Integración IA en tu Software",
-        description:
-          "Integramos soluciones IA existentes (OpenAI, Anthropic, Google AI) en tus aplicaciones. Desarrollamos interfaces inteligentes y flujos de trabajo automatizados adaptados a tus procesos.",
-        solutionsLabel: "Soluciones:",
-        solutions: "Chatbots conversacionales • Asistentes IA • Procesamiento NLP • Computer Vision",
-      },
-    },
-  },
-  whyUs: {
-    title: "¿Por qué AIworks?",
-    subtitle: "Ventajas competitivas que nos diferencian",
-    cards: {
-      fast: {
-        title: "Implementación rápida",
-        description: "Del concepto a producción en semanas, no meses",
-      },
-      security: {
-        title: "Seguridad empresarial",
-        description: "Cumplimiento SOC 2, GDPR y mejores prácticas",
-      },
-      quality: {
-        title: "Código de calidad",
-        description: "100% testeado, documentado y mantenible",
-      },
-      team: {
-        title: "Equipo experto",
-        description: "Desarrolladores senior especializados en IA/ML",
-      },
-    },
-  },
-  process: {
+  proceso: {
     title: "Cómo trabajamos",
-    subtitle: "Metodología probada de 5 pasos",
-    steps: {
-      discovery: {
-        title: "Descubrimiento y análisis",
-        description:
-          "Entendemos tu negocio, datos disponibles y objetivos. Evaluamos viabilidad técnica.",
+    subtitle:
+      "Tres fases, cada una con algo concreto que usted recibe al final. Si la primera no encuentra nada que valga la pena automatizar, se lo decimos y ahí queda.",
+    entregableLabel: "Usted recibe",
+    fases: [
+      {
+        numero: "01",
+        titulo: "Descubrimiento",
+        descripcion:
+          "Miramos el proceso donde está, con la gente que lo hace hoy. Medimos cuánto tiempo toma y dónde se rompe.",
+        entregable: "Un documento con el proceso tal como está, qué parte se puede automatizar y qué no conviene tocar.",
       },
-      design: {
-        title: "Diseño de solución",
-        description: "Arquitectura técnica, selección de modelos y hoja de ruta de implementación.",
+      {
+        numero: "02",
+        titulo: "Arquitectura y ejecución",
+        descripcion:
+          "Diseñamos la solución y la construimos en entregas cortas, de modo que usted la vea funcionando antes de que esté terminada.",
+        entregable: "El sistema funcionando sobre sus datos reales, con las reglas de revisión humana ya definidas.",
       },
-      development: {
-        title: "Desarrollo y entrenamiento",
-        description: "Desarrollo ágil con sprints de 2 semanas. Entrenamiento iterativo de modelos ML.",
+      {
+        numero: "03",
+        titulo: "Puesta en producción",
+        descripcion:
+          "Lo conectamos a lo que ya usa, capacitamos a quien lo va a operar y dejamos el registro de auditoría andando.",
+        entregable: "El sistema en producción, la documentación para operarlo y el registro de cada decisión que toma.",
       },
-      testing: {
-        title: "Testing y validación",
-        description: "Testing exhaustivo (unitario, integración, E2E). Validación de métricas de negocio.",
+    ],
+    stackLabel: "Construido con",
+    stack: "Python · FastAPI · PostgreSQL · Next.js · TypeScript · Docker",
+  },
+  porque: {
+    title: "Por qué AIworks",
+    items: [
+      {
+        titulo: "Más de 7 años resolviendo procesos",
+        descripcion:
+          "La marca es nueva; la experiencia no. Son más de siete años liderando proyectos de software, la mayoría resolviendo exactamente este tipo de problema.",
       },
-      deployment: {
-        title: "Deploy y monitoreo",
-        description:
-          "Despliegue a producción con CI/CD. Monitoreo continuo de performance y reentrenamiento.",
+      {
+        titulo: "IA con orden, no IA a ciegas",
+        descripcion:
+          "Toda decisión automática queda registrada, con su hora, y las que importan pasan por una persona antes de ejecutarse. Usted puede reconstruir por qué el sistema hizo lo que hizo.",
       },
-    },
+      {
+        titulo: "Del concepto a producción en semanas",
+        descripcion:
+          "Trabajamos en entregas cortas sobre sus datos reales. No hay una fase de seis meses en la que usted no ve nada.",
+      },
+      {
+        titulo: "Software que otro puede mantener",
+        descripcion:
+          "Código probado, documentado y suyo. Si mañana decide llevárselo a otro equipo, puede hacerlo.",
+      },
+    ],
+  },
+  preguntas: {
+    title: "Preguntas que nos hacen",
+    items: [
+      {
+        pregunta: "¿Cuánto cuesta?",
+        respuesta:
+          "Depende del proceso y de cuánto haya que conectar. En el diagnóstico de 15 minutos le damos un rango concreto para su caso, sin compromiso.",
+      },
+      {
+        pregunta: "¿Cuánto demora?",
+        respuesta:
+          "El descubrimiento toma entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.",
+      },
+      {
+        pregunta: "¿No son un equipo muy chico?",
+        respuesta:
+          "Somos chicos, y por eso hablamos directo con quien hace el trabajo en lugar de pasar por tres capas. Lo que compensa el tamaño es el método: el proceso de tres fases es el mismo en cada proyecto y está escrito.",
+      },
+      {
+        pregunta: "¿Qué pasa con los datos de mi empresa?",
+        respuesta:
+          "Se quedan donde usted decida, y firmamos confidencialidad antes de ver nada. Trabajamos bajo la Ley Orgánica de Protección de Datos Personales del Ecuador, y en el diagnóstico no necesitamos datos reales para decirle si el proceso se puede automatizar.",
+      },
+    ],
   },
   cta: {
-    title: "¿Listo para transformar tu negocio con IA?",
-    description: "Agenda una consulta gratuita de 30 minutos con nuestros expertos en IA",
-    button: "Agendar consulta",
-    form: {
-      title: "Formulario de contacto",
-      name: "Nombre",
-      email: "Correo electrónico",
-      message: "Mensaje",
-      submit: "Enviar",
-    },
+    title: "Empiece por saber qué le está costando más",
+    description:
+      "En 15 minutos sabe qué proceso le está costando más y si se puede automatizar. Sin costo ni compromiso.",
+    whatsapp: "Hablar por WhatsApp",
+    correoLabel: "O escríbanos a",
   },
   footer: {
     brand: {
       name: "AIworks",
-      description: "Consultora especializada en software potenciado con IA",
+      description: "Software con inteligencia artificial para empresas que quieren dejar de digitar. Quito, Ecuador.",
     },
-    navigation: {
-      title: "Navegación",
-      services: "Servicios",
-      technologies: "Tecnologías",
-      about: "Nosotros",
-      contact: "Contacto",
+    navegacion: {
+      title: "La página",
     },
-    legal: {
-      title: "Legal",
-      privacy: "Política de Privacidad",
-      terms: "Términos y Condiciones",
+    contacto: {
+      title: "Contacto",
+      whatsapp: "WhatsApp",
     },
-    copyright: "© 2026 AIworks. Todos los derechos reservados.",
+    copyright: "© 2026 AIworks. Quito, Ecuador.",
   },
 } as const;

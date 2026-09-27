@@ -1,44 +1,140 @@
 @import "tailwindcss";
 
+/*
+ * Sistema visual de AIworks — ver changes/rediseno-landing-octubre/sistema-visual.md
+ *
+ * La materia del negocio es conciliar registros: conciliación bancaria, cierre de mes,
+ * auditoría. Ese vernáculo es el del libro contable, así que la página se estructura en
+ * filas con reglas y cifras tabulares, no en tarjetas.
+ */
 :root {
-  /* AIworks Brand Colors */
-  --primary-blue: #0066FF;
-  --primary-cyan: #00D4FF;
-  --bg-dark: #0F0F23;
+  /* Papel y tinta */
+  --papel: #FBFAF7;
+  --papel-hundido: #F2F1EC;
+  --tinta: #1C1B17;
+  --tinta-media: #6B6A61;
+  --regla: #DEDCD4;
+
+  /* Único acento. Plano, sin gradiente. Solo en enlaces, foco y botón primario. */
+  --marca: #0B4FD8;
+  --marca-hover: #0940AE;
+
+  /* Bloque de firma: el registro operativo, la única superficie oscura de la página */
+  --registro-fondo: #141414;
+  --registro-texto: #E8E6DF;
+  --registro-media: #8C8A80;
+  --registro-regla: #2A2A28;
+
   --verde-whatsapp: #25D366;
+  --verde-whatsapp-hover: #1EBE5A;
 
-  /* Semi-transparent Whites */
-  --white-5: #FFFFFF0D;   /* 5% */
-  --white-8: #FFFFFF14;   /* 8% */
-  --white-10: #FFFFFF1A;  /* 10% */
-  --white-15: #FFFFFF26;  /* 15% */
-  --white-20: #FFFFFF33;  /* 20% */
-  --white-30: #FFFFFF4D;  /* 30% */
+  /* Escala tipográfica (Bringhurst) */
+  --paso--1: 0.8125rem;  /* 13px */
+  --paso-0: 0.9375rem;   /* 15px */
+  --paso-1: 1.0625rem;   /* 17px */
+  --paso-2: 1.3125rem;   /* 21px */
+  --paso-3: 1.6875rem;   /* 27px */
+  --paso-4: 2.125rem;    /* 34px */
+  --paso-5: 2.75rem;     /* 44px */
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(90deg, #00D4FF 0%, #0066FF 100%);
-  --gradient-cta: linear-gradient(135deg, #0066FF20 0%, #00D4FF15 50%, #6B46C120 100%);
-  --gradient-radial: radial-gradient(circle, #0066FF40 0%, transparent 70%);
-
-  /* Theme variables */
-  --background: #0F0F23;
-  --foreground: #ffffff;
+  --background: var(--papel);
+  --foreground: var(--tinta);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  --color-papel: var(--papel);
+  --color-papel-hundido: var(--papel-hundido);
+  --color-tinta: var(--tinta);
+  --color-tinta-media: var(--tinta-media);
+  --color-regla: var(--regla);
+  --color-marca: var(--marca);
+  --color-registro-fondo: var(--registro-fondo);
+  --color-registro-texto: var(--registro-texto);
+  --color-registro-media: var(--registro-media);
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+/*
+ * Red de seguridad contra el scroll horizontal. La causa raíz —las traslaciones de
+ * AnimatedSection— ya se eliminó, pero la regla se queda: es una línea y evita que
+ * cualquier bloque futuro reintroduzca el problema sin que nadie lo note.
+ */
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-sans);
+  font-size: var(--paso-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Cifras que se alinean en columna: horas del registro, números de fase, montos. */
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Titulares: tracking cerrado e interlineado corto, como pide una display de 600. */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* Medida: nunca más de 72 caracteres de ancho en texto corrido. */
+.medida {
+  max-width: 68ch;
+}
+
+/* Foco visible en todo elemento interactivo. Requisito, no adorno. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+section[id] {
+  scroll-margin-top: 88px;
+}
+
+/*
+ * El registro operativo es el ÚNICO momento animado de la página. Encadena sus líneas
+ * al entrar en viewport y luego se repite en bucle lento.
+ */
+@keyframes registro-linea {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.registro-linea {
+  opacity: 0;
+  animation: registro-linea 0.4s ease-out forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* Con movimiento reducido el registro se muestra completo y estático. */
+  .registro-linea {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   *,
@@ -50,58 +146,62 @@ html {
   }
 }
 
-section[id] {
-  scroll-margin-top: 100px;
+/*
+ * Acciones. Son clases y no un componente porque casi todos los CTA de la página son
+ * enlaces (wa.me, mailto) y no botones, y así ningún bloque depende de la API de Button.
+ * Sin sombras y sin cambio de escala en hover: solo color.
+ */
+.accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  font-size: var(--paso-0);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-body {
-  background: var(--bg-dark);
-  color: var(--foreground);
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+.accion-whatsapp {
+  background: var(--verde-whatsapp);
+  color: #06301A;
+}
+.accion-whatsapp:hover {
+  background: var(--verde-whatsapp-hover);
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.accion-secundaria {
+  border: 1px solid var(--regla);
+  background: transparent;
+  color: var(--tinta);
+}
+.accion-secundaria:hover {
+  border-color: var(--tinta);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Enlace de texto: subrayado desplazado, sin acento de color innecesario. */
+.enlace {
+  color: var(--tinta);
+  text-decoration: underline;
+  text-decoration-color: var(--regla);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+.enlace:hover {
+  text-decoration-color: var(--marca);
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+/*
+ * Fila de registro: la unidad estructural de la página. Regla arriba, espaciado
+ * generoso, y en la última de la lista una regla abajo para cerrar el bloque.
+ */
+.fila {
+  border-top: 1px solid var(--regla);
+  padding: 2rem 0;
 }
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-/* Stagger animations */
-.animate-delay-100 {
-  animation-delay: 100ms;
-}
-
-.animate-delay-200 {
-  animation-delay: 200ms;
-}
-
-.animate-delay-300 {
-  animation-delay: 300ms;
-}
-
-.animate-delay-400 {
-  animation-delay: 400ms;
+.fila:last-child {
+  border-bottom: 1px solid var(--regla);
 }

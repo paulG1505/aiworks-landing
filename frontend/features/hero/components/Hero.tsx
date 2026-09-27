@@ -1,33 +1,60 @@
+'use client';
+
 import { Container } from '@/shared/components/ui/Container';
-import { AnimatedSection } from '@/shared/components/ui/AnimatedSection';
-import { HeroContent } from './HeroContent';
-import { IndustryBadges } from './IndustryBadges';
-import { HeroVideoBackground } from './HeroVideoBackground';
+import { useTranslation } from '@/shared/hooks/useTranslation';
+import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
+import { RegistroOperativo } from './RegistroOperativo';
 
 export function Hero() {
+  const { t, locale } = useTranslation();
+
+  const whatsappHref = enlaceWhatsApp(locale);
+
   return (
-    <section className="relative min-h-screen overflow-hidden flex items-center">
-      {/* Video Background - covers entire section */}
-      <HeroVideoBackground />
+    <section className="pt-28 pb-12 sm:pt-32 sm:pb-16">
+      <Container>
+        <h1
+          className="medida text-[length:var(--paso-4)] sm:text-[length:var(--paso-5)]"
+        >
+          {t.hero.headline}
+        </h1>
 
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 pointer-events-none z-[1]" />
+        <p className="medida mt-6" style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso-1)' }}>
+          {t.hero.subtitle}
+        </p>
 
-      {/* Gradient effects for depth */}
-      <div className="absolute inset-0 bg-[var(--gradient-radial)] opacity-20 pointer-events-none z-[2]" />
+        <p className="mt-4" style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso-0)' }}>
+          {t.hero.trayectoria}
+        </p>
 
-      {/* Content overlay - centered vertically */}
-      <Container className="relative z-10 w-full py-32">
-        <div className="flex flex-col items-center justify-center text-center space-y-16 min-h-[70vh]">
-          {/* Main Content */}
-          <AnimatedSection animation="fade-up" delay={0}>
-            <HeroContent />
-          </AnimatedSection>
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t.hero.cta.primary} ${avisoPestanaNueva(locale)}`}
+            className="accion accion-whatsapp"
+          >
+            {t.hero.cta.primary}
+          </a>
+          <a href="#proceso" className="accion accion-secundaria">
+            {t.hero.cta.secondary}
+          </a>
+        </div>
 
-          {/* Industry Badges */}
-          <AnimatedSection animation="fade-up" delay={200}>
-            <IndustryBadges />
-          </AnimatedSection>
+        <div className="mt-10 max-w-2xl">
+          <RegistroOperativo />
+        </div>
+
+        <div className="mt-10">
+          <p style={{ color: 'var(--tinta-media)', fontSize: 'var(--paso--1)' }}>
+            {t.hero.sectores.label}
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2">
+            {t.hero.sectores.items.map((sector) => (
+              <li key={sector}>{sector}</li>
+            ))}
+          </ul>
         </div>
       </Container>
     </section>

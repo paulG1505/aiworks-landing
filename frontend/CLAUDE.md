@@ -22,10 +22,11 @@ frontend/
 │   │   ├── hooks/              # Hero-specific hooks
 │   │   └── types.ts            # Hero types
 │   │
-│   ├── pricing/                 # Pricing feature
-│   ├── testimonials/            # Testimonials feature
-│   ├── contact/                 # Contact form feature
-│   └── newsletter/              # Newsletter subscription feature
+│   ├── procesos/                # Procesos que se automatizan (3 filas)
+│   ├── proceso/                 # Cómo trabajamos (3 fases)
+│   ├── porque/                  # Por qué AIworks
+│   ├── preguntas/               # FAQ (acordeón accesible)
+│   └── cta-final/               # Cierre: WhatsApp + correo
 │
 ├── shared/                       # Shared/reusable code
 │   ├── components/              # UI components (Button, Input, Card, etc)
@@ -80,27 +81,38 @@ frontend/
 - **Linting**: ESLint
 - **Package Manager**: npm
 
-## 🤖 Vercel Skills Integration
+## 🤖 Skills de diseño
 
-This project is configured to work with Vercel Agent Skills:
+**Corregido el 2026-09-25.** Este archivo declaraba como instaladas cuatro skills
+(`react-best-practices`, `web-design-guidelines`, `composition-patterns`,
+`react-native-skills`) cuyos symlinks en `.claude/skills/` apuntaban a `../../.agents/skills/`,
+un directorio que no existe. Estaban rotas desde enero y no cargaban nada.
 
-### Installed Skills:
-- `react-best-practices` - React & Next.js optimization guidelines
-- `web-design-guidelines` - Accessibility, performance, and UX rules
-- `composition-patterns` - Scalable React composition patterns
+### Instalada y vigente
 
-### Adding Skills:
-```bash
-npx skills add <package-name>
-```
+- **`frontend-design`** (oficial de Anthropic, desde `claude-plugins-official`), en
+  `.claude/skills/frontend-design/`. Es la que manda para cualquier trabajo visual en este
+  proyecto: dirección estética, tipografía y la lista de clichés generativos a evitar.
 
-### Available Skills:
-- `vercel-labs/agent-skills/react-best-practices` - Performance optimization
-- `vercel-labs/agent-skills/web-design-guidelines` - UX & accessibility
-- `vercel-labs/agent-skills/composition-patterns` - Component patterns
-- `vercel-labs/agent-skills/vercel-deploy-claimable` - Quick deploy
+### Sistema visual
 
-Explore more at: https://skills.sh
+Antes de tocar estilos, lee
+`../../../changes/rediseno-landing-octubre/sistema-visual.md`. Contiene los tokens, la
+escala tipográfica, el wireframe de cada bloque y —lo importante— **la autocrítica contra los
+cinco clichés de diseño generado por IA**, con qué se corrigió y por qué.
+
+Reglas duras que salen de ahí y que aplican a todo código nuevo de UI:
+
+- Cero gradientes, cero glassmorphism, cero `shadow-*`.
+- La estructura son **filas con reglas** (`.fila`), no tarjetas. Un grid de tarjetas
+  idénticas es el cliché generativo más reconocible.
+- Cero etiquetas en VERSALITAS, cero cadenas tipo `A · B · C`, cero `→` pegado al texto de un
+  botón.
+- Una sola animación en toda la página: el registro operativo del hero. Nada de entradas
+  animadas por sección.
+- Tipografía: IBM Plex Sans para texto, IBM Plex Mono **solo** donde hay un dato que se
+  alinea en columna (horas, números de fase). Nunca como etiqueta decorativa.
+- Todo alineado a la izquierda, incluido el hero.
 
 ## 📝 Development Guidelines
 
@@ -291,5 +303,5 @@ When adding new features:
 
 ---
 
-**Last Updated**: 2026-01-27
-**Version**: 1.0.1
+**Last Updated**: 2026-09-25
+**Version**: 1.1.0

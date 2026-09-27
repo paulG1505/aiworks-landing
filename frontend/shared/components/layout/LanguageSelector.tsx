@@ -17,14 +17,12 @@ export function LanguageSelector() {
         <button
           key={lang.code}
           onClick={() => setLocale(lang.code)}
-          className={`
-            px-3 py-1.5 rounded-md text-sm font-semibold transition-all
-            ${
-              locale === lang.code
-                ? 'bg-blue-600 text-white'
-                : 'bg-white/10 text-gray-300 hover:bg-white/20'
-            }
-          `}
+          aria-pressed={locale === lang.code}
+          className={
+            locale === lang.code
+              ? 'px-3 py-1 rounded-[4px] text-[length:var(--paso--1)] font-medium bg-[var(--tinta)] text-[var(--papel)]'
+              : 'px-3 py-1 rounded-[4px] text-[length:var(--paso--1)] font-medium border border-[var(--regla)] text-[var(--tinta-media)] hover:border-[var(--tinta)] transition-colors duration-150'
+          }
         >
           {lang.label}
         </button>

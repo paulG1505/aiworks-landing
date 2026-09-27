@@ -1,174 +1,148 @@
 import Script from 'next/script';
 import { SITE_URL } from '@/shared/constants/site';
+import { CONTACT_INFO } from '@/shared/constants';
 
+/**
+ * Datos estructurados. Regla que ordena este archivo: **solo se declara lo que la
+ * página dice de verdad.**
+ *
+ * La versión anterior al rediseño declaraba un catálogo de cuatro servicios
+ * genéricos ("Análisis de Datos con IA", "Consultoría en IA") y un FAQ que
+ * prometía capacidades por industria —"Fintech (análisis de riesgo, detección de
+ * fraude), Retail (recomendaciones personalizadas), Logística (optimización de
+ * rutas), Salud (diagnóstico asistido)"— que el contenido visible nunca afirmó.
+ * Era la misma clase de afirmación sin respaldo que este cambio retira del texto,
+ * escondida en el JSON-LD: mal para Google, que exige que los datos estructurados
+ * reflejen el contenido visible, y peor si un prospecto la lee.
+ *
+ * El FAQ de abajo es palabra por palabra el que ve el visitante en español.
+ */
 export function StructuredData() {
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "AIworks",
-    "url": SITE_URL,
-    "logo": `${SITE_URL}/logo.png`,
-    "description": "Empresa líder en desarrollo de software con inteligencia artificial, chatbots IA y automatización empresarial",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "MX",
-      "addressLocality": "México"
+  const organizacion = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'AIworks',
+    url: SITE_URL,
+    logo: `${SITE_URL}/og-image.png`,
+    description:
+      'Consultora de software que automatiza procesos de back office con inteligencia artificial, con revisión humana y registro auditable de cada decisión.',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'EC',
+      addressLocality: 'Quito',
     },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Sales",
-      "availableLanguage": ["Spanish", "English"]
+    email: CONTACT_INFO.email,
+    telephone: CONTACT_INFO.phone,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Sales',
+      email: CONTACT_INFO.email,
+      telephone: CONTACT_INFO.phone,
+      availableLanguage: ['Spanish', 'English'],
     },
-    "sameAs": [
-      "https://twitter.com/aiworks",
-      "https://linkedin.com/company/aiworks"
-    ]
   };
 
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": "Desarrollo de Software con Inteligencia Artificial",
-    "provider": {
-      "@type": "Organization",
-      "name": "AIworks",
-      "url": SITE_URL
+  // Los tres procesos son exactamente los tres que el bloque "Procesos que se
+  // automatizan" desarrolla en la página. Ni uno más.
+  const servicio = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'Automatización de procesos con inteligencia artificial',
+    provider: { '@type': 'Organization', name: 'AIworks', url: SITE_URL },
+    areaServed: { '@type': 'Country', name: 'Ecuador' },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Procesos que se automatizan',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Conciliación bancaria automatizada',
+            description:
+              'El sistema lee el extracto, cruza por referencia y monto, y deja en una cola aparte solo las partidas que no cuadran para revisión humana.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Cierre de mes sin digitación',
+            description:
+              'Los documentos que llegan en correos, PDF y hojas de cálculo se leen al llegar y los datos entran una sola vez al sistema.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Atención a clientes fuera de horario',
+            description:
+              'Un asistente responde las consultas repetidas con la información real del negocio y deriva a una persona lo que no puede contestar.',
+          },
+        },
+      ],
     },
-    "areaServed": {
-      "@type": "Country",
-      "name": "México"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Servicios de IA",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Desarrollo de Chatbots con IA",
-            "description": "Chatbots inteligentes personalizados con procesamiento de lenguaje natural"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Automatización con IA",
-            "description": "Automatización de procesos empresariales usando machine learning"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Análisis de Datos con IA",
-            "description": "Transformación de datos en insights accionables con inteligencia artificial"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Consultoría en IA",
-            "description": "Asesoría experta en implementación de soluciones de inteligencia artificial"
-          }
-        }
-      ]
-    }
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+  const preguntas = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Inicio",
-        "item": SITE_URL
+        '@type': 'Question',
+        name: '¿Cuánto cuesta?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Depende del proceso y de cuánto haya que conectar. En el diagnóstico de 15 minutos le damos un rango concreto para su caso, sin compromiso.',
+        },
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Servicios",
-        "item": `${SITE_URL}/#servicios`
+        '@type': 'Question',
+        name: '¿Cuánto demora?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'El descubrimiento toma entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.',
+        },
       },
       {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Proyectos",
-        "item": `${SITE_URL}/#proyectos`
+        '@type': 'Question',
+        name: '¿No son un equipo muy chico?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Somos chicos, y por eso hablamos directo con quien hace el trabajo en lugar de pasar por tres capas. Lo que compensa el tamaño es el método: el proceso de tres fases es el mismo en cada proyecto y está escrito.',
+        },
       },
       {
-        "@type": "ListItem",
-        "position": 4,
-        "name": "Contacto",
-        "item": `${SITE_URL}/#contacto`
-      }
-    ]
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "¿Qué es un chatbot con inteligencia artificial?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Un chatbot con IA es un asistente virtual que utiliza procesamiento de lenguaje natural y machine learning para entender y responder conversaciones de forma inteligente, aprendiendo continuamente de las interacciones."
-        }
+        '@type': 'Question',
+        name: '¿Qué pasa con los datos de mi empresa?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Se quedan donde usted decida, y firmamos confidencialidad antes de ver nada. Trabajamos bajo la Ley Orgánica de Protección de Datos Personales del Ecuador, y en el diagnóstico no necesitamos datos reales para decirle si el proceso se puede automatizar.',
+        },
       },
-      {
-        "@type": "Question",
-        "name": "¿Cuánto tiempo toma desarrollar una solución de IA?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "El tiempo de desarrollo varía según la complejidad del proyecto. Un chatbot básico puede estar listo en 4-6 semanas, mientras que soluciones más complejas de automatización con IA pueden tomar 3-6 meses."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "¿Qué industrias se benefician más de la IA?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Todas las industrias pueden beneficiarse de la IA. Destacamos en Fintech (análisis de riesgo, detección de fraude), Retail (recomendaciones personalizadas), Logística (optimización de rutas) y Salud (diagnóstico asistido)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "¿Ofrecen consultoría en inteligencia artificial?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Sí, ofrecemos consultoría gratuita inicial para evaluar cómo la IA puede transformar tu negocio, seguida de consultoría especializada durante todo el proceso de implementación."
-        }
-      }
-    ]
+    ],
   };
 
   return (
     <>
       <Script
-        id="organization-schema"
+        id="ld-organizacion"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizacion) }}
       />
       <Script
-        id="service-schema"
+        id="ld-servicio"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicio) }}
       />
       <Script
-        id="breadcrumb-schema"
+        id="ld-preguntas"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <Script
-        id="faq-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(preguntas) }}
       />
     </>
   );

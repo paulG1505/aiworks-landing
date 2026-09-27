@@ -1,31 +1,32 @@
 'use client';
 
 import { MessageCircle } from 'lucide-react';
-import { CONTACT_INFO } from '@/shared/constants';
+import { useTranslation } from '@/shared/hooks/useTranslation';
+import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 
+/**
+ * Solo en móvil. En escritorio el CTA de WhatsApp del header ya está siempre visible
+ * (el header es fijo), así que el botón flotante sería el tercer botón verde en
+ * pantalla compitiendo con los otros dos.
+ */
 export function FloatingWhatsApp() {
-  const whatsappMessage = encodeURIComponent(
-    '¡Hola! Me interesa conocer más sobre las soluciones de IA y desarrollo de software que ofrecen.'
-  );
-  const whatsappUrl = `https://wa.me/${CONTACT_INFO.whatsapp}?text=${whatsappMessage}`;
+  const { t, locale } = useTranslation();
+  const whatsappUrl = enlaceWhatsApp(locale);
+  const whatsappAriaLabel = `${t.header.cta} ${avisoPestanaNueva(locale)}`;
 
   return (
     <a
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-8 right-8 z-40 w-16 h-16 bg-[var(--verde-whatsapp)] rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300 group"
-      aria-label="Contactar por WhatsApp"
+      className="lg:hidden fixed bottom-6 right-6 z-40 w-12 h-12 bg-[var(--verde-whatsapp)] rounded-full flex items-center justify-center hover:bg-[var(--verde-whatsapp-hover)] transition-colors duration-150"
+      aria-label={whatsappAriaLabel}
     >
-      <MessageCircle className="w-8 h-8 text-white" />
-      
-      {/* Pulse animation */}
-      <span className="absolute inset-0 rounded-full bg-[var(--verde-whatsapp)] animate-ping opacity-75 motion-reduce:animate-none" />
-      
-      {/* Tooltip */}
-      <span className="absolute right-full mr-3 px-3 py-2 bg-white text-gray-900 text-sm font-medium rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        ¡Chatea con nosotros!
-      </span>
+      {/* Icono en #06301A (mismo tono que .accion-whatsapp usa para su texto en
+          globals.css): blanco sobre --verde-whatsapp da 1.98:1, bajo el 3:1 que
+          exige WCAG 1.4.11 para componentes gráficos. Con #06301A el ratio sube
+          por encima de 4:1. */}
+      <MessageCircle className="w-5 h-5 text-[#06301A]" />
     </a>
   );
 }
