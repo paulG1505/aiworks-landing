@@ -44,7 +44,10 @@ ausente "+593 99 509 0170"   "el numero viejo formateado no aparece"
 presente "593978923586"      "el numero oficial 593978923586 si aparece"
 
 head_ "Requirement: Afirmaciones sostenibles"
-for c in "99.2" "85%" "40%" "30%" "95%"; do ausente "$c" "cifra inventada $c retirada"; done
+# Las cifras se buscan como aparecían en el copy ("99.2% de precisión", "85% reducción"):
+# con el % y seguidas de espacio. Así no dan falso positivo una clase como w-[85%] ni
+# los números de un trazado SVG.
+for c in "99.2%" "85% " "40% " "30% " "95% "; do ausente "$c" "cifra inventada '$c' retirada"; done
 ausente "SOC 2"          "sello SOC 2 retirado"
 ausente "GDPR"           "sello GDPR retirado"
 ausente "Empresa líder"  "superlativo 'Empresa líder' retirado"

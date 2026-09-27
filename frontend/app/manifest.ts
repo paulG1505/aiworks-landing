@@ -9,8 +9,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Transformamos tus datos en decisiones automatizadas con IA',
     start_url: '/',
     display: 'standalone',
-    background_color: '#FBFAF7',
-    theme_color: '#FBFAF7',
+    background_color: '#F6F3EE',
+    theme_color: '#F6F3EE',
     icons: [
       {
         src: '/icon-192.png',

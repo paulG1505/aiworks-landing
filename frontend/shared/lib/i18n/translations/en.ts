@@ -11,7 +11,6 @@ export const en = {
     cta: "Message us on WhatsApp",
   },
   hero: {
-    eyebrow: "Quito, Ecuador · For SMEs",
     categoria: { antes: "", clave: "AI-powered", despues: " software." },
     beneficio: "Built for the work your team still does by hand.",
     subtitle:
@@ -24,14 +23,23 @@ export const en = {
   },
   registro: {
     titulo: "Operations log",
-    etiqueta: "Sample flow · illustrative",
+    etiqueta: "Sample flow",
+    mensaje: {
+      canal: "WhatsApp · 9:47 pm",
+      texto: "Hi, do you have the plan for 20 users? We need it this month.",
+    },
     lineas: [
-      { hora: "09:42", tipo: "entrada", etiqueta: "INPUT", texto: "The day's bank statement arrives." },
-      { hora: "09:42", tipo: "ia", etiqueta: "AI", texto: "Matches every entry on reference and amount." },
-      { hora: "09:42", tipo: "sistema", etiqueta: "DECISION", texto: "Reconciles the entries that add up on its own." },
-      { hora: "09:43", tipo: "ia", etiqueta: "REVIEW", texto: "One does not add up: it goes to a person first." },
-      { hora: "09:43", tipo: "sistema", etiqueta: "LOG", texto: "Recorded with its timestamp and owner." },
+      { hora: "21:47", tipo: "entrada", etiqueta: "INPUT", texto: "New WhatsApp message, after hours." },
+      { hora: "21:47", tipo: "ia", etiqueta: "AI", texto: "Intent: purchase. Urgency: high, needed this month." },
+      { hora: "21:47", tipo: "ia", etiqueta: "AI", texto: "Checks the CRM: new customer, 20-person company." },
+      { hora: "21:48", tipo: "sistema", etiqueta: "DECISION", texto: "Replies with the plan and offers a call tomorrow." },
+      { hora: "21:48", tipo: "ia", etiqueta: "REVIEW", texto: "Alerts sales to confirm the call." },
+      { hora: "21:48", tipo: "sistema", etiqueta: "LOG", texto: "Recorded with its timestamp and owner." },
     ],
+    resultado: {
+      label: "Outcome",
+      items: ["Priority lead", "Assigned to sales", "Answered in 1 minute"],
+    },
     pie: "Every decision is stored with its timestamp, its owner and its record. That is what makes an automation auditable instead of something you have to take on trust.",
   },
   procesos: {
@@ -94,8 +102,9 @@ export const en = {
         entregable: "The system in production, the documentation to operate it, and the record of every decision it makes.",
       },
     ],
-    stackLabel: "Built with",
-    stack: "Python · FastAPI · PostgreSQL · Next.js · TypeScript · Docker",
+    stackLabel: "Technologies we work with",
+    pausar: "Pause",
+    reanudar: "Resume",
   },
   porque: {
     eyebrow: "Why AIworks",
@@ -123,19 +132,47 @@ export const en = {
       },
     ],
     casos: {
-      rotulo: "Illustrative case · not a client",
+      titulo: "Automation examples",
+      anterior: "Previous example",
+      siguiente: "Next example",
       hoyLabel: "Today",
       conIaLabel: "With AI",
       items: [
         {
-          titulo: "An accounting team that reconciles the bank by hand",
+          area: "Sales",
+          titulo: "WhatsApp leads that arrive at night",
+          hoy: "Night-time messages get answered the next day, and some have already bought elsewhere.",
+          conIa: "Every message is classified on arrival; interested leads get a reply and go to sales first.",
+        },
+        {
+          area: "Finance",
+          titulo: "Bank reconciliation by hand",
           hoy: "Someone matches the statement against the system line by line, and the close waits until they finish.",
           conIa: "The system matches on reference and amount; the person reviews only the entries that do not add up.",
         },
         {
-          titulo: "A company that receives PDF invoices by email",
+          area: "Documents",
+          titulo: "PDF invoices arriving by email",
           hoy: "Every invoice is typed into the system again, and the mistakes surface at the next close.",
           conIa: "Invoices are read as they arrive and the data is entered once, with a person reviewing anything doubtful.",
+        },
+        {
+          area: "Collections",
+          titulo: "Overdue invoices nobody follows up",
+          hoy: "Someone checks who owes what and writes to each customer one by one, when they find the time.",
+          conIa: "The system spots overdue invoices, sends reminders and alerts a person when the customer replies.",
+        },
+        {
+          area: "Reporting",
+          titulo: "The Monday weekly report",
+          hoy: "Several spreadsheets are stitched together by hand to build the same report every week.",
+          conIa: "The report builds itself from the system's data and arrives by email with what changed.",
+        },
+        {
+          area: "Operations",
+          titulo: "Inventory that does not match the system",
+          hoy: "Stock in the spreadsheet does not match the system, and nobody knows which one is right.",
+          conIa: "Both are reconciled daily and only the differences reach whoever has to decide.",
         },
       ],
     },
@@ -155,9 +192,9 @@ export const en = {
           "Discovery takes one to two weeks. After that, the first working version on your data is usually weeks away rather than months, because we deliver in parts.",
       },
       {
-        pregunta: "Aren't you a very small team?",
+        pregunta: "What if the AI gets it wrong?",
         respuesta:
-          "We are small, which is why you talk directly to whoever does the work instead of going through three layers. What makes up for the size is the method: the three-phase process is the same on every project and it is written down.",
+          "That is why it does not decide alone on what matters. Sensitive steps go through a person before they execute, and every decision is recorded with its timestamp, so you can see what the system did and correct it.",
       },
       {
         pregunta: "What happens to my company's data?",

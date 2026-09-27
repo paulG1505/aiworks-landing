@@ -22,7 +22,7 @@ export function Footer() {
   return (
     <footer className="oscuro">
       <Container>
-        <div className="flex flex-col gap-6 border-t border-[var(--regla-noche)] py-8 font-mono text-xs text-hueso-medio lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-6 border-t border-[var(--regla-noche)] py-8 font-mono text-[0.8125rem] text-hueso-medio lg:flex-row lg:items-center lg:justify-between">
           <p>{t.footer.copyright}</p>
 
           <nav aria-label={t.footer.navegacion}>

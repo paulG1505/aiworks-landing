@@ -3,6 +3,7 @@
 import { useId, useState } from 'react';
 
 interface PreguntaProps {
+  indice: number;
   pregunta: string;
   respuesta: string;
   defaultOpen?: boolean;
@@ -16,16 +17,20 @@ interface PreguntaProps {
  * Apertura con altura (grid-template-rows 0fr → 1fr, 350ms; ver .respuesta en
  * globals.css). El panel cerrado lleva visibility: hidden, que —igual que `hidden`— lo
  * saca del árbol de accesibilidad y del orden de Tab, pero sí se puede animar. El "+"
- * rota a "–". Con movimiento reducido no hay transición.
+ * rota a "–" y el texto de la respuesta baja con un fundido (fadeInDown de
+ * animate.style) mientras el panel se abre. Con movimiento reducido no hay transición.
  */
-export function Pregunta({ pregunta, respuesta, defaultOpen = false }: PreguntaProps) {
+export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: PreguntaProps) {
   const [open, setOpen] = useState(defaultOpen);
   const reactId = useId();
   const buttonId = `preguntas-trigger-${reactId}`;
   const panelId = `preguntas-panel-${reactId}`;
 
   return (
-    <div className="border-b border-[var(--c-regla)]">
+    <div
+      className="revelar border-b border-[var(--c-regla)]"
+      style={{ '--d': `${indice * 90}ms` } as React.CSSProperties}
+    >
       <h3>
         <button
           type="button"
@@ -33,7 +38,7 @@ export function Pregunta({ pregunta, respuesta, defaultOpen = false }: PreguntaP
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((prev) => !prev)}
-          className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-serif text-[1.375rem] leading-[1.2] text-tinta sm:py-[26px] lg:text-[1.625rem]"
+          className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-serif text-[1.5rem] leading-[1.2] text-tinta sm:py-[26px] lg:text-[1.875rem]"
         >
           <span>{pregunta}</span>
           <span aria-hidden="true" className="relative size-4 shrink-0">
@@ -52,7 +57,7 @@ export function Pregunta({ pregunta, respuesta, defaultOpen = false }: PreguntaP
         data-abierta={open ? '' : undefined}
       >
         <div>
-          <p className="medida pb-7 pr-0 text-base leading-[1.6] text-tinta-media sm:pr-12">{respuesta}</p>
+          <p className="respuesta-texto medida pb-7 pr-0 leading-[1.6] text-tinta-media sm:pr-12">{respuesta}</p>
         </div>
       </div>
     </div>

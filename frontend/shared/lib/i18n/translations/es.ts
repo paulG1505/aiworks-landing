@@ -11,7 +11,6 @@ export const es = {
     cta: "Hablar por WhatsApp",
   },
   hero: {
-    eyebrow: "Quito, Ecuador · Para PYMEs",
     // La categoría es la primera línea del titular: un visitante frío tiene que leer
     // "software con IA" antes que cualquier beneficio.
     categoria: { antes: "Software con ", clave: "inteligencia artificial", despues: "." },
@@ -26,14 +25,25 @@ export const es = {
   },
   registro: {
     titulo: "Registro operativo",
-    etiqueta: "Ejemplo de flujo · ilustrativo",
+    etiqueta: "Ejemplo de flujo",
+    // Un lead que llega por WhatsApp fuera de horario: se entiende sin contexto técnico y
+    // muestra en seis líneas qué hace la IA y dónde entra una persona.
+    mensaje: {
+      canal: "WhatsApp · 21:47",
+      texto: "Hola, ¿tienen el plan para 20 usuarios? Lo necesitamos este mes.",
+    },
     lineas: [
-      { hora: "09:42", tipo: "entrada", etiqueta: "ENTRADA", texto: "Llega el extracto bancario del día." },
-      { hora: "09:42", tipo: "ia", etiqueta: "IA", texto: "Cruza cada movimiento por referencia y monto." },
-      { hora: "09:42", tipo: "sistema", etiqueta: "DECISIÓN", texto: "Concilia solos los movimientos que cuadran." },
-      { hora: "09:43", tipo: "ia", etiqueta: "REVISIÓN", texto: "Uno no cuadra: pasa a una persona antes de seguir." },
-      { hora: "09:43", tipo: "sistema", etiqueta: "REGISTRO", texto: "Queda anotado con hora y responsable." },
+      { hora: "21:47", tipo: "entrada", etiqueta: "ENTRADA", texto: "Mensaje nuevo por WhatsApp, fuera de horario." },
+      { hora: "21:47", tipo: "ia", etiqueta: "IA", texto: "Intención: compra. Urgencia: alta, lo pide para este mes." },
+      { hora: "21:47", tipo: "ia", etiqueta: "IA", texto: "Cruza con el CRM: cliente nuevo, empresa de 20 personas." },
+      { hora: "21:48", tipo: "sistema", etiqueta: "DECISIÓN", texto: "Responde con el plan y propone una llamada mañana." },
+      { hora: "21:48", tipo: "ia", etiqueta: "REVISIÓN", texto: "Avisa a ventas para que confirme la llamada." },
+      { hora: "21:48", tipo: "sistema", etiqueta: "REGISTRO", texto: "Queda anotado con hora y responsable." },
     ],
+    resultado: {
+      label: "Resultado",
+      items: ["Lead prioritario", "Asignado a ventas", "Respondido en 1 minuto"],
+    },
     pie: "Cada decisión queda con hora, con responsable y con registro. Eso es lo que hace que una automatización se pueda auditar en lugar de tener que creerle.",
   },
   procesos: {
@@ -96,8 +106,9 @@ export const es = {
         entregable: "El sistema en producción, la documentación para operarlo y el registro de cada decisión que toma.",
       },
     ],
-    stackLabel: "Construido con",
-    stack: "Python · FastAPI · PostgreSQL · Next.js · TypeScript · Docker",
+    stackLabel: "Tecnologías con las que trabajamos",
+    pausar: "Pausar",
+    reanudar: "Reanudar",
   },
   porque: {
     eyebrow: "Por qué AIworks",
@@ -124,23 +135,49 @@ export const es = {
           "Código probado, documentado y suyo. Si mañana decide llevárselo a otro equipo, puede hacerlo.",
       },
     ],
-    // Sustituyen a las "tarjetas de cifra grande": no hay clientes todavía, así que son
-    // casos ilustrativos y lo dicen antes que nada. Cuando exista el primer cliente con
-    // permiso, un caso real reemplaza a uno de estos.
+    // Ejemplos de lo que se puede automatizar, no clientes: el titular del carrusel lo dice.
     casos: {
-      rotulo: "Caso ilustrativo · no es un cliente",
+      titulo: "Ejemplos de automatización",
+      anterior: "Ejemplo anterior",
+      siguiente: "Ejemplo siguiente",
       hoyLabel: "Hoy",
       conIaLabel: "Con IA",
       items: [
         {
-          titulo: "Un área contable que concilia el banco a mano",
+          area: "Ventas",
+          titulo: "Leads de WhatsApp que llegan de noche",
+          hoy: "Los mensajes de la noche se contestan al día siguiente, y algunos ya compraron en otro lado.",
+          conIa: "Cada mensaje se clasifica al llegar; los interesados reciben respuesta y pasan a ventas con prioridad.",
+        },
+        {
+          area: "Finanzas",
+          titulo: "Conciliación bancaria a mano",
           hoy: "Una persona cruza el extracto contra el sistema línea por línea, y el cierre espera a que termine.",
           conIa: "El sistema cruza por referencia y monto; la persona revisa solo las partidas que no cuadran.",
         },
         {
-          titulo: "Una empresa que recibe facturas en PDF por correo",
+          area: "Documentos",
+          titulo: "Facturas en PDF que llegan por correo",
           hoy: "Cada factura se vuelve a digitar en el sistema, y los errores aparecen en el cierre siguiente.",
           conIa: "Las facturas se leen al llegar y los datos entran una sola vez, con revisión humana de lo dudoso.",
+        },
+        {
+          area: "Cobranza",
+          titulo: "Facturas vencidas sin seguimiento",
+          hoy: "Alguien revisa quién debe y escribe a cada cliente uno por uno, cuando tiene tiempo.",
+          conIa: "El sistema detecta los vencimientos, envía recordatorios y avisa a una persona cuando el cliente responde.",
+        },
+        {
+          area: "Reportes",
+          titulo: "El reporte semanal de cada lunes",
+          hoy: "Se juntan varias hojas de cálculo a mano para armar el mismo reporte todas las semanas.",
+          conIa: "El reporte se arma solo con los datos del sistema y llega por correo con lo que cambió.",
+        },
+        {
+          area: "Operaciones",
+          titulo: "Inventario que no cuadra con el sistema",
+          hoy: "El stock de la hoja de cálculo no coincide con el sistema y nadie sabe cuál es el real.",
+          conIa: "Ambos se concilian a diario y solo las diferencias llegan a quien tiene que decidir.",
         },
       ],
     },
@@ -160,9 +197,9 @@ export const es = {
           "El descubrimiento toma entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.",
       },
       {
-        pregunta: "¿No son un equipo muy chico?",
+        pregunta: "¿Qué pasa si la IA se equivoca?",
         respuesta:
-          "Somos chicos, y por eso hablamos directo con quien hace el trabajo en lugar de pasar por tres capas. Lo que compensa el tamaño es el método: el proceso de tres fases es el mismo en cada proyecto y está escrito.",
+          "Por eso no decide sola en lo que importa. Los pasos sensibles pasan por una persona antes de ejecutarse, y cada decisión queda registrada con su hora, así se puede ver qué hizo el sistema y corregirlo.",
       },
       {
         pregunta: "¿Qué pasa con los datos de mi empresa?",

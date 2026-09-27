@@ -5,6 +5,7 @@ import { EncabezadoSeccion } from '@/shared/components/ui/EncabezadoSeccion';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { useProgresoFases } from '../hooks/useProgresoFases';
 import { Fase } from './Fase';
+import { CintaTecnologias } from './CintaTecnologias';
 
 /**
  * Primer bloque oscuro: cambia el clima justo cuando se pasa de qué hacemos a cómo.
@@ -50,10 +51,13 @@ export function Proceso() {
           </ol>
         </div>
 
-        <p className="mt-16 flex flex-col gap-1 font-mono text-[0.8125rem] text-hueso-medio sm:flex-row sm:gap-3 md:mt-20">
-          <span>{t.proceso.stackLabel}</span>
-          <span>{t.proceso.stack}</span>
-        </p>
+        <div className="mt-20 border-t border-[var(--regla-noche)] pt-10 md:mt-24">
+          <CintaTecnologias
+            label={t.proceso.stackLabel}
+            pausar={t.proceso.pausar}
+            reanudar={t.proceso.reanudar}
+          />
+        </div>
       </Container>
     </section>
   );

@@ -37,12 +37,12 @@ export function Header() {
         <nav aria-label={locale === 'en' ? 'Main' : 'Principal'} className="py-3.5 lg:py-[18px]">
           <div className="flex items-center justify-between gap-4">
             {/* Wordmark tipográfico: placeholder hasta que exista un logo. */}
-            <a href="#" className="text-base font-semibold tracking-[-0.02em] text-tinta lg:text-[1.1875rem]">
+            <a href="#" className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]">
               {t.header.logo}
             </a>
 
             <div className="flex items-center gap-7">
-              <ul className="hidden items-center gap-7 text-sm lg:flex">
+              <ul className="hidden items-center gap-7 text-[0.9375rem] lg:flex">
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <a

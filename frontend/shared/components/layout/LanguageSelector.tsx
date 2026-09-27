@@ -16,7 +16,7 @@ export function LanguageSelector() {
     <div
       role="group"
       aria-label={locale === 'en' ? 'Language' : 'Idioma'}
-      className="flex w-fit rounded-full border border-[var(--c-regla)] font-mono text-xs font-medium"
+      className="flex w-fit rounded-full border border-[var(--c-regla)] font-mono text-[0.8125rem] font-medium"
     >
       {LANGUAGES.map((lang) => {
         const activo = locale === lang.code;

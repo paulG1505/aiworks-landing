@@ -31,7 +31,7 @@ export function ProcesoFila({ indice, numero, titulo, hoy, resuelve, ctaLabel, l
       className="revelar-regla grid grid-cols-1 gap-y-4 py-7 md:grid-cols-[64px_minmax(0,1fr)_minmax(0,1fr)] md:items-baseline md:gap-x-6"
       style={{ '--d': `${retardo}ms` } as React.CSSProperties}
     >
-      <span className="revelar tabular text-xs font-medium text-tinta-media" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
+      <span className="revelar tabular text-[0.8125rem] font-medium text-tinta-media" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
         {numero}
       </span>
 
@@ -39,7 +39,7 @@ export function ProcesoFila({ indice, numero, titulo, hoy, resuelve, ctaLabel, l
         {titulo}
       </h3>
 
-      <div className="revelar flex flex-col items-start gap-4 text-base" style={{ '--d': `${retardo + 160}ms` } as React.CSSProperties}>
+      <div className="revelar flex flex-col items-start gap-4" style={{ '--d': `${retardo + 160}ms` } as React.CSSProperties}>
         <p className="text-tinta-media">{hoy}</p>
         <p className="text-tinta-media">
           <span className="font-medium text-tinta">{resuelveLabel}: </span>
@@ -50,7 +50,7 @@ export function ProcesoFila({ indice, numero, titulo, hoy, resuelve, ctaLabel, l
           target="_blank"
           rel="noopener noreferrer"
           aria-label={whatsappAriaLabel}
-          className="enlace text-[0.9375rem] font-medium text-tinta"
+          className="enlace text-base font-medium text-tinta"
         >
           {ctaLabel}
         </a>

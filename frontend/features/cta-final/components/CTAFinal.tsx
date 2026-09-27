@@ -58,14 +58,14 @@ export function CTAFinal() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${t.cta.whatsapp} ${avisoPestanaNueva(locale)}`}
-            className="accion accion-primaria revelar mt-4 w-full px-[30px] py-5 text-lg sm:mt-6 sm:w-auto lg:mt-2"
+            className="accion accion-primaria revelar mt-4 w-full px-[32px] py-5 text-[1.1875rem] sm:mt-6 sm:w-auto lg:mt-2"
             style={retardo(800)}
           >
             {t.cta.whatsapp}
           </a>
 
           <p
-            className="revelar flex flex-col gap-2 font-mono text-sm text-hueso-medio sm:flex-row sm:flex-wrap sm:gap-6"
+            className="revelar flex flex-col gap-2 font-mono text-[0.9375rem] text-hueso-medio sm:flex-row sm:flex-wrap sm:gap-6"
             style={retardo(900)}
           >
             <span className="tabular">{CONTACT_INFO.phone}</span>

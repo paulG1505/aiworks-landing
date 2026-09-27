@@ -107,10 +107,10 @@ export function StructuredData() {
       },
       {
         '@type': 'Question',
-        name: '¿No son un equipo muy chico?',
+        name: '¿Qué pasa si la IA se equivoca?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Somos chicos, y por eso hablamos directo con quien hace el trabajo en lugar de pasar por tres capas. Lo que compensa el tamaño es el método: el proceso de tres fases es el mismo en cada proyecto y está escrito.',
+          text: 'Por eso no decide sola en lo que importa. Los pasos sensibles pasan por una persona antes de ejecutarse, y cada decisión queda registrada con su hora, así se puede ver qué hizo el sistema y corregirlo.',
         },
       },
       {
