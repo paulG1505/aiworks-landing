@@ -18,9 +18,12 @@ export function Procesos() {
   return (
     <section id="procesos" className="seccion">
       <Container>
-        <EncabezadoSeccion numero="01" eyebrow={t.procesos.eyebrow} titulo={t.procesos.titulo} />
-
-        <p className="medida mt-8 text-tinta-media">{t.procesos.subtitle}</p>
+        <EncabezadoSeccion
+          numero="01"
+          eyebrow={t.procesos.eyebrow}
+          titulo={t.procesos.titulo}
+          intro={t.procesos.subtitle}
+        />
 
         <ol {...revelado} className="mt-14 border-b border-regla lg:mt-[72px]">
           {t.procesos.items.map((item, index) => (

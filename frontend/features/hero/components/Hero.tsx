@@ -25,7 +25,8 @@ export function Hero() {
 
   return (
     <section className="pt-28 pb-24 sm:pt-36 lg:pt-48 lg:pb-40">
-      <Container>
+      {/* Desde xl, dos columnas: titular y CTA a la izquierda, registro a la derecha. */}
+      <Container className="xl:grid xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:items-end xl:gap-16">
         <div className="flex max-w-[900px] flex-col gap-4 sm:gap-6">
           <p className="eyebrow eyebrow-marcador entrada-fundido">{t.hero.eyebrow}</p>
 
@@ -69,7 +70,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mt-12 max-w-[760px] lg:mt-16">
+        <div className="mt-12 max-w-[760px] lg:mt-16 xl:mt-0 xl:max-w-none">
           <RegistroOperativo inicioMs={900} />
         </div>
       </Container>

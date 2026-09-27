@@ -25,53 +25,58 @@ export function CTAFinal() {
 
   return (
     <section id="contacto" {...revelado} className="oscuro cortina">
-      <Container className="flex flex-col items-start gap-6 pb-24 pt-32 lg:pb-40 lg:pt-[200px]">
-        <p className="eyebrow revelar" style={retardo(300)}>
-          <span>
-            <span className="tabular">05</span> — {t.cta.eyebrow}
-          </span>
-        </p>
-
-        <h2 className="max-w-[14ch] text-[clamp(2.625rem,1.4rem+5vw,5rem)] leading-[0.98] tracking-[-0.015em]">
-          <span className="linea-mascara revelar-mascara">
-            <span className="linea" style={retardo(400)}>
-              {t.cta.titulo.antes}
+      {/* Desde lg: titular a la izquierda; párrafo, CTA y contacto a la derecha. */}
+      <Container className="pb-24 pt-32 lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-end lg:gap-16 lg:pb-40 lg:pt-[200px]">
+        <div className="flex flex-col items-start gap-6">
+          <p className="eyebrow revelar" style={retardo(300)}>
+            <span>
+              <span className="tabular">05</span> — {t.cta.eyebrow}
             </span>
-          </span>
-          <span className="linea-mascara revelar-mascara">
-            <span className="linea clave" style={retardo(520)}>
-              {t.cta.titulo.clave}
+          </p>
+
+          <h2 className="max-w-[14ch] text-[clamp(2.625rem,1.4rem+5vw,5rem)] leading-[0.98] tracking-[-0.015em]">
+            <span className="linea-mascara revelar-mascara">
+              <span className="linea" style={retardo(400)}>
+                {t.cta.titulo.antes}
+              </span>
             </span>
-          </span>
-        </h2>
+            <span className="linea-mascara revelar-mascara">
+              <span className="linea clave" style={retardo(520)}>
+                {t.cta.titulo.clave}
+              </span>
+            </span>
+          </h2>
+        </div>
 
-        <p className="medida revelar text-[var(--hueso-tenue)]" style={retardo(640)}>
-          {t.cta.description}
-        </p>
+        <div className="mt-6 flex flex-col items-start gap-6 lg:mt-0">
+          <p className="medida revelar text-[var(--hueso-tenue)]" style={retardo(640)}>
+            {t.cta.description}
+          </p>
 
-        <a
-          href={enlaceWhatsApp(locale)}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`${t.cta.whatsapp} ${avisoPestanaNueva(locale)}`}
-          className="accion accion-primaria revelar mt-4 w-full px-[30px] py-5 text-lg sm:mt-6 sm:w-auto"
-          style={retardo(800)}
-        >
-          {t.cta.whatsapp}
-        </a>
+          <a
+            href={enlaceWhatsApp(locale)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${t.cta.whatsapp} ${avisoPestanaNueva(locale)}`}
+            className="accion accion-primaria revelar mt-4 w-full px-[30px] py-5 text-lg sm:mt-6 sm:w-auto lg:mt-2"
+            style={retardo(800)}
+          >
+            {t.cta.whatsapp}
+          </a>
 
-        <p
-          className="revelar flex flex-col gap-2 font-mono text-sm text-hueso-medio sm:flex-row sm:flex-wrap sm:gap-6"
-          style={retardo(900)}
-        >
-          <span className="tabular">{CONTACT_INFO.phone}</span>
-          <span>
-            {t.cta.correoLabel}{' '}
-            <a href={`mailto:${CONTACT_INFO.email}`} className="enlace break-all text-hueso">
-              {CONTACT_INFO.email}
-            </a>
-          </span>
-        </p>
+          <p
+            className="revelar flex flex-col gap-2 font-mono text-sm text-hueso-medio sm:flex-row sm:flex-wrap sm:gap-6"
+            style={retardo(900)}
+          >
+            <span className="tabular">{CONTACT_INFO.phone}</span>
+            <span>
+              {t.cta.correoLabel}{' '}
+              <a href={`mailto:${CONTACT_INFO.email}`} className="enlace break-all text-hueso">
+                {CONTACT_INFO.email}
+              </a>
+            </span>
+          </p>
+        </div>
       </Container>
     </section>
   );

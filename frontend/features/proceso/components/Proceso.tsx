@@ -18,9 +18,13 @@ export function Proceso() {
   return (
     <section id="proceso" className="oscuro seccion">
       <Container>
-        <EncabezadoSeccion numero="02" eyebrow={t.proceso.eyebrow} titulo={t.proceso.titulo} />
-
-        <p className="medida mt-8 text-[var(--hueso-tenue)]">{t.proceso.subtitle}</p>
+        <EncabezadoSeccion
+          numero="02"
+          eyebrow={t.proceso.eyebrow}
+          titulo={t.proceso.titulo}
+          intro={t.proceso.subtitle}
+          introClassName="text-[var(--hueso-tenue)]"
+        />
 
         <div ref={ref} className="relative mt-16 pl-6 md:mt-20 md:pl-0 md:pt-8">
           <div
