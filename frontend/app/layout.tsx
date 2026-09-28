@@ -1,48 +1,49 @@
 import type { Metadata } from "next";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
+import { ProveedorMovimiento } from "@/shared/components/providers/ProveedorMovimiento";
 import { SITE_URL } from "@/shared/constants/site";
+import { CLAVE_TEMA } from "@/shared/lib/tema";
 import "./globals.css";
+
+// Tres voces, una por función: Bricolage Grotesque para titulares, Geist para cuerpo y
+// UI, Geist Mono para eyebrows y el registro operativo. next/font las sirve desde el
+// propio dominio (sin petición a Google en el navegador) y reserva su métrica para evitar
+// saltos de layout. Bricolage es variable: se carga el eje de tamaño óptico (opsz), que
+// abre el espaciado en tamaños chicos y lo cierra en el titular grande.
+const titular = Bricolage_Grotesque({
+  subsets: ["latin"],
+  axes: ["opsz"],
+  variable: "--fuente-titular",
+  display: "swap",
+});
+const sans = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // En la pestaña solo el nombre. El título descriptivo queda en openGraph/twitter, que es
+  // lo que se ve al compartir el enlace; las demás rutas usan "%s | AIworks".
   title: {
-    default: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
+    default: "AIworks",
     template: "%s | AIworks"
   },
-  description: "Empresa líder en desarrollo de software con inteligencia artificial, chatbots IA y automatización empresarial. Creamos soluciones personalizadas con IA para Fintech, Retail, Logística y Salud. Consultores expertos en machine learning y procesamiento de datos.",
+  description: "Su equipo copia datos de un Excel a otro. Construimos el software que hace ese trabajo solo, con revisión humana y registro auditable de cada decisión. Diagnóstico de 15 minutos sin costo.",
+  // Alineadas con los tres procesos que la página desarrolla de verdad. Antes
+  // apuntaban a "chatbots" como producto genérico, que ahora es solo uno de los tres.
   keywords: [
-    // Palabras clave principales
-    "desarrollo software inteligencia artificial",
-    "chatbots con IA",
-    "chatbot inteligente",
-    "desarrollo chatbot personalizado",
-    "software con inteligencia artificial",
-    "empresa desarrollo IA",
-    "automatización con IA",
-    "soluciones IA empresariales",
-    // Long-tail keywords
-    "desarrollo software IA México",
-    "crear chatbot con inteligencia artificial",
-    "empresa chatbots IA",
-    "desarrollo aplicaciones machine learning",
-    "automatización procesos IA",
-    "consultoría inteligencia artificial",
-    "integración IA empresas",
-    // Keywords por industria
-    "IA para fintech",
-    "IA para retail",
-    "IA para logística",
-    "IA para salud",
-    // Términos técnicos
-    "machine learning",
-    "procesamiento lenguaje natural",
-    "NLP español",
-    "AI development",
-    "custom AI solutions"
+    "automatización de procesos con IA",
+    "conciliación bancaria automática",
+    "automatizar cierre de mes",
+    "lectura automática de documentos",
+    "asistente de atención al cliente con IA",
+    "software con inteligencia artificial Ecuador",
+    "automatización para cooperativas",
+    "consultora de software Quito"
   ],
   authors: [{ name: "AIworks", url: SITE_URL }],
   creator: "AIworks",
@@ -54,25 +55,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "es_MX",
+    locale: "es_EC",
     url: SITE_URL,
-    title: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
-    description: "Empresa líder en desarrollo de software con IA, chatbots inteligentes y automatización empresarial. Soluciones personalizadas con machine learning para tu negocio.",
+    title: "AIworks | Automatización de procesos con IA en Quito",
+    description: "Construimos el software que hace el trabajo de digitar, con revisión humana y registro auditable. Diagnóstico de 15 minutos sin costo.",
     siteName: "AIworks",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "AIworks - Desarrollo de Software con Inteligencia Artificial"
+        alt: "AIworks: software con inteligencia artificial, hecho para el trabajo que su equipo hoy hace a mano. Quito, Ecuador."
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AIworks | Desarrollo de Software con Inteligencia Artificial y Chatbots",
-    description: "Empresa líder en desarrollo de software con IA, chatbots y automatización empresarial",
-    creator: "@aiworks",
+    title: "AIworks | Automatización de procesos con IA en Quito",
+    description: "Construimos el software que hace el trabajo de digitar, con revisión humana y registro auditable. Diagnóstico de 15 minutos sin costo.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -93,29 +93,46 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
+const SCRIPT_INICIAL = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${CLAVE_TEMA}')}catch(e){}if(t!=='claro'&&t!=='oscuro'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'}d.setAttribute('data-tema',t)})()`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning className={`${titular.variable} ${sans.variable} ${mono.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        {/*
+          * Antes del primer pintado:
+          * 1. Marca que hay JavaScript. Los revelados al hacer scroll solo ocultan contenido
+          *    bajo `html.js`: sin JS, o si el script falla, todo se ve.
+          * 2. Resuelve el tema (elección guardada o, si no hay, la del sistema) para que
+          *    la página no parpadee en claro antes de pasar a oscuro.
+          */}
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_INICIAL }} />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
-      <body className="antialiased font-sans" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <body className="antialiased font-sans">
+        {/*
+          * Saltar al contenido: con el header fijo, quien navega con teclado tenía que
+          * pasar por el logo, cinco enlaces, el selector de idioma y el CTA antes de
+          * llegar al contenido. Visible solo al recibir foco.
+          */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
+        >
+          Saltar al contenido
+        </a>
         <StoreRehydrate />
         <StructuredData />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <FloatingWhatsApp />
+        <ProveedorMovimiento>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+          <FloatingWhatsApp />
+        </ProveedorMovimiento>
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 # Landing Page Project
 
 ## 📋 Project Overview
-Modern landing page built with Next.js 15, TypeScript, and Tailwind CSS following Screaming Architecture principles.
+Landing de AIworks (consultora de software con IA, Quito) construida con Next.js 16, React 19, TypeScript, Tailwind CSS 4 y Motion, siguiendo Screaming Architecture.
 
 ## 🏗️ Architecture: Screaming Architecture
 
@@ -11,42 +11,36 @@ This project follows **Screaming Architecture** - the folder structure screams w
 
 ```
 frontend/
-├── app/                          # Next.js App Router (infrastructure)
-│   ├── (routes)/                 # Route groups
-│   ├── layout.tsx               # Root layout
-│   └── page.tsx                 # Home page
+├── app/                          # Next.js App Router (infraestructura)
+│   ├── layout.tsx               # Layout raíz: fuentes, script de tema, header/footer
+│   ├── page.tsx                 # Inicio (secciones con next/dynamic)
+│   ├── privacidad/page.tsx      # Política de privacidad (LOPDP)
+│   ├── globals.css              # Tokens, tema claro/oscuro, clases del sistema, movimiento
+│   ├── icon.svg / favicon.ico / apple-icon.png
+│   ├── manifest.ts · sitemap.ts
 │
-├── features/                     # Business features (THE CORE)
-│   ├── hero/                    # Hero section feature
-│   │   ├── components/          # Hero-specific components
-│   │   ├── hooks/              # Hero-specific hooks
-│   │   └── types.ts            # Hero types
-│   │
-│   ├── pricing/                 # Pricing feature
-│   ├── testimonials/            # Testimonials feature
-│   ├── contact/                 # Contact form feature
-│   └── newsletter/              # Newsletter subscription feature
+├── features/                     # Bloques de negocio (EL NÚCLEO)
+│   ├── hero/                    # Titular de categoría + terminal del registro operativo
+│   ├── servicios/               # 01 Qué construimos (4 líneas de servicio)
+│   ├── procesos/                # 02 Procesos que se automatizan (3 filas)
+│   ├── proceso/                 # 03 Cómo trabajamos (3 fases + cinta de 15 tecnologías)
+│   ├── porque/                  # 04 Por qué AIworks + carrusel de ejemplos
+│   ├── preguntas/               # 05 FAQ (acordeón accesible)
+│   ├── cta-final/               # 06 Cierre: WhatsApp + correo
+│   └── legal/                   # Página de privacidad
 │
-├── shared/                       # Shared/reusable code
-│   ├── components/              # UI components (Button, Input, Card, etc)
-│   │   ├── ui/                 # Base UI components
-│   │   └── layout/             # Layout components (Header, Footer)
-│   │
-│   ├── hooks/                   # Shared hooks (useMediaQuery, useScroll)
-│   ├── lib/                     # Utilities and helpers
-│   │   ├── utils.ts            # General utilities
-│   │   └── validations.ts      # Form validations
-│   │
-│   ├── types/                   # Shared TypeScript types
-│   └── constants/               # App-wide constants
+├── shared/
+│   ├── components/
+│   │   ├── ui/                 # Container, EncabezadoSeccion, FloatingWhatsApp, LogoWhatsApp
+│   │   ├── layout/             # Header, Footer, LanguageSelector, SelectorTema, BarraProgreso
+│   │   ├── providers/          # StoreRehydrate, ProveedorMovimiento, ScrollAlAncla
+│   │   └── seo/                # StructuredData (JSON-LD)
+│   ├── hooks/                   # useRevelado, useIntersectionObserver, useMediaQuery…
+│   ├── lib/                     # i18n (es/en), tema.ts, whatsapp.ts, utils.ts
+│   ├── store/                   # Zustand: idioma, UI
+│   ├── types/ · constants/
 │
-├── styles/                      # Global styles
-│   └── globals.css             # Tailwind imports & global CSS
-│
-└── public/                      # Static assets
-    ├── images/
-    ├── icons/
-    └── fonts/
+└── public/                      # CNAME, og-image, íconos del manifest, robots.txt
 ```
 
 ## 🎯 Key Principles
@@ -73,34 +67,66 @@ frontend/
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router), export estático (`output: "export"`) a GitHub Pages
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS 4 + tokens propios en `app/globals.css`
+- **Animación**: Motion (`motion/react`), cargado con `LazyMotion` + `domAnimation`
 - **State Management**: Zustand
 - **Linting**: ESLint
 - **Package Manager**: npm
 
-## 🤖 Vercel Skills Integration
+> `next.config.ts` desactiva `turbopackFileSystemCacheForDev`: la caché de Turbopack en disco
+> sirvió dos veces un `globals.css` viejo en `next dev`. Si algo de CSS "no se aplica" en
+> local, borra `.next/` y vuelve a arrancar antes de buscar el error en el código.
 
-This project is configured to work with Vercel Agent Skills:
+## 🤖 Skills de diseño
 
-### Installed Skills:
-- `react-best-practices` - React & Next.js optimization guidelines
-- `web-design-guidelines` - Accessibility, performance, and UX rules
-- `composition-patterns` - Scalable React composition patterns
+### Instalada y vigente
 
-### Adding Skills:
-```bash
-npx skills add <package-name>
-```
+- **`frontend-design`** (oficial de Anthropic, desde `claude-plugins-official`), en
+  `.claude/skills/frontend-design/`: dirección estética, tipografía y clichés a evitar.
+- **UI/UX Pro Max** (`npm install -g ui-ux-pro-max-cli`, luego `uipro init --ai claude`).
+  Su base de datos se consulta con
+  `python3 "$(npm root -g)/ui-ux-pro-max-cli/assets/scripts/search.py" "<consulta>" --domain ux`
+  (dominios: `ux`, `landing`, `typography`, `color`, `react`, `web`…; `--stack nextjs`).
+  Úsala para pautas de UX, accesibilidad y movimiento. Sus recomendaciones de paleta y
+  tipografía son genéricas: las decisiones de marca de abajo mandan.
 
-### Available Skills:
-- `vercel-labs/agent-skills/react-best-practices` - Performance optimization
-- `vercel-labs/agent-skills/web-design-guidelines` - UX & accessibility
-- `vercel-labs/agent-skills/composition-patterns` - Component patterns
-- `vercel-labs/agent-skills/vercel-deploy-claimable` - Quick deploy
+### Sistema visual (v2, sep 2026)
 
-Explore more at: https://skills.sh
+Los tokens y su contraste calculado están comentados al inicio de `app/globals.css`.
+
+- **Tipografía**: Bricolage Grotesque 600 para titulares (`font-titular`), Geist para cuerpo y
+  UI, Geist Mono para eyebrows, etiquetas y la terminal. La palabra clave de cada titular se
+  marca **solo con color** (Bricolage no tiene cursiva real; nada de cursiva sintética).
+- **Color**: neutro claro (`--papel` #F7F6F3, `--arena` #EEECE6) y un único acento,
+  **petróleo** (`--marca` #0B6571 en claro, #5CC3CC en oscuro). El petróleo va en la palabra
+  clave, enlaces, foco, íconos de servicio, barra de progreso y botón principal
+  (`--boton`). Única excepción de color: el verde de WhatsApp en su botón flotante.
+- **Tema**: claro/oscuro con `<html data-tema>`. Lo resuelve un script en el `<head>` antes
+  del primer pintado; el botón del header lo fija (`shared/lib/tema.ts`). Todo color de un
+  componente sale de un token que tiene valor en ambos temas; nada de hex fijos que solo
+  funcionen en uno.
+- **Contraste**: todo texto ≥ 4,5:1 en ambos temas. Si agregas un par nuevo, calcúlalo y
+  anótalo junto al token.
+- **Estructura**: bloques con eyebrow numerado + titular en dos líneas (`EncabezadoSeccion`),
+  filas con filete para listas; las tarjetas se reservan para el carrusel de ejemplos.
+- **Afirmaciones**: cero cifras inventadas, cero sellos, cero superlativos. Todo ejemplo va
+  rotulado como tal. `scripts/verificar-landing.sh` lo comprueba sobre el build.
+
+### Movimiento
+
+- Revelados al hacer scroll y la entrada del hero: **CSS** (`.revelar`, `.linea-mascara`,
+  `useRevelado`). Su estado oculto vive bajo `html.js` y
+  `prefers-reduced-motion: no-preference`, así el contenido se ve sin JS.
+- **Motion** solo donde aporta algo que CSS no resuelve bien: salidas animadas
+  (`AnimatePresence`: menú móvil, burbuja de WhatsApp, ícono de tema), resortes ligados al
+  scroll (línea de fases, barra de progreso) y gestos (`whileHover`/`whileTap` del botón de
+  WhatsApp). Usa los componentes `m.*`, no `motion.*` (`LazyMotion` va en modo `strict`).
+- `MotionConfig reducedMotion="user"` aplica el movimiento reducido a todo Motion; en CSS,
+  cada animación nueva va dentro de `@media (prefers-reduced-motion: no-preference)`.
+- Solo `transform` y `opacity`. Desplazamientos de hover < 2 px. Todo movimiento que dure
+  más de 5 s debe poder pausarse (la cinta de tecnologías tiene su botón).
 
 ## 📝 Development Guidelines
 
@@ -161,10 +187,10 @@ npm run lint
 
 ## 🎨 Styling Conventions
 
-- Use Tailwind utility classes
-- Create custom utilities in `tailwind.config.ts` when needed
-- Keep component-specific styles in the component file
-- Use CSS variables for theme values
+- Utilidades de Tailwind para layout; tokens de `globals.css` para color y tipografía.
+- Las clases del sistema (`.accion`, `.eyebrow`, `.titular`…) viven en `@layer components`
+  para que una utilidad pueda sobrescribirlas.
+- No hay `tailwind.config.ts`: Tailwind 4 se configura con `@theme` en `globals.css`.
 
 ## 🔄 State Management with Zustand
 
@@ -291,5 +317,5 @@ When adding new features:
 
 ---
 
-**Last Updated**: 2026-01-27
-**Version**: 1.0.1
+**Last Updated**: 2026-09-28
+**Version**: 2.0.0

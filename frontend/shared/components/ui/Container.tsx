@@ -4,30 +4,15 @@ import { cn } from '@/shared/lib/utils';
 interface ContainerProps {
   children: ReactNode;
   className?: string;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
-export function Container({
-  children,
-  className,
-  size = 'xl'
-}: ContainerProps) {
-  const sizeStyles = {
-    sm: 'max-w-3xl',
-    md: 'max-w-5xl',
-    lg: 'max-w-6xl',
-    xl: 'max-w-7xl',
-    full: 'max-w-full'
-  };
-
+/**
+ * Contenedor de hasta 1440px. Margen interior de 20px en móvil (a 320px quedan 280
+ * útiles), 32px en tablet y, en escritorio, entre 64 y 96px según el ancho de pantalla.
+ */
+export function Container({ children, className }: ContainerProps) {
   return (
-    <div
-      className={cn(
-        'mx-auto px-4 sm:px-6 lg:px-8',
-        sizeStyles[size],
-        className
-      )}
-    >
+    <div className={cn('mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-[clamp(4rem,6vw,6rem)]', className)}>
       {children}
     </div>
   );

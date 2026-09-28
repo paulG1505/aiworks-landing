@@ -4,3 +4,6 @@
 
 # Build output (deployed by GitHub Actions)
 frontend/out
+
+# Capturas locales de scripts/e2e-landing.sh (no se versionan)
+.e2e/

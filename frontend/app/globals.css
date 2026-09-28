@@ -1,39 +1,611 @@
 @import "tailwindcss";
 
+/*
+ * Sistema visual de AIworks — v2 (sep 2026).
+ *
+ * Minimalismo editorial con voz de software: una columna, bloques autocontenidos y el
+ * vacío como material. Neutro claro sin gradientes y un solo acento (petróleo),
+ * reservado para la palabra clave de cada titular, los enlaces, el foco y los íconos de
+ * servicio. Nunca como fondo de texto. La única excepción es el verde de WhatsApp en su
+ * botón flotante: es la marca de ese canal.
+ *
+ * Contraste (WCAG 2.x, calculado sobre estos valores):
+ *   tinta / papel 16.2 · tinta-media / papel 6.6 · tinta-media / arena 6.0
+ *   marca / papel 6.2 · marca / arena 5.7
+ *   hueso / noche 15.1 · hueso-medio / noche 6.9 · hueso-tenue / noche 10.2
+ *   marca-clara / noche 8.8
+ */
 :root {
-  /* AIworks Brand Colors */
-  --primary-blue: #0066FF;
-  --primary-cyan: #00D4FF;
-  --bg-dark: #0F0F23;
-  --verde-whatsapp: #25D366;
+  /* Claros */
+  --papel: #F7F6F3;
+  --arena: #EEECE6;
+  --tinta: #1B1916;
+  --tinta-media: #5C5850;
+  --regla: #DDD9D0;
+  --regla-arena: #CFCAC0;
+  --marca: #0B6571;
+  --arena-hover: #E6E3DC;
+  /* Botón principal: petróleo. Blanco sobre #0B6571 6,7:1; sobre el hover 9,1:1. */
+  --boton: #0B6571;
+  --boton-hover: #08505A;
+  --sobre-boton: #FFFFFF;
 
-  /* Semi-transparent Whites */
-  --white-5: #FFFFFF0D;   /* 5% */
-  --white-8: #FFFFFF14;   /* 8% */
-  --white-10: #FFFFFF1A;  /* 10% */
-  --white-15: #FFFFFF26;  /* 15% */
-  --white-20: #FFFFFF33;  /* 20% */
-  --white-30: #FFFFFF4D;  /* 30% */
+  /* Oscuros: bandas de "Cómo trabajamos" y del cierre */
+  --noche: #171513;
+  --hueso: #EEE9E0;
+  --hueso-tenue: #C9C1B5;
+  --hueso-medio: #A69E92;
+  --regla-noche: #2E2A25;
+  --pista-noche: #3A352F;
+  --marca-clara: #5CC3CC;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(90deg, #00D4FF 0%, #0066FF 100%);
-  --gradient-cta: linear-gradient(135deg, #0066FF20 0%, #00D4FF15 50%, #6B46C120 100%);
-  --gradient-radial: radial-gradient(circle, #0066FF40 0%, transparent 70%);
+  /*
+   * Colores "de contexto". Los componentes usan estos, y un bloque oscuro solo tiene que
+   * redefinirlos (ver .oscuro) para que eyebrow, titular, enlaces y foco se adapten.
+   */
+  --c-fondo: var(--papel);
+  --c-texto: var(--tinta);
+  --c-media: var(--tinta-media);
+  --c-regla: var(--regla);
+  --c-clave: var(--marca);
 
-  /* Theme variables */
-  --background: #0F0F23;
-  --foreground: #ffffff;
+  /* Terminal del registro operativo: oscura en ambos temas. */
+  --term-fondo: #12110F;
+  --term-barra: #1D1B18;
+  --term-regla: #2A2723;
+  --term-regla-fuerte: #45403A;
+  --term-texto: #E8E4DC;
+  --term-media: #9A9387;
+  --term-entrada: #9DB4C0;
+  --term-ia: var(--marca-clara);
+  --term-ok: #8CC7A1;
+  --term-revision: #E6C07B;
+
+  --term-anillo: rgb(0 0 0 / 0.08);
+
+  /* Movimiento */
+  --curva: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --background: var(--papel);
+  --foreground: var(--tinta);
+  color-scheme: light;
+}
+
+/*
+ * Modo oscuro. El tema resuelto vive en <html data-tema>: lo pone un script en el <head>
+ * antes del primer pintado (elección guardada o, si no hay, la del sistema) y lo cambia
+ * el botón del header. Sin JS no hay atributo y decide solo el sistema (bloque @media).
+ *
+ * En oscuro, las bandas "noche" pasan a ser una superficie un poco MÁS clara que la
+ * página, para que el ritmo claro/oscuro entre secciones no se pierda.
+ *
+ * Contraste en oscuro: tinta / papel 15.6 · tinta-media / papel 7.4 · tinta-media /
+ * arena 6.9 · marca / papel 9.1 · marca / arena 8.5 · hueso-medio / noche 6.2
+ */
+html[data-tema="oscuro"] {
+  --papel: #121110;
+  --arena: #1A1916;
+  --arena-hover: #221F1B;
+  --tinta: #EEE9E0;
+  --tinta-media: #A7A197;
+  --regla: #2E2B27;
+  --regla-arena: #34302B;
+  --marca: #5CC3CC;
+  --boton: #5CC3CC;
+  --boton-hover: #86D6DC;
+  --sobre-boton: #0E1B1D;
+  --noche: #221F1C;
+  --regla-noche: #36322D;
+  --pista-noche: #403B35;
+  --term-anillo: rgb(255 255 255 / 0.1);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema]) {
+    --papel: #121110;
+    --arena: #1A1916;
+    --arena-hover: #221F1B;
+    --tinta: #EEE9E0;
+    --tinta-media: #A7A197;
+    --regla: #2E2B27;
+    --regla-arena: #34302B;
+    --marca: #5CC3CC;
+    --boton: #5CC3CC;
+    --boton-hover: #86D6DC;
+    --sobre-boton: #0E1B1D;
+    --noche: #221F1C;
+    --regla-noche: #36322D;
+    --pista-noche: #403B35;
+    --term-anillo: rgb(255 255 255 / 0.1);
+    color-scheme: dark;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  --color-papel: var(--papel);
+  --color-arena: var(--arena);
+  --color-tinta: var(--tinta);
+  --color-tinta-media: var(--tinta-media);
+  --color-regla: var(--regla);
+  --color-marca: var(--marca);
+  --color-noche: var(--noche);
+  --color-hueso: var(--hueso);
+  --color-hueso-medio: var(--hueso-medio);
+  --font-titular: var(--fuente-titular), var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--fuente-mono), ui-monospace, monospace;
 }
 
+.oscuro {
+  --c-fondo: var(--noche);
+  --c-texto: var(--hueso);
+  --c-media: var(--hueso-medio);
+  --c-regla: var(--regla-noche);
+  --c-clave: var(--marca-clara);
+  background: var(--c-fondo);
+  color: var(--c-texto);
+}
+
+@layer base {
 html {
   scroll-behavior: smooth;
+}
+
+/*
+ * Red de seguridad contra el scroll horizontal (320–414px). Es una línea y evita que
+ * cualquier bloque futuro reintroduzca el problema sin que nadie lo note.
+ */
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 1.1875rem;
+  }
+}
+}
+
+/*
+ * Clases del sistema en la capa `components`: así una utilidad de Tailwind (`hidden`,
+ * `w-full`, `px-*`…) puede sobrescribirlas en un caso puntual.
+ */
+@layer components {
+/* ---------------------------------------------------------------- Tipografía */
+
+/* Titulares en Bricolage Grotesque 600, con el tracking cerrado que pide una grotesca
+   en tamaño grande. */
+h1, h2, h3 {
+  font-family: var(--font-titular);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+/* display: 72 / 1.0 en escritorio → 38 / 1.05 a 320–414px. Bricolage es más ancha que
+   la serif condensada anterior, por eso la escala baja respecto de la v1 (88 / 60). */
+.titular-display {
+  font-size: clamp(2.375rem, 1.3rem + 4.6vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+/* h2: 52 / 1.02 → 32 / 1.08 */
+.titular {
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+/* h3: 26 / 1.2 → 22 / 1.25 */
+.titular-3 {
+  font-size: clamp(1.375rem, 1.15rem + 0.8vw, 1.625rem);
+  line-height: 1.25;
+}
+@media (min-width: 1024px) {
+  .titular-display { line-height: 1; }
+  .titular { line-height: 1.02; }
+  .titular-3 { line-height: 1.2; }
+}
+
+/* La palabra clave: el acento. Una por titular. Bricolage no tiene cursiva real, así
+   que se marca solo con color (una cursiva sintética deformaría las letras). */
+.clave {
+  color: var(--c-clave);
+}
+
+/* Eyebrow: la voz "técnica". 11 · +0.12em → 12 · +0.14em */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-media);
+}
+@media (min-width: 640px) {
+  .eyebrow {
+    font-size: 0.8125rem;
+    letter-spacing: 0.14em;
+  }
+}
+/* Marcador cuadrado del eyebrow del hero: el único acento fuera de un titular. */
+.eyebrow-marcador::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--c-clave);
+}
+
+/* Cifras que se alinean en columna: horas del registro, números de fila y de fase. */
+.tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Medida: columna de lectura. */
+.medida {
+  max-width: 62ch;
+}
+
+/* Rótulo punteado: todo lo que es ejemplo lo dice antes de que se lea el contenido. */
+.rotulo-ilustrativo {
+  align-self: flex-start;
+  display: inline-block;
+  border: 1px dashed var(--c-media);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-texto);
+}
+@media (min-width: 640px) {
+  .rotulo-ilustrativo { font-size: 0.75rem; }
+}
+
+/* ---------------------------------------------------------------- Espaciado */
+
+/* Bloque de sección: 96px móvil · 160px escritorio. */
+.seccion {
+  padding-block: 6rem;
+}
+@media (min-width: 1024px) {
+  .seccion { padding-block: 10rem; }
+}
+
+/* ---------------------------------------------------------------- Foco */
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--c-clave);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+section[id] {
+  scroll-margin-top: 72px;
+}
+
+/* ---------------------------------------------------------------- Acciones */
+
+/*
+ * Son clases y no un componente porque casi todos los CTA son enlaces (wa.me, mailto).
+ * Píldora en tinta, sin sombra ni escala en hover: solo color. En bloques oscuros se
+ * invierte a hueso sobre noche.
+ */
+.accion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Botón principal en petróleo: es el color de la marca y el punto de acción de cada
+   vista. Sobre las bandas oscuras usa el petróleo claro con texto casi negro (8,5:1). */
+.accion-primaria {
+  padding: 1.0625rem 1.625rem;
+  font-size: 1.0625rem;
+  background: var(--boton);
+  color: var(--sobre-boton);
+}
+.accion-primaria:hover {
+  background: var(--boton-hover);
+}
+.oscuro .accion-primaria {
+  background: var(--marca-clara);
+  color: #0E1B1D;
+}
+.oscuro .accion-primaria:hover {
+  background: #86D6DC;
+}
+
+.accion-contorno {
+  padding: 0.6875rem 1.125rem;
+  font-size: 0.9375rem;
+  border: 1px solid var(--c-texto);
+  color: var(--c-texto);
+}
+.accion-contorno:hover {
+  background: var(--c-texto);
+  color: var(--c-fondo);
+}
+
+/* Enlace de texto: subrayado desplazado. */
+.enlace {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.15s ease;
+}
+.enlace:hover {
+  color: var(--c-clave);
+}
+}
+
+/* ---------------------------------------------------------------- Movimiento
+ *
+ * Regla: cada movimiento revela información nueva (un titular, un paso, una línea del
+ * registro). Nada en bucle, sin parallax, sin contadores animados. Los revelados al
+ * hacer scroll se disparan una sola vez, cuando el bloque entra al 20% inferior del
+ * viewport (useRevelado).
+ *
+ * Todo estado oculto vive dentro de `html.js` y de `prefers-reduced-motion:
+ * no-preference`: sin JS, o con movimiento reducido, el contenido está simplemente ahí.
+ */
+
+/* Una línea de titular que sube desde una máscara inferior. El padding compensa los
+   descendentes de la cursiva, que el overflow recortaría. */
+.linea-mascara {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.linea-mascara > .linea {
+  display: block;
+}
+
+@keyframes subir-mascara {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fundido {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes revelar {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Inspiradas en animate.style (zoomIn, fadeInUp, fadeInDown), en versión sobria. */
+@keyframes aparecer-chip {
+  0%   { opacity: 0; transform: scale(0.6); }
+  60%  { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes registro-linea {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero: la única secuencia cinemática sin scroll. Se dispara al cargar. */
+  html.js .entrada-fundido {
+    animation: fundido 400ms ease-out both;
+    animation-delay: var(--d, 0ms);
+  }
+  html.js .entrada-mascara > .linea {
+    animation: subir-mascara 900ms var(--curva) both;
+    animation-delay: var(--d, 0ms);
+  }
+  html.js .entrada-revelar {
+    animation: revelar 700ms var(--curva) both;
+    animation-delay: var(--d, 0ms);
+  }
+  html.js .registro-linea {
+    animation: registro-linea 500ms var(--curva) both;
+    animation-delay: var(--d, 0ms);
+  }
+  html.js .registro-mensaje {
+    animation: revelar 700ms var(--curva) both;
+    animation-delay: var(--d, 0ms);
+  }
+  html.js .registro-chip {
+    display: inline-block;
+    animation: aparecer-chip 450ms var(--curva) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  /* FAQ: el texto de la respuesta baja con un fundido mientras el panel se abre. */
+  .respuesta-texto {
+    transition: opacity 350ms var(--curva) 60ms, transform 350ms var(--curva) 60ms;
+  }
+  .respuesta:not([data-abierta]) .respuesta-texto {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  /* Botones: suben 1 px al pasar el mouse y se hunden al pulsar. Menos de 2 px: se lee
+     como respuesta, no como movimiento. */
+  .accion {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+      transform 0.2s var(--curva);
+  }
+  .accion:hover {
+    transform: translateY(-1px);
+  }
+  .accion:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* Tarjetas del carrusel: se elevan apenas al pasar el mouse. */
+  .tarjeta-ejemplo {
+    transition: opacity 700ms var(--curva), transform 700ms var(--curva), background-color 200ms ease;
+    transition-delay: var(--d, 0ms), var(--d, 0ms), 0ms;
+  }
+  .tarjeta-ejemplo:hover {
+    background-color: var(--arena-hover);
+    transform: translateY(-2px);
+    transition-delay: 0ms;
+  }
+
+  /* Revelados al hacer scroll: transición desde el estado oculto al entrar data-visible. */
+  .revelar,
+  .revelar-mascara > .linea {
+    transition: opacity 700ms var(--curva), transform 700ms var(--curva);
+    transition-delay: var(--d, 0ms);
+  }
+  .revelar-mascara > .linea {
+    transition-duration: 900ms;
+  }
+  html.js [data-revelar]:not([data-visible]) .revelar {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  html.js [data-revelar]:not([data-visible]) .revelar-mascara > .linea {
+    transform: translateY(105%);
+  }
+
+  /* Filete que se dibuja de izquierda a derecha (filas de "Procesos"). */
+  .revelar-regla::before {
+    transition: transform 600ms var(--curva);
+    transition-delay: var(--d, 0ms);
+  }
+  html.js [data-revelar]:not([data-visible]) .revelar-regla::before {
+    transform: scaleX(0);
+  }
+
+  /* Cierre: el fondo oscuro sube desde abajo como cortina. */
+  .cortina {
+    transition: clip-path 800ms var(--curva);
+  }
+  html.js .cortina[data-revelar]:not([data-visible]) {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  /* Fases: aparecen cuando la línea de progreso las alcanza. */
+  .fase {
+    transition: opacity 700ms var(--curva), transform 700ms var(--curva);
+  }
+  html.js .fase:not([data-alcanzada]) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Navegación del header: subrayado en petróleo que se dibuja de izquierda a derecha. */
+.nav-enlace {
+  position: relative;
+}
+.nav-enlace::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--marca);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--curva);
+}
+.nav-enlace:hover::after,
+.nav-enlace:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Texto seleccionado en petróleo. */
+::selection {
+  background: color-mix(in srgb, var(--marca) 28%, transparent);
+  color: inherit;
+}
+
+/* Carrusel: scroll nativo sin barra visible (se navega con swipe, flechas o botones). */
+.carrusel {
+  scrollbar-width: none;
+}
+.carrusel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Terminal: sombra que la separa del fondo, en claro y en oscuro. */
+.terminal {
+  box-shadow: 0 0 0 1px var(--term-anillo), 0 28px 56px -28px rgb(0 0 0 / 0.5);
+}
+
+/* Filete de fila: pseudo-elemento para poder dibujarlo sin mover el layout. */
+.revelar-regla {
+  position: relative;
+}
+.revelar-regla::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--c-regla);
+  transform-origin: left;
+}
+
+/* Línea de progreso de "Cómo trabajamos": la única animación ligada al scroll. */
+.fases-progreso {
+  transform-origin: left top;
+  transform: scaleY(var(--progreso, 1));
+}
+@media (min-width: 768px) {
+  .fases-progreso {
+    transform: scaleX(var(--progreso, 1));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fases-progreso {
+    transform: none;
+  }
+}
+
+/* FAQ: apertura por altura. visibility saca el panel cerrado del árbol de accesibilidad
+   y del orden de Tab (igual que `hidden`), pero, a diferencia de display, sí se anima. */
+.respuesta {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 350ms var(--curva), visibility 350ms;
+}
+.respuesta[data-abierta] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+.respuesta > div {
+  overflow: hidden;
+}
+/* Tailwind 4 rota con la propiedad individual `rotate`, no con `transform`. */
+.signo-barra {
+  transition: rotate 350ms var(--curva);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -47,61 +619,6 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
-}
-
-section[id] {
-  scroll-margin-top: 100px;
-}
-
-body {
-  background: var(--bg-dark);
-  color: var(--foreground);
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-}
-
-/* Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-/* Stagger animations */
-.animate-delay-100 {
-  animation-delay: 100ms;
-}
-
-.animate-delay-200 {
-  animation-delay: 200ms;
-}
-
-.animate-delay-300 {
-  animation-delay: 300ms;
-}
-
-.animate-delay-400 {
-  animation-delay: 400ms;
 }

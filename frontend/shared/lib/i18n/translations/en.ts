@@ -2,177 +2,322 @@ export const en = {
   header: {
     logo: "AIworks",
     nav: {
-      services: "Services",
-      technologies: "Technologies",
-      about: "About",
-      process: "Process",
-      contact: "Contact",
+      servicios: "Services",
+      procesos: "Processes",
+      proceso: "How we work",
+      porque: "Why AIworks",
+      preguntas: "Questions",
+      contacto: "Contact",
     },
-    cta: "Schedule free consultation",
+    cta: "Message us on WhatsApp",
   },
   hero: {
-    headline: "Transform your data into automated decisions with AI",
-    subtitle: "Specialists in AI-powered software for companies seeking competitive advantage",
+    categoria: { antes: "", clave: "AI-powered", despues: " software." },
+    beneficio: "Built for the work your team still does by hand.",
+    subtitle:
+      "We are a consultancy: we build the software that does that work on its own, and we leave every decision it makes in plain view.",
+    trayectoria: "Over 7 years solving processes.",
     cta: {
-      primary: "Schedule free consultation",
-      secondary: "Learn more",
-    },
-    industries: {
-      fintech: "Fintech",
-      retail: "Retail",
-      logistics: "Logistics",
-      healthcare: "Healthcare",
+      primary: "Message us on WhatsApp",
+      ejemplos: "See examples",
     },
   },
-  services: {
-    title: "AI Solutions that drive your business",
-    subtitle: "We implement artificial intelligence in critical processes of your company",
-    cards: {
-      fintech: {
-        title: "Fintech: Fraud Detection",
-        problem: "Problem: Million-dollar losses from fraudulent transactions",
-        solution: "Solution: ML system that analyzes patterns in real-time with 99.2% accuracy",
-        benefit: "85% fraud reduction",
+  registro: {
+    titulo: "Operations log",
+    etiqueta: "Sample flow",
+    ventana: "aiworks — whatsapp-lead",
+    comando: "analyze-lead --channel=whatsapp",
+    lineas: [
+      { hora: "21:47", tipo: "entrada", etiqueta: "input", texto: "“Hi, do you have the plan for 20 users? We need it this month.”" },
+      { hora: "21:47", tipo: "ia", etiqueta: "ai", texto: "Intent: purchase. Urgency: high, needed this month." },
+      { hora: "21:47", tipo: "ia", etiqueta: "ai", texto: "Checks the CRM: new customer, 20-person company." },
+      { hora: "21:48", tipo: "decision", etiqueta: "decision", texto: "Replies with the plan and offers a call tomorrow." },
+      { hora: "21:48", tipo: "revision", etiqueta: "review", texto: "Alerts sales to confirm the call." },
+      { hora: "21:48", tipo: "registro", etiqueta: "log", texto: "Recorded with its timestamp and owner." },
+    ],
+    resultado: {
+      label: "outcome",
+      items: ["Priority lead", "Assigned to sales", "Answered in 1 minute"],
+    },
+    pie: "Every decision is stored with its timestamp, its owner and its record. That is what makes an automation auditable instead of something you have to take on trust.",
+  },
+  servicios: {
+    eyebrow: "What we build",
+    titulo: { antes: "Software shaped", clave: "around how your company works." },
+    subtitle:
+      "Four lines of work. All of them end in software running on your data, with human review where it matters.",
+    ejemploLabel: "For example",
+    items: [
+      {
+        icono: "procesos",
+        titulo: "Process automation",
+        descripcion:
+          "Reconciliations, month-end close, reports and collections that today depend on copying and pasting between systems.",
+        ejemplo: "A daily bank reconciliation that leaves a person only the entries that do not add up.",
+        tecnologias: ["Python", "n8n", "PostgreSQL"],
       },
-      retail: {
-        title: "Retail: Demand Forecasting",
-        problem: "Problem: Obsolete inventory or stock shortages in key products",
-        solution: "Solution: Forecasting with neural networks that predicts demand by SKU",
-        benefit: "40% less waste",
+      {
+        icono: "chatbots",
+        titulo: "AI assistants and chatbots",
+        descripcion:
+          "They answer on WhatsApp and on your website using your business's real information, hand to a person what they cannot answer, and log every conversation.",
+        ejemplo: "An assistant that answers pricing and availability after hours and books calls with sales.",
+        tecnologias: ["Claude", "OpenAI", "LangChain", "WhatsApp"],
       },
-      logistics: {
-        title: "Logistics: Route Optimization",
-        problem: "Problem: High fuel costs and slow delivery times",
-        solution: "Solution: Optimization algorithms that calculate routes in real-time",
-        benefit: "30% fuel savings",
+      {
+        icono: "documentos",
+        titulo: "Document reading and classification",
+        descripcion:
+          "Invoices, PDFs, emails and forms are read as they arrive and the data is entered into the system once.",
+        ejemplo: "Supplier invoices recorded without typing, with a person reviewing doubtful amounts.",
+        tecnologias: ["Python", "Claude", "FastAPI"],
       },
-      healthcare: {
-        title: "Healthcare: Medical Image Analysis",
-        problem: "Problem: Delayed diagnoses in X-ray analysis",
-        solution: "Solution: Computer Vision that detects anomalies with specialist-level accuracy",
-        benefit: "95% diagnostic accuracy",
+      {
+        icono: "nube",
+        titulo: "Integration and cloud",
+        descripcion:
+          "We connect what you already use and deploy to your own cloud, Azure or AWS, with the infrastructure written as code.",
+        ejemplo: "The whole environment defined in Terraform: reproducible, auditable and in your account.",
+        tecnologias: ["Azure", "AWS", "Terraform", "Docker", "GitHub Actions"],
       },
+    ],
+  },
+  procesos: {
+    eyebrow: "Processes that can be automated",
+    titulo: { antes: "What still gets done by hand", clave: "and shouldn't." },
+    subtitle:
+      "If you recognise any of these in your company, you already know where the hours that show up in no report are going.",
+    ctaItem: "Talk about this",
+    items: [
+      {
+        numero: "01",
+        titulo: "Bank reconciliation",
+        hoy: "Someone matches the statement against the system, line by line. The close depends on how many lines they get through before the day ends.",
+        resuelve:
+          "The system reads the statement, matches on reference and amount, and sets aside only the entries that do not add up. A person reviews the exceptions, not the five thousand rows.",
+      },
+      {
+        numero: "02",
+        titulo: "Month-end close and data entry",
+        hoy: "Data arrives in emails, PDFs and spreadsheets, and someone types it into the system again. Whatever is mistyped surfaces at the next close.",
+        resuelve:
+          "Documents are read as they arrive and the data is entered once. The team stops typing and starts deciding on what the system flagged.",
+      },
+      {
+        numero: "03",
+        titulo: "Customer questions after hours",
+        hoy: "Enquiries pile up overnight and Monday starts with a queue. The questions are almost always the same ones.",
+        resuelve:
+          "An assistant answers the repeat enquiries using your business's real information, and hands anything it cannot answer to a person. It does not improvise.",
+      },
+    ],
+  },
+  proceso: {
+    eyebrow: "How we work",
+    titulo: { antes: "Three phases.", clave: "No surprises." },
+    faseLabel: "Phase",
+    subtitle:
+      "Three phases, each ending with something concrete you receive. If the first one finds nothing worth automating, we tell you and it stops there.",
+    entregableLabel: "You receive",
+    fases: [
+      {
+        numero: "01",
+        titulo: "Discovery",
+        descripcion:
+          "We look at the process where it lives, with the people who run it today. We measure how long it takes and where it breaks.",
+        entregable: "A document with the process as it actually is, which part can be automated and which is better left alone.",
+      },
+      {
+        numero: "02",
+        titulo: "Architecture and build",
+        descripcion:
+          "We design the solution and build it in short increments, so you see it working before it is finished.",
+        entregable: "The system running on your real data, with the human-review rules already defined.",
+      },
+      {
+        numero: "03",
+        titulo: "Going live",
+        descripcion:
+          "We connect it to what you already use, train whoever will operate it, and leave the audit log running.",
+        entregable: "The system in production, the documentation to operate it, and the record of every decision it makes.",
+      },
+    ],
+    stackLabel: "Technologies we work with",
+    pausar: "Pause",
+    reanudar: "Resume",
+  },
+  porque: {
+    eyebrow: "Why AIworks",
+    titulo: { antes: "No inflated promises.", clave: "Just sound judgement." },
+    items: [
+      {
+        titulo: "Over 7 years solving processes",
+        descripcion:
+          "The brand is new; the experience is not. It is over seven years leading software projects, most of it solving exactly this kind of problem.",
+      },
+      {
+        titulo: "AI with a paper trail, not AI on blind faith",
+        descripcion:
+          "Every automated decision is recorded with its timestamp, and the ones that matter go through a person before they execute. You can reconstruct why the system did what it did.",
+      },
+      {
+        titulo: "From concept to production in weeks",
+        descripcion:
+          "We work in short increments on your real data. There is no six-month phase where you see nothing.",
+      },
+      {
+        titulo: "Software someone else can maintain",
+        descripcion:
+          "Tested, documented code, and it is yours. If you decide tomorrow to hand it to another team, you can.",
+      },
+    ],
+    casos: {
+      titulo: "Automation examples",
+      anterior: "Previous example",
+      siguiente: "Next example",
+      hoyLabel: "Today",
+      conIaLabel: "With AI",
+      items: [
+        {
+          area: "Sales",
+          titulo: "WhatsApp leads that arrive at night",
+          hoy: "Night-time messages get answered the next day, and some have already bought elsewhere.",
+          conIa: "Every message is classified on arrival; interested leads get a reply and go to sales first.",
+        },
+        {
+          area: "Finance",
+          titulo: "Bank reconciliation by hand",
+          hoy: "Someone matches the statement against the system line by line, and the close waits until they finish.",
+          conIa: "The system matches on reference and amount; the person reviews only the entries that do not add up.",
+        },
+        {
+          area: "Documents",
+          titulo: "PDF invoices arriving by email",
+          hoy: "Every invoice is typed into the system again, and the mistakes surface at the next close.",
+          conIa: "Invoices are read as they arrive and the data is entered once, with a person reviewing anything doubtful.",
+        },
+        {
+          area: "Collections",
+          titulo: "Overdue invoices nobody follows up",
+          hoy: "Someone checks who owes what and writes to each customer one by one, when they find the time.",
+          conIa: "The system spots overdue invoices, sends reminders and alerts a person when the customer replies.",
+        },
+        {
+          area: "Reporting",
+          titulo: "The Monday weekly report",
+          hoy: "Several spreadsheets are stitched together by hand to build the same report every week.",
+          conIa: "The report builds itself from the system's data and arrives by email with what changed.",
+        },
+        {
+          area: "Operations",
+          titulo: "Inventory that does not match the system",
+          hoy: "Stock in the spreadsheet does not match the system, and nobody knows which one is right.",
+          conIa: "Both are reconciled daily and only the differences reach whoever has to decide.",
+        },
+      ],
     },
   },
-  technologies: {
-    title: "Cutting-edge Technologies",
-    subtitle: "Modern and scalable technology stack",
-    backend: {
-      title: "Backend",
-      items: ["FastAPI", "Python", "PostgreSQL", "Redis"],
-    },
-    frontend: {
-      title: "Frontend",
-      items: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    },
-    aiml: {
-      title: "IA/ML",
-      items: ["TensorFlow", "PyTorch", "scikit-learn", "LangChain"],
-    },
-    infrastructure: {
-      title: "Infrastructure",
-      items: ["AWS", "Docker", "Kubernetes", "GitHub Actions"],
-    },
-  },
-  projects: {
-    title: "Artificial Intelligence applied to your business",
-    subtitle: "We implement AI models that solve real problems and generate measurable ROI",
-    cards: {
-      dataAnalysis: {
-        title: "Data Analysis with AI",
-        description:
-          "We analyze your data to identify patterns and opportunities. We select and implement the most suitable AI models according to your business objectives and data type.",
-        solutionsLabel: "Solutions:",
-        solutions: "Predictive analysis • Forecasting • Segmentation • Anomaly detection",
+  preguntas: {
+    eyebrow: "Frequently asked questions",
+    titulo: { antes: "What people", clave: "usually ask us." },
+    items: [
+      {
+        pregunta: "What does it cost?",
+        respuesta:
+          "It depends on the process and on how much has to be connected. In the 15-minute assessment we give you a concrete range for your case, with no obligation.",
       },
-      aiIntegration: {
-        title: "AI Integration in your Software",
-        description:
-          "We integrate existing AI solutions (OpenAI, Anthropic, Google AI) into your applications. We develop intelligent interfaces and automated workflows adapted to your processes.",
-        solutionsLabel: "Solutions:",
-        solutions: "Conversational chatbots • AI assistants • NLP processing • Computer Vision",
+      {
+        pregunta: "How long does it take?",
+        respuesta:
+          "Discovery takes one to two weeks. After that, the first working version on your data is usually weeks away rather than months, because we deliver in parts.",
       },
-    },
-  },
-  whyUs: {
-    title: "Why AIworks?",
-    subtitle: "Competitive advantages that set us apart",
-    cards: {
-      fast: {
-        title: "Fast implementation",
-        description: "From concept to production in weeks, not months",
+      {
+        pregunta: "What if the AI gets it wrong?",
+        respuesta:
+          "That is why it does not decide alone on what matters. Sensitive steps go through a person before they execute, and every decision is recorded with its timestamp, so you can see what the system did and correct it.",
       },
-      security: {
-        title: "Enterprise security",
-        description: "SOC 2, GDPR compliance and best practices",
+      {
+        pregunta: "What happens to my company's data?",
+        respuesta:
+          "It stays wherever you decide, and we sign a confidentiality agreement before seeing anything. We work under Ecuador's data protection law, and the assessment does not need real data for us to tell you whether the process can be automated.",
       },
-      quality: {
-        title: "Quality code",
-        description: "100% tested, documented and maintainable",
-      },
-      team: {
-        title: "Expert team",
-        description: "Senior developers specialized in AI/ML",
-      },
-    },
-  },
-  process: {
-    title: "How we work",
-    subtitle: "Proven 5-step methodology",
-    steps: {
-      discovery: {
-        title: "Discovery and analysis",
-        description:
-          "We understand your business, available data and objectives. We evaluate technical feasibility.",
-      },
-      design: {
-        title: "Solution design",
-        description: "Technical architecture, model selection, and implementation roadmap.",
-      },
-      development: {
-        title: "Development and training",
-        description: "Agile development with 2-week sprints. Iterative ML model training.",
-      },
-      testing: {
-        title: "Testing and validation",
-        description: "Exhaustive testing (unit, integration, E2E). Business metrics validation.",
-      },
-      deployment: {
-        title: "Deploy and monitoring",
-        description:
-          "Production deployment with CI/CD. Continuous performance monitoring and retraining.",
-      },
-    },
+    ],
   },
   cta: {
-    title: "Ready to transform your business with AI?",
-    description: "Schedule a free 30-minute consultation with our AI experts",
-    button: "Schedule consultation",
-    form: {
-      title: "Contact form",
-      name: "Name",
-      email: "Email",
-      message: "Message",
-      submit: "Send",
-    },
+    eyebrow: "Contact",
+    titulo: { antes: "Start by finding out", clave: "what is costing you most." },
+    description:
+      "In 15 minutes you will know which process is costing you the most and whether it can be automated. No cost, no obligation.",
+    whatsapp: "Message us on WhatsApp",
+    correoLabel: "or email us at",
+  },
+  whatsappFlotante: {
+    titulo: "Need a hand?",
+    texto: "Message us on WhatsApp",
+    cerrar: "Dismiss",
   },
   footer: {
-    brand: {
-      name: "AIworks",
-      description: "Consulting firm specialized in AI-powered software",
+    descripcion: "AI software consultancy for small and mid-sized businesses. Quito, Ecuador.",
+    columnas: {
+      servicios: "Services",
+      empresa: "Company",
+      contacto: "Contact",
+      legal: "Legal",
     },
-    navigation: {
-      title: "Navigation",
-      services: "Services",
-      technologies: "Technologies",
-      about: "About",
-      contact: "Contact",
+    ejemplos: "Examples",
+    ubicacion: "Quito, Ecuador",
+    privacidad: "Privacy policy",
+    navegacion: "Footer navigation",
+    copyright: "© 2026 AIworks · Quito, Ecuador",
+  },
+  legal: {
+    volver: "Back to home",
+    privacidad: {
+      titulo: "Privacy policy",
+      actualizado: "Last updated: September 28, 2026",
+      intro:
+        "This policy explains which personal data AIworks receives through this website, what it is used for, and how you can exercise your rights under Ecuador's Organic Law on Personal Data Protection (LOPDP).",
+      secciones: [
+        {
+          titulo: "Who is responsible",
+          parrafos: [
+            "AIworks, a software consultancy based in Quito, Ecuador, is responsible for processing the data described here. You can write to us at {correo}.",
+          ],
+        },
+        {
+          titulo: "What data we receive",
+          parrafos: [
+            "This website has no forms or user accounts. We only receive the data you choose to send us when you message us on WhatsApp or by email: your name, your phone number or email address, and the content of your message.",
+            "The website uses no tracking cookies or analytics tools. Your browser stores three local preferences — language, light or dark mode, and whether you dismissed the WhatsApp prompt — which never leave your device and cannot identify you.",
+          ],
+        },
+        {
+          titulo: "What we use it for",
+          parrafos: [
+            "To answer your enquiry, prepare an assessment or a proposal, and follow up on the conversation you started. The legal basis is your consent when you contact us and, if we work together, the performance of the contract.",
+            "We do not sell or share your data with third parties. We do not use it to send you advertising you did not ask for.",
+          ],
+        },
+        {
+          titulo: "Where it is kept and for how long",
+          parrafos: [
+            "Messages stay in the services you chose to contact us through (Meta's WhatsApp or our email provider), which may process data outside Ecuador. We keep the conversation for as long as the business relationship lasts or until you ask us to delete it.",
+          ],
+        },
+        {
+          titulo: "Your rights",
+          parrafos: [
+            "At any time you can ask to access your data, correct it, delete it, object to its processing, or receive it in a portable format. Write to us at {correo} and we will reply within 15 days at most.",
+            "If you believe we did not handle your request properly, you can contact Ecuador's Superintendency of Personal Data Protection.",
+          ],
+        },
+        {
+          titulo: "Changes to this policy",
+          parrafos: [
+            "If this policy changes, we will publish the new version on this same page with its update date.",
+          ],
+        },
+      ],
     },
-    legal: {
-      title: "Legal",
-      privacy: "Privacy Policy",
-      terms: "Terms and Conditions",
-    },
-    copyright: "© 2026 AIworks. All rights reserved.",
   },
 } as const;

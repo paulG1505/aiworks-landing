@@ -3,46 +3,22 @@ import { SITE_URL } from '@/shared/constants/site';
 
 export const dynamic = 'force-static';
 
+/**
+ * Las anclas tienen que coincidir con los id que la página renderiza de verdad.
+ * Antes del rediseño apuntaban a #servicios, #tecnologias y #proyectos, secciones
+ * que ya no existen: eran 404 internos que el sitemap le declaraba a Google.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE_URL;
-  const currentDate = new Date();
+  const lastModified = new Date('2026-09-28');
 
   return [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 1.0,
-    },
-    {
-      url: `${baseUrl}/#servicios`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#tecnologias`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#proyectos`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#proceso`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#contacto`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+    { url: SITE_URL, lastModified, changeFrequency: 'monthly', priority: 1.0 },
+    { url: `${SITE_URL}/#servicios`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${SITE_URL}/#procesos`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${SITE_URL}/#proceso`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/#porque`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${SITE_URL}/#preguntas`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${SITE_URL}/#contacto`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${SITE_URL}/privacidad`, lastModified, changeFrequency: 'yearly', priority: 0.3 },
   ];
 }

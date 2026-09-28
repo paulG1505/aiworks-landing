@@ -3,32 +3,41 @@
 import { useLanguageStore } from '@/shared/store/useLanguageStore';
 import type { Locale } from '@/shared/lib/i18n/translations';
 
+const LANGUAGES: { code: Locale; label: string; nombre: string }[] = [
+  { code: 'es', label: 'ES', nombre: 'Español' },
+  { code: 'en', label: 'EN', nombre: 'English' },
+];
+
+/** Control segmentado ES / EN. Toma los colores de contexto, así sirve en claro y oscuro. */
 export function LanguageSelector() {
   const { locale, setLocale } = useLanguageStore();
 
-  const languages: { code: Locale; label: string }[] = [
-    { code: 'en', label: 'EN' },
-    { code: 'es', label: 'ES' },
-  ];
-
   return (
-    <div className="flex items-center gap-2">
-      {languages.map((lang) => (
-        <button
-          key={lang.code}
-          onClick={() => setLocale(lang.code)}
-          className={`
-            px-3 py-1.5 rounded-md text-sm font-semibold transition-all
-            ${
-              locale === lang.code
-                ? 'bg-blue-600 text-white'
-                : 'bg-white/10 text-gray-300 hover:bg-white/20'
+    <div
+      role="group"
+      aria-label={locale === 'en' ? 'Language' : 'Idioma'}
+      className="flex w-fit rounded-full border border-[var(--c-regla)] font-mono text-[0.8125rem] font-medium"
+    >
+      {LANGUAGES.map((lang) => {
+        const activo = locale === lang.code;
+        return (
+          <button
+            key={lang.code}
+            type="button"
+            lang={lang.code}
+            onClick={() => setLocale(lang.code)}
+            aria-pressed={activo}
+            aria-label={lang.nombre}
+            className={
+              activo
+                ? 'cursor-pointer rounded-full bg-[var(--c-texto)] px-2.5 py-[7px] leading-none text-[var(--c-fondo)]'
+                : 'cursor-pointer rounded-full px-2.5 py-[7px] leading-none text-[var(--c-media)] transition-colors duration-150 hover:text-[var(--c-texto)]'
             }
-          `}
-        >
-          {lang.label}
-        </button>
-      ))}
+          >
+            {lang.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
