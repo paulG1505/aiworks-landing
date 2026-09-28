@@ -3,6 +3,7 @@
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
+import { SelectorTema } from '@/shared/components/layout/SelectorTema';
 import { useUIStore } from '@/shared/store/useUIStore';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
@@ -59,8 +60,9 @@ export function Header() {
                 ))}
               </ul>
 
-              <div className="flex items-center gap-3 lg:gap-7">
+              <div className="flex items-center gap-2.5 lg:gap-4">
                 <LanguageSelector />
+                <SelectorTema />
                 <a
                   href={whatsappUrl}
                   target="_blank"

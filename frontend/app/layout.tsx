@@ -6,6 +6,7 @@ import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
 import { SITE_URL } from "@/shared/constants/site";
+import { CLAVE_TEMA } from "@/shared/lib/tema";
 import "./globals.css";
 
 // Tres voces, una por función: Bricolage Grotesque para titulares, Geist para cuerpo y
@@ -89,6 +90,8 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
+const SCRIPT_INICIAL = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${CLAVE_TEMA}')}catch(e){}if(t!=='claro'&&t!=='oscuro'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'}d.setAttribute('data-tema',t)})()`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -98,10 +101,13 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning className={`${titular.variable} ${sans.variable} ${mono.variable}`}>
       <head>
         {/*
-          * Marca que hay JavaScript antes del primer pintado. Los revelados al hacer scroll
-          * solo ocultan contenido bajo `html.js`: sin JS, o si el script falla, todo se ve.
+          * Antes del primer pintado:
+          * 1. Marca que hay JavaScript. Los revelados al hacer scroll solo ocultan contenido
+          *    bajo `html.js`: sin JS, o si el script falla, todo se ve.
+          * 2. Resuelve el tema (elección guardada o, si no hay, la del sistema) para que
+          *    la página no parpadee en claro antes de pasar a oscuro.
           */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_INICIAL }} />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
       <body className="antialiased font-sans">

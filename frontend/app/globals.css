@@ -24,6 +24,7 @@
   --regla: #DDD9D0;
   --regla-arena: #CFCAC0;
   --marca: #0B6571;
+  --arena-hover: #E6E3DC;
 
   /* Oscuros: bandas de "Cómo trabajamos" y del cierre */
   --noche: #171513;
@@ -56,11 +57,58 @@
   --term-ok: #8CC7A1;
   --term-revision: #E6C07B;
 
+  --term-anillo: rgb(0 0 0 / 0.08);
+
   /* Movimiento */
   --curva: cubic-bezier(0.16, 1, 0.3, 1);
 
   --background: var(--papel);
   --foreground: var(--tinta);
+  color-scheme: light;
+}
+
+/*
+ * Modo oscuro. El tema resuelto vive en <html data-tema>: lo pone un script en el <head>
+ * antes del primer pintado (elección guardada o, si no hay, la del sistema) y lo cambia
+ * el botón del header. Sin JS no hay atributo y decide solo el sistema (bloque @media).
+ *
+ * En oscuro, las bandas "noche" pasan a ser una superficie un poco MÁS clara que la
+ * página, para que el ritmo claro/oscuro entre secciones no se pierda.
+ *
+ * Contraste en oscuro: tinta / papel 15.6 · tinta-media / papel 7.4 · tinta-media /
+ * arena 6.9 · marca / papel 9.1 · marca / arena 8.5 · hueso-medio / noche 6.2
+ */
+html[data-tema="oscuro"] {
+  --papel: #121110;
+  --arena: #1A1916;
+  --arena-hover: #221F1B;
+  --tinta: #EEE9E0;
+  --tinta-media: #A7A197;
+  --regla: #2E2B27;
+  --regla-arena: #34302B;
+  --marca: #5CC3CC;
+  --noche: #221F1C;
+  --regla-noche: #36322D;
+  --pista-noche: #403B35;
+  --term-anillo: rgb(255 255 255 / 0.1);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema]) {
+    --papel: #121110;
+    --arena: #1A1916;
+    --arena-hover: #221F1B;
+    --tinta: #EEE9E0;
+    --tinta-media: #A7A197;
+    --regla: #2E2B27;
+    --regla-arena: #34302B;
+    --marca: #5CC3CC;
+    --noche: #221F1C;
+    --regla-noche: #36322D;
+    --pista-noche: #403B35;
+    --term-anillo: rgb(255 255 255 / 0.1);
+    color-scheme: dark;
+  }
 }
 
 @theme inline {
@@ -274,7 +322,7 @@ section[id] {
   color: var(--papel);
 }
 .accion-primaria:hover {
-  background: #000;
+  background: color-mix(in srgb, var(--tinta) 82%, var(--papel));
 }
 .oscuro .accion-primaria {
   background: var(--hueso);
@@ -402,7 +450,7 @@ section[id] {
     transition-delay: var(--d, 0ms), var(--d, 0ms), 0ms;
   }
   .tarjeta-ejemplo:hover {
-    background-color: #E6E3DC;
+    background-color: var(--arena-hover);
   }
 
   /* Revelados al hacer scroll: transición desde el estado oculto al entrar data-visible. */
@@ -459,7 +507,7 @@ section[id] {
 
 /* Terminal: sombra que la separa del fondo, en claro y en oscuro. */
 .terminal {
-  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 28px 56px -28px rgb(0 0 0 / 0.5);
+  box-shadow: 0 0 0 1px var(--term-anillo), 0 28px 56px -28px rgb(0 0 0 / 0.5);
 }
 
 /* Filete de fila: pseudo-elemento para poder dibujarlo sin mover el layout. */
