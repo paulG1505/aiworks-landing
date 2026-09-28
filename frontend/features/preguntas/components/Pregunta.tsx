@@ -38,7 +38,7 @@ export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: P
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((prev) => !prev)}
-          className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-serif text-[1.5rem] leading-[1.2] text-tinta sm:py-[26px] lg:text-[1.875rem]"
+          className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-titular text-[1.25rem] font-medium leading-[1.25] tracking-[-0.015em] text-tinta sm:py-[26px] lg:text-[1.5rem]"
         >
           <span>{pregunta}</span>
           <span aria-hidden="true" className="relative size-4 shrink-0">

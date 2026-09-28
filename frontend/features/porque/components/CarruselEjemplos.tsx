@@ -78,8 +78,8 @@ export function CarruselEjemplos({ titulo, anterior, siguiente, hoyLabel, conIaL
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex items-end justify-between gap-6">
-        <h3 className="text-[1.75rem] leading-[1.1] lg:text-[2.25rem]">{titulo}</h3>
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+        <h3 className="text-[1.625rem] leading-[1.1] lg:text-[2rem]">{titulo}</h3>
 
         <div className="flex shrink-0 items-center gap-3">
           <span className="tabular hidden text-sm text-tinta-media sm:inline" aria-live="polite">
@@ -122,7 +122,7 @@ export function CarruselEjemplos({ titulo, anterior, siguiente, hoyLabel, conIaL
               <span>{item.area}</span>
               <span className="tabular">{String(index + 1).padStart(2, '0')}</span>
             </span>
-            <h4 className="font-serif text-[1.625rem] leading-[1.15] lg:text-[1.875rem]">{item.titulo}</h4>
+            <h4 className="font-titular text-[1.375rem] font-semibold leading-[1.2] tracking-[-0.02em] lg:text-[1.5rem]">{item.titulo}</h4>
             <dl className="mt-auto grid grid-cols-1 gap-y-1 text-base leading-normal sm:grid-cols-[72px_minmax(0,1fr)] sm:gap-x-3 sm:gap-y-3">
               <dt className="font-mono text-xs font-medium uppercase leading-[2] text-tinta-media">{hoyLabel}</dt>
               <dd className="mb-3 text-tinta-media sm:mb-0">{item.hoy}</dd>

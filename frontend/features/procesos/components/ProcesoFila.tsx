@@ -35,7 +35,7 @@ export function ProcesoFila({ indice, numero, titulo, hoy, resuelve, ctaLabel, l
         {numero}
       </span>
 
-      <h3 className="revelar titular-3 md:text-[2rem] md:leading-[1.1]" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
+      <h3 className="revelar titular-3" style={{ '--d': `${retardo + 100}ms` } as React.CSSProperties}>
         {titulo}
       </h3>
 

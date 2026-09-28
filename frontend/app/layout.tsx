@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
@@ -8,14 +8,15 @@ import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
 import { SITE_URL } from "@/shared/constants/site";
 import "./globals.css";
 
-// Tres voces, una por función: serif para titulares, sans para cuerpo y UI, mono para
-// eyebrows y el registro operativo. next/font las sirve desde el propio dominio (sin
-// petición a Google en el navegador) y reserva su métrica para evitar saltos de layout.
-const serif = Instrument_Serif({
+// Tres voces, una por función: Bricolage Grotesque para titulares, Geist para cuerpo y
+// UI, Geist Mono para eyebrows y el registro operativo. next/font las sirve desde el
+// propio dominio (sin petición a Google en el navegador) y reserva su métrica para evitar
+// saltos de layout. Bricolage es variable: se carga el eje de tamaño óptico (opsz), que
+// abre el espaciado en tamaños chicos y lo cierra en el titular grande.
+const titular = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--fuente-serif",
+  axes: ["opsz"],
+  variable: "--fuente-titular",
   display: "swap",
 });
 const sans = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
@@ -94,7 +95,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${titular.variable} ${sans.variable} ${mono.variable}`}>
       <head>
         {/*
           * Marca que hay JavaScript antes del primer pintado. Los revelados al hacer scroll

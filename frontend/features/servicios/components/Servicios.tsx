@@ -52,7 +52,7 @@ export function Servicios() {
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </div>
-                <h3 className="text-[1.75rem] leading-[1.1] lg:text-[2.125rem]">{item.titulo}</h3>
+                <h3 className="text-[1.5rem] leading-[1.15] lg:text-[1.875rem]">{item.titulo}</h3>
                 <p className="text-tinta-media">{item.descripcion}</p>
                 <p className="border-l-2 border-marca pl-4 text-[0.9375rem] lg:text-base">
                   <span className="font-medium">{t.servicios.ejemploLabel}: </span>

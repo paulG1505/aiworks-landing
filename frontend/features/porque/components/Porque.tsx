@@ -30,13 +30,13 @@ export function Porque() {
               className="revelar flex flex-col gap-3 border-t border-tinta pt-5"
               style={{ '--d': `${index * 90}ms` } as Retardo}
             >
-              <h3 className="text-[1.625rem] leading-[1.15] lg:text-[1.875rem]">{item.titulo}</h3>
+              <h3 className="text-[1.375rem] leading-[1.2] lg:text-[1.625rem]">{item.titulo}</h3>
               <p className="text-tinta-media">{item.descripcion}</p>
             </li>
           ))}
         </ul>
 
-        <div {...ejemplos} className="mt-24 lg:mt-32">
+        <div {...ejemplos} id="ejemplos" className="mt-24 scroll-mt-24 lg:mt-32">
           <CarruselEjemplos
             titulo={t.porque.casos.titulo}
             anterior={t.porque.casos.anterior}

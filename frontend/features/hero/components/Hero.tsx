@@ -2,7 +2,7 @@
 
 import { Container } from '@/shared/components/ui/Container';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { CONTACT_INFO } from '@/shared/constants';
+import { ArrowRight } from 'lucide-react';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
 import { RegistroOperativo } from './RegistroOperativo';
 
@@ -32,7 +32,7 @@ export function Hero() {
             <span className="linea-mascara entrada-mascara">
               <span className="linea text-tinta-media" style={retardo(100)}>
                 {categoria.antes}
-                <i className="clave">{categoria.clave}</i>
+                <span className="clave">{categoria.clave}</span>
                 {categoria.despues}
               </span>
             </span>
@@ -57,10 +57,14 @@ export function Hero() {
                 {t.hero.cta.primary}
               </a>
               <a
-                href={`mailto:${CONTACT_INFO.email}`}
-                className="enlace self-center p-2 text-base font-medium sm:self-auto sm:p-0 sm:text-[1.0625rem]"
+                href="#ejemplos"
+                className="group inline-flex items-center gap-2 self-center p-2 text-base font-medium text-tinta sm:self-auto sm:p-0 sm:text-[1.0625rem]"
               >
-                {t.hero.cta.correo}
+                <span className="enlace">{t.hero.cta.ejemplos}</span>
+                <ArrowRight
+                  className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
               </a>
             </div>
 

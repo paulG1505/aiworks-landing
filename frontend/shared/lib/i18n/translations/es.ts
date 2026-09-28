@@ -21,7 +21,7 @@ export const es = {
     trayectoria: "Más de 7 años resolviendo procesos.",
     cta: {
       primary: "Escribir por WhatsApp",
-      correo: "o por correo",
+      ejemplos: "Ver ejemplos",
     },
   },
   registro: {

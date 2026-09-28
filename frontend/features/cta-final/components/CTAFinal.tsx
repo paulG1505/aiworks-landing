@@ -34,7 +34,7 @@ export function CTAFinal() {
             </span>
           </p>
 
-          <h2 className="max-w-[14ch] text-[clamp(2.625rem,1.4rem+5vw,5rem)] leading-[0.98] tracking-[-0.015em]">
+          <h2 className="max-w-[16ch] text-[clamp(2.25rem,1.3rem+3.8vw,4rem)] leading-[1.02] tracking-[-0.03em]">
             <span className="linea-mascara revelar-mascara">
               <span className="linea" style={retardo(400)}>
                 {t.cta.titulo.antes}

@@ -19,7 +19,7 @@ export const en = {
     trayectoria: "Over 7 years solving processes.",
     cta: {
       primary: "Message us on WhatsApp",
-      correo: "or by email",
+      ejemplos: "See examples",
     },
   },
   registro: {

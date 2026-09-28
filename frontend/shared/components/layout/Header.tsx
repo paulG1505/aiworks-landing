@@ -103,7 +103,7 @@ export function Header() {
                       e.preventDefault();
                       handleNavClick(link.href);
                     }}
-                    className="block py-3 font-serif text-2xl text-tinta"
+                    className="block py-3 font-titular text-2xl font-semibold tracking-[-0.02em] text-tinta"
                   >
                     {link.label}
                   </a>

@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 /*
- * Sistema visual de AIworks — dirección visual v1 (sep 2026).
+ * Sistema visual de AIworks — v2 (sep 2026).
  *
- * Minimalismo editorial: una columna, bloques autocontenidos, el vacío como material.
- * Neutro cálido sin gradientes y un solo acento (terracota), reservado para la palabra
- * clave en cursiva de cada titular, los enlaces, el foco y el marcador del eyebrow.
- * Nunca como fondo de texto.
+ * Minimalismo editorial con voz de software: una columna, bloques autocontenidos y el
+ * vacío como material. Neutro claro sin gradientes y un solo acento (petróleo),
+ * reservado para la palabra clave de cada titular, los enlaces, el foco y los íconos de
+ * servicio. Nunca como fondo de texto. La única excepción es el verde de WhatsApp en su
+ * botón flotante: es la marca de ese canal.
  *
  * Contraste (WCAG 2.x, calculado sobre estos valores):
- *   tinta / papel 15.9 · tinta-media / papel 6.6 · tinta-media / arena 5.9
- *   marca / papel 5.6 · marca / arena 5.0
+ *   tinta / papel 16.2 · tinta-media / papel 6.6 · tinta-media / arena 6.0
+ *   marca / papel 6.2 · marca / arena 5.7
  *   hueso / noche 15.1 · hueso-medio / noche 6.9 · hueso-tenue / noche 10.2
- *   marca-clara / noche 7.9
- * La terracota normal sobre noche da 2.96:1: en bloques oscuros se usa marca-clara.
+ *   marca-clara / noche 8.8
  */
 :root {
   /* Claros */
-  --papel: #F6F3EE;
-  --arena: #ECE6DC;
+  --papel: #F7F6F3;
+  --arena: #EEECE6;
   --tinta: #1B1916;
-  --tinta-media: #5C554B;
-  --regla: #D8D0C3;
-  --regla-arena: #C9C0B2;
-  --marca: #9C4A22;
+  --tinta-media: #5C5850;
+  --regla: #DDD9D0;
+  --regla-arena: #CFCAC0;
+  --marca: #0B6571;
 
   /* Oscuros: bandas de "Cómo trabajamos" y del cierre */
   --noche: #171513;
@@ -32,7 +32,7 @@
   --hueso-medio: #A69E92;
   --regla-noche: #2E2A25;
   --pista-noche: #3A352F;
-  --marca-clara: #E39A72;
+  --marca-clara: #5CC3CC;
 
   /*
    * Colores "de contexto". Los componentes usan estos, y un bloque oscuro solo tiene que
@@ -75,7 +75,7 @@
   --color-noche: var(--noche);
   --color-hueso: var(--hueso);
   --color-hueso-medio: var(--hueso-medio);
-  --font-serif: var(--fuente-serif), Georgia, serif;
+  --font-titular: var(--fuente-titular), var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--fuente-mono), ui-monospace, monospace;
 }
@@ -127,39 +127,42 @@ body {
 @layer components {
 /* ---------------------------------------------------------------- Tipografía */
 
-/* Titulares en serif 400; nunca negrita. */
+/* Titulares en Bricolage Grotesque 600, con el tracking cerrado que pide una grotesca
+   en tamaño grande. */
 h1, h2, h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-family: var(--font-titular);
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
-/* display: 88 / 0.96 en escritorio → 42 / 1.0 a 320–414px */
+/* display: 72 / 1.0 en escritorio → 38 / 1.05 a 320–414px. Bricolage es más ancha que
+   la serif condensada anterior, por eso la escala baja respecto de la v1 (88 / 60). */
 .titular-display {
-  font-size: clamp(2.625rem, 1.2rem + 6vw, 5.5rem);
-  line-height: 1;
-  letter-spacing: -0.015em;
-}
-/* h2: 60 / 1.0 → 36 / 1.05 */
-.titular {
-  font-size: clamp(2.25rem, 1.25rem + 3.6vw, 3.75rem);
+  font-size: clamp(2.375rem, 1.3rem + 4.6vw, 4.5rem);
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.03em;
 }
-/* h3: 30 / 1.15 → 24 / 1.2 */
+/* h2: 52 / 1.02 → 32 / 1.08 */
+.titular {
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+/* h3: 26 / 1.2 → 22 / 1.25 */
 .titular-3 {
-  font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
-  line-height: 1.2;
+  font-size: clamp(1.375rem, 1.15rem + 0.8vw, 1.625rem);
+  line-height: 1.25;
 }
 @media (min-width: 1024px) {
-  .titular-display { line-height: 0.96; }
-  .titular { line-height: 1; }
-  .titular-3 { line-height: 1.15; }
+  .titular-display { line-height: 1; }
+  .titular { line-height: 1.02; }
+  .titular-3 { line-height: 1.2; }
 }
 
-/* La palabra clave: cursiva y acento. Una por titular. */
+/* La palabra clave: el acento. Una por titular. Bricolage no tiene cursiva real, así
+   que se marca solo con color (una cursiva sintética deformaría las letras). */
 .clave {
-  font-style: italic;
   color: var(--c-clave);
 }
 
@@ -399,7 +402,7 @@ section[id] {
     transition-delay: var(--d, 0ms), var(--d, 0ms), 0ms;
   }
   .tarjeta-ejemplo:hover {
-    background-color: #E5DED2;
+    background-color: #E6E3DC;
   }
 
   /* Revelados al hacer scroll: transición desde el estado oculto al entrar data-visible. */
