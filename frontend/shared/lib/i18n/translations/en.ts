@@ -257,7 +257,67 @@ export const en = {
     cerrar: "Dismiss",
   },
   footer: {
+    descripcion: "AI software consultancy for small and mid-sized businesses. Quito, Ecuador.",
+    columnas: {
+      servicios: "Services",
+      empresa: "Company",
+      contacto: "Contact",
+      legal: "Legal",
+    },
+    ejemplos: "Examples",
+    ubicacion: "Quito, Ecuador",
+    privacidad: "Privacy policy",
     navegacion: "Footer navigation",
     copyright: "© 2026 AIworks · Quito, Ecuador",
+  },
+  legal: {
+    volver: "Back to home",
+    privacidad: {
+      titulo: "Privacy policy",
+      actualizado: "Last updated: September 28, 2026",
+      intro:
+        "This policy explains which personal data AIworks receives through this website, what it is used for, and how you can exercise your rights under Ecuador's Organic Law on Personal Data Protection (LOPDP).",
+      secciones: [
+        {
+          titulo: "Who is responsible",
+          parrafos: [
+            "AIworks, a software consultancy based in Quito, Ecuador, is responsible for processing the data described here. You can write to us at {correo}.",
+          ],
+        },
+        {
+          titulo: "What data we receive",
+          parrafos: [
+            "This website has no forms or user accounts. We only receive the data you choose to send us when you message us on WhatsApp or by email: your name, your phone number or email address, and the content of your message.",
+            "The website uses no tracking cookies or analytics tools. Your browser stores three local preferences — language, light or dark mode, and whether you dismissed the WhatsApp prompt — which never leave your device and cannot identify you.",
+          ],
+        },
+        {
+          titulo: "What we use it for",
+          parrafos: [
+            "To answer your enquiry, prepare an assessment or a proposal, and follow up on the conversation you started. The legal basis is your consent when you contact us and, if we work together, the performance of the contract.",
+            "We do not sell or share your data with third parties. We do not use it to send you advertising you did not ask for.",
+          ],
+        },
+        {
+          titulo: "Where it is kept and for how long",
+          parrafos: [
+            "Messages stay in the services you chose to contact us through (Meta's WhatsApp or our email provider), which may process data outside Ecuador. We keep the conversation for as long as the business relationship lasts or until you ask us to delete it.",
+          ],
+        },
+        {
+          titulo: "Your rights",
+          parrafos: [
+            "At any time you can ask to access your data, correct it, delete it, object to its processing, or receive it in a portable format. Write to us at {correo} and we will reply within 15 days at most.",
+            "If you believe we did not handle your request properly, you can contact Ecuador's Superintendency of Personal Data Protection.",
+          ],
+        },
+        {
+          titulo: "Changes to this policy",
+          parrafos: [
+            "If this policy changes, we will publish the new version on this same page with its update date.",
+          ],
+        },
+      ],
+    },
   },
 } as const;

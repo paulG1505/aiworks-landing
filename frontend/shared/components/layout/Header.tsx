@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
@@ -16,16 +17,21 @@ export function Header() {
   const { t, locale } = useTranslation();
 
   const navLinks = [
-    { label: t.header.nav.servicios, href: '#servicios' },
-    { label: t.header.nav.procesos, href: '#procesos' },
-    { label: t.header.nav.proceso, href: '#proceso' },
-    { label: t.header.nav.porque, href: '#porque' },
-    { label: t.header.nav.preguntas, href: '#preguntas' },
+    { label: t.header.nav.servicios, href: '/#servicios' },
+    { label: t.header.nav.procesos, href: '/#procesos' },
+    { label: t.header.nav.proceso, href: '/#proceso' },
+    { label: t.header.nav.porque, href: '/#porque' },
+    { label: t.header.nav.preguntas, href: '/#preguntas' },
   ];
 
-  const handleNavClick = (href: string) => {
+  // Los enlaces apuntan a "/#seccion" para que también funcionen desde otras rutas
+  // (p. ej. /privacidad). Si la sección está en esta página, se desplaza suave sin recargar.
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     closeMenu();
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    const destino = document.getElementById(href.split('#')[1] ?? '');
+    if (!destino) return;
+    e.preventDefault();
+    destino.scrollIntoView({ behavior: 'smooth' });
   };
 
   // El export estático no tiene backend: el CTA del header lleva directo a WhatsApp.
@@ -38,9 +44,9 @@ export function Header() {
         <nav aria-label={locale === 'en' ? 'Main' : 'Principal'} className="py-3.5 lg:py-[18px]">
           <div className="flex items-center justify-between gap-4">
             {/* Wordmark tipográfico: placeholder hasta que exista un logo. */}
-            <a href="#" className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]">
+            <Link href="/" className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]">
               {t.header.logo}
-            </a>
+            </Link>
 
             <div className="flex items-center gap-7">
               <ul className="hidden items-center gap-7 text-[0.9375rem] lg:flex">
@@ -48,10 +54,7 @@ export function Header() {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNavClick(link.href);
-                      }}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className="text-tinta transition-colors duration-150 hover:text-marca"
                     >
                       {link.label}
@@ -101,10 +104,7 @@ export function Header() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleNavClick(link.href);
-                    }}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className="block py-3 font-titular text-2xl font-semibold tracking-[-0.02em] text-tinta"
                   >
                     {link.label}

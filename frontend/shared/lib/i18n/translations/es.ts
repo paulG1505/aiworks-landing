@@ -262,7 +262,67 @@ export const es = {
     cerrar: "Cerrar aviso",
   },
   footer: {
+    descripcion: "Consultora de software con inteligencia artificial para PYMEs. Quito, Ecuador.",
+    columnas: {
+      servicios: "Servicios",
+      empresa: "La empresa",
+      contacto: "Contacto",
+      legal: "Legal",
+    },
+    ejemplos: "Ejemplos",
+    ubicacion: "Quito, Ecuador",
+    privacidad: "Política de privacidad",
     navegacion: "Navegación del pie",
     copyright: "© 2026 AIworks · Quito, Ecuador",
+  },
+  legal: {
+    volver: "Volver al inicio",
+    privacidad: {
+      titulo: "Política de privacidad",
+      actualizado: "Última actualización: 28 de septiembre de 2026",
+      intro:
+        "Esta política explica qué datos personales recibe AIworks a través de este sitio, para qué los usa y cómo puede ejercer sus derechos según la Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP).",
+      secciones: [
+        {
+          titulo: "Quién es responsable",
+          parrafos: [
+            "AIworks, consultora de software con sede en Quito, Ecuador, es responsable del tratamiento de los datos descritos aquí. Puede escribirnos a {correo}.",
+          ],
+        },
+        {
+          titulo: "Qué datos recibimos",
+          parrafos: [
+            "Este sitio no tiene formularios ni cuentas de usuario. Solo recibimos los datos que usted decide enviarnos al escribirnos por WhatsApp o por correo: su nombre, su número o su dirección de correo, y el contenido de su mensaje.",
+            "El sitio no usa cookies de seguimiento ni herramientas de analítica. Su navegador guarda tres preferencias locales —idioma, modo claro u oscuro y si cerró el aviso de WhatsApp— que no salen de su dispositivo ni sirven para identificarle.",
+          ],
+        },
+        {
+          titulo: "Para qué los usamos",
+          parrafos: [
+            "Para responder su consulta, preparar un diagnóstico o una propuesta, y dar seguimiento a la conversación que usted inició. La base legal es su consentimiento al contactarnos y, si llegamos a trabajar juntos, la ejecución del contrato.",
+            "No vendemos ni cedemos sus datos a terceros. No los usamos para enviarle publicidad que no haya pedido.",
+          ],
+        },
+        {
+          titulo: "Dónde se guardan y por cuánto tiempo",
+          parrafos: [
+            "Los mensajes quedan en los servicios que usted eligió para escribirnos (WhatsApp de Meta o nuestro proveedor de correo), que pueden procesar datos fuera del Ecuador. Conservamos la conversación mientras dure la relación comercial o hasta que usted pida su eliminación.",
+          ],
+        },
+        {
+          titulo: "Sus derechos",
+          parrafos: [
+            "Puede pedir en cualquier momento acceder a sus datos, corregirlos, eliminarlos, oponerse a su tratamiento o recibirlos en un formato portable. Escríbanos a {correo} y le responderemos en un plazo máximo de 15 días.",
+            "Si considera que no atendimos su solicitud, puede acudir a la Superintendencia de Protección de Datos Personales del Ecuador.",
+          ],
+        },
+        {
+          titulo: "Cambios a esta política",
+          parrafos: [
+            "Si esta política cambia, publicaremos la nueva versión en esta misma página con su fecha de actualización.",
+          ],
+        },
+      ],
+    },
   },
 } as const;

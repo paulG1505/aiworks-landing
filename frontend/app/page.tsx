@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 // Direct import for above-the-fold content (bundle-barrel-imports)
 import { Hero } from '@/features/hero/components/Hero';
+import { ScrollAlAncla } from '@/shared/components/providers/ScrollAlAncla';
 
 // Dynamic imports for below-the-fold sections (bundle-dynamic-imports)
 // No placeholder here: a min-h-[400px] box reserves blank space and causes
@@ -38,6 +39,7 @@ const CTAFinal = dynamic(
 export default function Home() {
   return (
     <>
+      <ScrollAlAncla />
       <Hero />
       <Servicios />
       <Procesos />
