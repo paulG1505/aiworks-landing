@@ -26,8 +26,10 @@ const mono = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  // En la pestaña solo el nombre. El título descriptivo queda en openGraph/twitter, que es
+  // lo que se ve al compartir el enlace; las demás rutas usan "%s | AIworks".
   title: {
-    default: "AIworks | Automatización de procesos con IA en Quito",
+    default: "AIworks",
     template: "%s | AIworks"
   },
   description: "Su equipo copia datos de un Excel a otro. Construimos el software que hace ese trabajo solo, con revisión humana y registro auditable de cada decisión. Diagnóstico de 15 minutos sin costo.",
@@ -63,7 +65,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "AIworks — No vendemos software, resolvemos ineficiencia. Quito, Ecuador."
+        alt: "AIworks: software con inteligencia artificial, hecho para el trabajo que su equipo hoy hace a mano. Quito, Ecuador."
       }
     ],
   },
