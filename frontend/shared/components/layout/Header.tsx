@@ -15,11 +15,11 @@ export function Header() {
   const { t, locale } = useTranslation();
 
   const navLinks = [
+    { label: t.header.nav.servicios, href: '#servicios' },
     { label: t.header.nav.procesos, href: '#procesos' },
     { label: t.header.nav.proceso, href: '#proceso' },
     { label: t.header.nav.porque, href: '#porque' },
     { label: t.header.nav.preguntas, href: '#preguntas' },
-    { label: t.header.nav.contacto, href: '#contacto' },
   ];
 
   const handleNavClick = (href: string) => {

@@ -5,6 +5,11 @@ import { Hero } from '@/features/hero/components/Hero';
 // Dynamic imports for below-the-fold sections (bundle-dynamic-imports)
 // No placeholder here: a min-h-[400px] box reserves blank space and causes
 // a layout shift when the section finally loads.
+const Servicios = dynamic(
+  () => import('@/features/servicios/components/Servicios').then((mod) => ({ default: mod.Servicios })),
+  { loading: () => null }
+);
+
 const Procesos = dynamic(
   () => import('@/features/procesos/components/Procesos').then((mod) => ({ default: mod.Procesos })),
   { loading: () => null }
@@ -34,6 +39,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Servicios />
       <Procesos />
       <Proceso />
       <Porque />

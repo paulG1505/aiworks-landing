@@ -20,7 +20,7 @@ export function Proceso() {
     <section id="proceso" className="oscuro seccion">
       <Container>
         <EncabezadoSeccion
-          numero="02"
+          numero="03"
           eyebrow={t.proceso.eyebrow}
           titulo={t.proceso.titulo}
           intro={t.proceso.subtitle}

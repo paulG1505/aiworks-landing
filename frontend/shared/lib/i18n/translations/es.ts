@@ -2,6 +2,7 @@ export const es = {
   header: {
     logo: "AIworks",
     nav: {
+      servicios: "Servicios",
       procesos: "Procesos",
       proceso: "Cómo trabajamos",
       porque: "Por qué AIworks",
@@ -28,23 +29,62 @@ export const es = {
     etiqueta: "Ejemplo de flujo",
     // Un lead que llega por WhatsApp fuera de horario: se entiende sin contexto técnico y
     // muestra en seis líneas qué hace la IA y dónde entra una persona.
-    mensaje: {
-      canal: "WhatsApp · 21:47",
-      texto: "Hola, ¿tienen el plan para 20 usuarios? Lo necesitamos este mes.",
-    },
+    ventana: "aiworks — lead-whatsapp",
+    comando: "analizar-lead --canal=whatsapp",
     lineas: [
-      { hora: "21:47", tipo: "entrada", etiqueta: "ENTRADA", texto: "Mensaje nuevo por WhatsApp, fuera de horario." },
-      { hora: "21:47", tipo: "ia", etiqueta: "IA", texto: "Intención: compra. Urgencia: alta, lo pide para este mes." },
-      { hora: "21:47", tipo: "ia", etiqueta: "IA", texto: "Cruza con el CRM: cliente nuevo, empresa de 20 personas." },
-      { hora: "21:48", tipo: "sistema", etiqueta: "DECISIÓN", texto: "Responde con el plan y propone una llamada mañana." },
-      { hora: "21:48", tipo: "ia", etiqueta: "REVISIÓN", texto: "Avisa a ventas para que confirme la llamada." },
-      { hora: "21:48", tipo: "sistema", etiqueta: "REGISTRO", texto: "Queda anotado con hora y responsable." },
+      { hora: "21:47", tipo: "entrada", etiqueta: "entrada", texto: "“Hola, ¿tienen el plan para 20 usuarios? Lo necesitamos este mes.”" },
+      { hora: "21:47", tipo: "ia", etiqueta: "ia", texto: "Intención: compra. Urgencia: alta, lo pide para este mes." },
+      { hora: "21:47", tipo: "ia", etiqueta: "ia", texto: "Cruza con el CRM: cliente nuevo, empresa de 20 personas." },
+      { hora: "21:48", tipo: "decision", etiqueta: "decisión", texto: "Responde con el plan y propone una llamada mañana." },
+      { hora: "21:48", tipo: "revision", etiqueta: "revisión", texto: "Avisa a ventas para que confirme la llamada." },
+      { hora: "21:48", tipo: "registro", etiqueta: "registro", texto: "Queda anotado con hora y responsable." },
     ],
     resultado: {
-      label: "Resultado",
+      label: "resultado",
       items: ["Lead prioritario", "Asignado a ventas", "Respondido en 1 minuto"],
     },
     pie: "Cada decisión queda con hora, con responsable y con registro. Eso es lo que hace que una automatización se pueda auditar en lugar de tener que creerle.",
+  },
+  servicios: {
+    eyebrow: "Qué construimos",
+    titulo: { antes: "Software a la medida", clave: "de cómo trabaja su empresa." },
+    subtitle:
+      "Cuatro líneas de trabajo. Todas terminan en software funcionando sobre sus datos, con revisión humana donde importa.",
+    ejemploLabel: "Por ejemplo",
+    items: [
+      {
+        icono: "procesos",
+        titulo: "Automatización de procesos",
+        descripcion:
+          "Conciliaciones, cierres de mes, reportes y cobranza que hoy dependen de copiar y pegar entre sistemas.",
+        ejemplo: "Conciliación bancaria diaria que deja a una persona solo las partidas que no cuadran.",
+        tecnologias: ["Python", "n8n", "PostgreSQL"],
+      },
+      {
+        icono: "chatbots",
+        titulo: "Asistentes y chatbots con IA",
+        descripcion:
+          "Atienden por WhatsApp y en su web con la información real del negocio, pasan a una persona lo que no saben responder y registran cada conversación.",
+        ejemplo: "Un asistente que responde precios y disponibilidad fuera de horario y agenda con ventas.",
+        tecnologias: ["Claude", "OpenAI", "LangChain", "WhatsApp"],
+      },
+      {
+        icono: "documentos",
+        titulo: "Lectura y clasificación de documentos",
+        descripcion:
+          "Facturas, PDF, correos y formularios se leen al llegar y los datos entran una sola vez al sistema.",
+        ejemplo: "Facturas de proveedores registradas sin digitar, con revisión de los montos dudosos.",
+        tecnologias: ["Python", "Claude", "FastAPI"],
+      },
+      {
+        icono: "nube",
+        titulo: "Integración y nube",
+        descripcion:
+          "Conectamos lo que ya usa y desplegamos en su propia nube, Azure o AWS, con la infraestructura escrita como código.",
+        ejemplo: "Todo el entorno definido en Terraform: reproducible, auditable y en su cuenta.",
+        tecnologias: ["Azure", "AWS", "Terraform", "Docker", "GitHub Actions"],
+      },
+    ],
   },
   procesos: {
     eyebrow: "Procesos que se automatizan",
@@ -215,6 +255,11 @@ export const es = {
       "En 15 minutos sabe qué proceso le está costando más y si se puede automatizar. Sin costo ni compromiso.",
     whatsapp: "Hablar por WhatsApp",
     correoLabel: "o escríbanos a",
+  },
+  whatsappFlotante: {
+    titulo: "¿Necesita ayuda?",
+    texto: "Escríbanos por WhatsApp",
+    cerrar: "Cerrar aviso",
   },
   footer: {
     navegacion: "Navegación del pie",

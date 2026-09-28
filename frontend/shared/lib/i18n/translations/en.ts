@@ -2,6 +2,7 @@ export const en = {
   header: {
     logo: "AIworks",
     nav: {
+      servicios: "Services",
       procesos: "Processes",
       proceso: "How we work",
       porque: "Why AIworks",
@@ -24,23 +25,62 @@ export const en = {
   registro: {
     titulo: "Operations log",
     etiqueta: "Sample flow",
-    mensaje: {
-      canal: "WhatsApp · 9:47 pm",
-      texto: "Hi, do you have the plan for 20 users? We need it this month.",
-    },
+    ventana: "aiworks — whatsapp-lead",
+    comando: "analyze-lead --channel=whatsapp",
     lineas: [
-      { hora: "21:47", tipo: "entrada", etiqueta: "INPUT", texto: "New WhatsApp message, after hours." },
-      { hora: "21:47", tipo: "ia", etiqueta: "AI", texto: "Intent: purchase. Urgency: high, needed this month." },
-      { hora: "21:47", tipo: "ia", etiqueta: "AI", texto: "Checks the CRM: new customer, 20-person company." },
-      { hora: "21:48", tipo: "sistema", etiqueta: "DECISION", texto: "Replies with the plan and offers a call tomorrow." },
-      { hora: "21:48", tipo: "ia", etiqueta: "REVIEW", texto: "Alerts sales to confirm the call." },
-      { hora: "21:48", tipo: "sistema", etiqueta: "LOG", texto: "Recorded with its timestamp and owner." },
+      { hora: "21:47", tipo: "entrada", etiqueta: "input", texto: "“Hi, do you have the plan for 20 users? We need it this month.”" },
+      { hora: "21:47", tipo: "ia", etiqueta: "ai", texto: "Intent: purchase. Urgency: high, needed this month." },
+      { hora: "21:47", tipo: "ia", etiqueta: "ai", texto: "Checks the CRM: new customer, 20-person company." },
+      { hora: "21:48", tipo: "decision", etiqueta: "decision", texto: "Replies with the plan and offers a call tomorrow." },
+      { hora: "21:48", tipo: "revision", etiqueta: "review", texto: "Alerts sales to confirm the call." },
+      { hora: "21:48", tipo: "registro", etiqueta: "log", texto: "Recorded with its timestamp and owner." },
     ],
     resultado: {
-      label: "Outcome",
+      label: "outcome",
       items: ["Priority lead", "Assigned to sales", "Answered in 1 minute"],
     },
     pie: "Every decision is stored with its timestamp, its owner and its record. That is what makes an automation auditable instead of something you have to take on trust.",
+  },
+  servicios: {
+    eyebrow: "What we build",
+    titulo: { antes: "Software shaped", clave: "around how your company works." },
+    subtitle:
+      "Four lines of work. All of them end in software running on your data, with human review where it matters.",
+    ejemploLabel: "For example",
+    items: [
+      {
+        icono: "procesos",
+        titulo: "Process automation",
+        descripcion:
+          "Reconciliations, month-end close, reports and collections that today depend on copying and pasting between systems.",
+        ejemplo: "A daily bank reconciliation that leaves a person only the entries that do not add up.",
+        tecnologias: ["Python", "n8n", "PostgreSQL"],
+      },
+      {
+        icono: "chatbots",
+        titulo: "AI assistants and chatbots",
+        descripcion:
+          "They answer on WhatsApp and on your website using your business's real information, hand to a person what they cannot answer, and log every conversation.",
+        ejemplo: "An assistant that answers pricing and availability after hours and books calls with sales.",
+        tecnologias: ["Claude", "OpenAI", "LangChain", "WhatsApp"],
+      },
+      {
+        icono: "documentos",
+        titulo: "Document reading and classification",
+        descripcion:
+          "Invoices, PDFs, emails and forms are read as they arrive and the data is entered into the system once.",
+        ejemplo: "Supplier invoices recorded without typing, with a person reviewing doubtful amounts.",
+        tecnologias: ["Python", "Claude", "FastAPI"],
+      },
+      {
+        icono: "nube",
+        titulo: "Integration and cloud",
+        descripcion:
+          "We connect what you already use and deploy to your own cloud, Azure or AWS, with the infrastructure written as code.",
+        ejemplo: "The whole environment defined in Terraform: reproducible, auditable and in your account.",
+        tecnologias: ["Azure", "AWS", "Terraform", "Docker", "GitHub Actions"],
+      },
+    ],
   },
   procesos: {
     eyebrow: "Processes that can be automated",
@@ -210,6 +250,11 @@ export const en = {
       "In 15 minutes you will know which process is costing you the most and whether it can be automated. No cost, no obligation.",
     whatsapp: "Message us on WhatsApp",
     correoLabel: "or email us at",
+  },
+  whatsappFlotante: {
+    titulo: "Need a hand?",
+    texto: "Message us on WhatsApp",
+    cerrar: "Dismiss",
   },
   footer: {
     navegacion: "Footer navigation",

@@ -19,7 +19,7 @@ export function Preguntas() {
     <section id="preguntas" className="seccion bg-arena [--c-regla:var(--regla-arena)]">
       <Container className="lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
         <EncabezadoSeccion
-          numero="04"
+          numero="05"
           eyebrow={t.preguntas.eyebrow}
           titulo={t.preguntas.titulo}
           className="lg:sticky lg:top-28 lg:self-start"

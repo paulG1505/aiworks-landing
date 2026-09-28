@@ -1,6 +1,7 @@
 import Script from 'next/script';
 import { SITE_URL } from '@/shared/constants/site';
 import { CONTACT_INFO } from '@/shared/constants';
+import { es } from '@/shared/lib/i18n/translations/es';
 
 /**
  * Datos estructurados. Regla que ordena este archivo: **solo se declara lo que la
@@ -42,46 +43,25 @@ export function StructuredData() {
     },
   };
 
-  // Los tres procesos son exactamente los tres que el bloque "Procesos que se
-  // automatizan" desarrolla en la página. Ni uno más.
+  // Las cuatro líneas de servicio son exactamente las del bloque "Qué construimos" de la
+  // página, con el mismo texto que ve el visitante en español. Ni una más.
   const servicio = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    serviceType: 'Automatización de procesos con inteligencia artificial',
+    serviceType: 'Desarrollo de software con inteligencia artificial',
     provider: { '@type': 'Organization', name: 'AIworks', url: SITE_URL },
     areaServed: { '@type': 'Country', name: 'Ecuador' },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Procesos que se automatizan',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Conciliación bancaria automatizada',
-            description:
-              'El sistema lee el extracto, cruza por referencia y monto, y deja en una cola aparte solo las partidas que no cuadran para revisión humana.',
-          },
+      name: 'Qué construimos',
+      itemListElement: es.servicios.items.map((item) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: item.titulo,
+          description: item.descripcion,
         },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Cierre de mes sin digitación',
-            description:
-              'Los documentos que llegan en correos, PDF y hojas de cálculo se leen al llegar y los datos entran una sola vez al sistema.',
-          },
-        },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: 'Atención a clientes fuera de horario',
-            description:
-              'Un asistente responde las consultas repetidas con la información real del negocio y deriva a una persona lo que no puede contestar.',
-          },
-        },
-      ],
+      })),
     },
   };
 

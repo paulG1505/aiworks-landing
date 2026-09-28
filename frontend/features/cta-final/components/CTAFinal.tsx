@@ -30,7 +30,7 @@ export function CTAFinal() {
         <div className="flex flex-col items-start gap-6">
           <p className="eyebrow revelar" style={retardo(300)}>
             <span>
-              <span className="tabular">05</span> — {t.cta.eyebrow}
+              <span className="tabular">06</span> — {t.cta.eyebrow}
             </span>
           </p>
 

@@ -68,6 +68,7 @@ export function CintaTecnologias({ label, pausar, reanudar }: CintaTecnologiasPr
           <svg
             role="img"
             viewBox="0 0 24 24"
+            fillRule={tec.evenodd ? 'evenodd' : undefined}
             className="size-8 fill-current text-hueso opacity-90 transition-opacity duration-150 hover:opacity-100 sm:size-9"
           >
             <title>{tec.nombre}</title>

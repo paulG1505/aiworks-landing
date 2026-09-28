@@ -44,6 +44,18 @@
   --c-regla: var(--regla);
   --c-clave: var(--marca);
 
+  /* Terminal del registro operativo: oscura en ambos temas. */
+  --term-fondo: #12110F;
+  --term-barra: #1D1B18;
+  --term-regla: #2A2723;
+  --term-regla-fuerte: #45403A;
+  --term-texto: #E8E4DC;
+  --term-media: #9A9387;
+  --term-entrada: #9DB4C0;
+  --term-ia: var(--marca-clara);
+  --term-ok: #8CC7A1;
+  --term-revision: #E6C07B;
+
   /* Movimiento */
   --curva: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -367,6 +379,11 @@ section[id] {
     animation-delay: var(--d, 0ms);
   }
 
+  /* Burbuja de WhatsApp: entra desde abajo (fadeInUp). */
+  .wa-burbuja {
+    animation: revelar 500ms var(--curva) both;
+  }
+
   /* FAQ: el texto de la respuesta baja con un fundido mientras el panel se abre. */
   .respuesta-texto {
     transition: opacity 350ms var(--curva) 60ms, transform 350ms var(--curva) 60ms;
@@ -435,6 +452,11 @@ section[id] {
 }
 .carrusel::-webkit-scrollbar {
   display: none;
+}
+
+/* Terminal: sombra que la separa del fondo, en claro y en oscuro. */
+.terminal {
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 28px 56px -28px rgb(0 0 0 / 0.5);
 }
 
 /* Filete de fila: pseudo-elemento para poder dibujarlo sin mover el layout. */

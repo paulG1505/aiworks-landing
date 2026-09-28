@@ -21,7 +21,7 @@ export function Porque() {
   return (
     <section id="porque" className="seccion">
       <Container>
-        <EncabezadoSeccion numero="03" eyebrow={t.porque.eyebrow} titulo={t.porque.titulo} />
+        <EncabezadoSeccion numero="04" eyebrow={t.porque.eyebrow} titulo={t.porque.titulo} />
 
         <ul {...principios} className="mt-14 grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-x-10 md:gap-y-14 lg:mt-[72px]">
           {t.porque.items.map((item, index) => (
