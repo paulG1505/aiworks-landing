@@ -1,13 +1,30 @@
 'use client';
 
+import { useRef } from 'react';
 import Link from 'next/link';
+import { AnimatePresence, m } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
 import { SelectorTema } from '@/shared/components/layout/SelectorTema';
+import { BarraProgreso } from '@/shared/components/layout/BarraProgreso';
 import { useUIStore } from '@/shared/store/useUIStore';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
+
+// Menú móvil: el panel se despliega en altura y los enlaces entran uno tras otro.
+const PANEL = {
+  cerrado: { height: 0, opacity: 0 },
+  abierto: {
+    height: 'auto',
+    opacity: 1,
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1], when: 'beforeChildren', staggerChildren: 0.04 },
+  },
+} as const;
+const ITEM = {
+  cerrado: { opacity: 0, y: -8 },
+  abierto: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } },
+} as const;
 
 export function Header() {
   // Suscripciones selectivas a Zustand para no re-renderizar de más.
@@ -26,12 +43,29 @@ export function Header() {
 
   // Los enlaces apuntan a "/#seccion" para que también funcionen desde otras rutas
   // (p. ej. /privacidad). Si la sección está en esta página, se desplaza suave sin recargar.
+  // Con el menú móvil abierto, el desplazamiento espera a que termine su animación de
+  // salida: si arranca mientras el menú se desmonta, Chrome cancela el scroll suave.
+  const destinoPendiente = useRef<HTMLElement | null>(null);
+  const desplazarA = (destino: HTMLElement) => destino.scrollIntoView({ behavior: 'smooth' });
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    closeMenu();
     const destino = document.getElementById(href.split('#')[1] ?? '');
-    if (!destino) return;
+    if (!destino) {
+      closeMenu();
+      return;
+    }
     e.preventDefault();
-    destino.scrollIntoView({ behavior: 'smooth' });
+    if (isMenuOpen) {
+      destinoPendiente.current = destino;
+      closeMenu();
+    } else {
+      desplazarA(destino);
+    }
+  };
+
+  const alCerrarMenu = () => {
+    if (destinoPendiente.current) desplazarA(destinoPendiente.current);
+    destinoPendiente.current = null;
   };
 
   // El export estático no tiene backend: el CTA del header lleva directo a WhatsApp.
@@ -44,7 +78,10 @@ export function Header() {
         <nav aria-label={locale === 'en' ? 'Main' : 'Principal'} className="py-3.5 lg:py-[18px]">
           <div className="flex items-center justify-between gap-4">
             {/* Wordmark tipográfico: placeholder hasta que exista un logo. */}
-            <Link href="/" className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]">
+            <Link
+              href="/"
+              className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]"
+            >
               {t.header.logo}
             </Link>
 
@@ -55,7 +92,7 @@ export function Header() {
                     <a
                       href={link.href}
                       onClick={(e) => handleNavClick(e, link.href)}
-                      className="text-tinta transition-colors duration-150 hover:text-marca"
+                      className="nav-enlace text-tinta transition-colors duration-150 hover:text-marca"
                     >
                       {link.label}
                     </a>
@@ -84,8 +121,12 @@ export function Header() {
                   aria-controls="menu-movil"
                   aria-label={
                     locale === 'en'
-                      ? isMenuOpen ? 'Close menu' : 'Open menu'
-                      : isMenuOpen ? 'Cerrar menú' : 'Abrir menú'
+                      ? isMenuOpen
+                        ? 'Close menu'
+                        : 'Open menu'
+                      : isMenuOpen
+                        ? 'Cerrar menú'
+                        : 'Abrir menú'
                   }
                 >
                   {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -95,37 +136,50 @@ export function Header() {
           </div>
 
           {/*
-            Accesibilidad: cerrado, el menú sale del árbol con `hidden`, así no queda
-            alcanzable con Tab ni legible para un lector de pantalla.
+            Accesibilidad: cerrado, el menú se desmonta (AnimatePresence lo saca del DOM al
+            terminar la salida), así no queda alcanzable con Tab ni legible para un lector
+            de pantalla.
           */}
-          <div id="menu-movil" hidden={!isMenuOpen} className="lg:hidden">
-            <ul className="mt-4 flex flex-col border-t border-regla pb-2 pt-2">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className="block py-3 font-titular text-2xl font-semibold tracking-[-0.02em] text-tinta"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li className="pt-4">
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={whatsappAriaLabel}
-                  className="accion accion-primaria w-full"
-                >
-                  {t.header.cta}
-                </a>
-              </li>
-            </ul>
-          </div>
+          <AnimatePresence initial={false} onExitComplete={alCerrarMenu}>
+            {isMenuOpen && (
+              <m.div
+                id="menu-movil"
+                className="overflow-hidden lg:hidden"
+                variants={PANEL}
+                initial="cerrado"
+                animate="abierto"
+                exit="cerrado"
+              >
+                <ul className="mt-4 flex flex-col border-t border-regla pb-2 pt-2">
+                  {navLinks.map((link) => (
+                    <m.li key={link.href} variants={ITEM}>
+                      <a
+                        href={link.href}
+                        onClick={(e) => handleNavClick(e, link.href)}
+                        className="block py-3 font-titular text-2xl font-semibold tracking-[-0.02em] text-tinta"
+                      >
+                        {link.label}
+                      </a>
+                    </m.li>
+                  ))}
+                  <m.li variants={ITEM} className="pt-4">
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={whatsappAriaLabel}
+                      className="accion accion-primaria w-full"
+                    >
+                      {t.header.cta}
+                    </a>
+                  </m.li>
+                </ul>
+              </m.div>
+            )}
+          </AnimatePresence>
         </nav>
       </Container>
+      <BarraProgreso />
     </header>
   );
 }

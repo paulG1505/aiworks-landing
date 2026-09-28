@@ -1,7 +1,7 @@
 # Landing Page Project
 
 ## 📋 Project Overview
-Modern landing page built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4 following Screaming Architecture principles.
+Landing de AIworks (consultora de software con IA, Quito) construida con Next.js 16, React 19, TypeScript, Tailwind CSS 4 y Motion, siguiendo Screaming Architecture.
 
 ## 🏗️ Architecture: Screaming Architecture
 
@@ -11,43 +11,36 @@ This project follows **Screaming Architecture** - the folder structure screams w
 
 ```
 frontend/
-├── app/                          # Next.js App Router (infrastructure)
-│   ├── (routes)/                 # Route groups
-│   ├── layout.tsx               # Root layout
-│   └── page.tsx                 # Home page
+├── app/                          # Next.js App Router (infraestructura)
+│   ├── layout.tsx               # Layout raíz: fuentes, script de tema, header/footer
+│   ├── page.tsx                 # Inicio (secciones con next/dynamic)
+│   ├── privacidad/page.tsx      # Política de privacidad (LOPDP)
+│   ├── globals.css              # Tokens, tema claro/oscuro, clases del sistema, movimiento
+│   ├── icon.svg / favicon.ico / apple-icon.png
+│   ├── manifest.ts · sitemap.ts
 │
-├── features/                     # Business features (THE CORE)
-│   ├── hero/                    # Hero section feature
-│   │   ├── components/          # Hero-specific components
-│   │   ├── hooks/              # Hero-specific hooks
-│   │   └── types.ts            # Hero types
-│   │
-│   ├── procesos/                # Procesos que se automatizan (3 filas)
-│   ├── proceso/                 # Cómo trabajamos (3 fases)
-│   ├── porque/                  # Por qué AIworks
-│   ├── preguntas/               # FAQ (acordeón accesible)
-│   └── cta-final/               # Cierre: WhatsApp + correo
+├── features/                     # Bloques de negocio (EL NÚCLEO)
+│   ├── hero/                    # Titular de categoría + terminal del registro operativo
+│   ├── servicios/               # 01 Qué construimos (4 líneas de servicio)
+│   ├── procesos/                # 02 Procesos que se automatizan (3 filas)
+│   ├── proceso/                 # 03 Cómo trabajamos (3 fases + cinta de 15 tecnologías)
+│   ├── porque/                  # 04 Por qué AIworks + carrusel de ejemplos
+│   ├── preguntas/               # 05 FAQ (acordeón accesible)
+│   ├── cta-final/               # 06 Cierre: WhatsApp + correo
+│   └── legal/                   # Página de privacidad
 │
-├── shared/                       # Shared/reusable code
-│   ├── components/              # UI components (Button, Input, Card, etc)
-│   │   ├── ui/                 # Base UI components
-│   │   └── layout/             # Layout components (Header, Footer)
-│   │
-│   ├── hooks/                   # Shared hooks (useMediaQuery, useScroll)
-│   ├── lib/                     # Utilities and helpers
-│   │   ├── utils.ts            # General utilities
-│   │   └── validations.ts      # Form validations
-│   │
-│   ├── types/                   # Shared TypeScript types
-│   └── constants/               # App-wide constants
+├── shared/
+│   ├── components/
+│   │   ├── ui/                 # Container, EncabezadoSeccion, FloatingWhatsApp, LogoWhatsApp
+│   │   ├── layout/             # Header, Footer, LanguageSelector, SelectorTema, BarraProgreso
+│   │   ├── providers/          # StoreRehydrate, ProveedorMovimiento, ScrollAlAncla
+│   │   └── seo/                # StructuredData (JSON-LD)
+│   ├── hooks/                   # useRevelado, useIntersectionObserver, useMediaQuery…
+│   ├── lib/                     # i18n (es/en), tema.ts, whatsapp.ts, utils.ts
+│   ├── store/                   # Zustand: idioma, UI
+│   ├── types/ · constants/
 │
-├── styles/                      # Global styles
-│   └── globals.css             # Tailwind imports & global CSS
-│
-└── public/                      # Static assets
-    ├── images/
-    ├── icons/
-    └── fonts/
+└── public/                      # CNAME, og-image, íconos del manifest, robots.txt
 ```
 
 ## 🎯 Key Principles
@@ -74,45 +67,66 @@ frontend/
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
+- **Framework**: Next.js 16 (App Router), export estático (`output: "export"`) a GitHub Pages
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS 4
+- **Styling**: Tailwind CSS 4 + tokens propios en `app/globals.css`
+- **Animación**: Motion (`motion/react`), cargado con `LazyMotion` + `domAnimation`
 - **State Management**: Zustand
 - **Linting**: ESLint
 - **Package Manager**: npm
 
-## 🤖 Skills de diseño
+> `next.config.ts` desactiva `turbopackFileSystemCacheForDev`: la caché de Turbopack en disco
+> sirvió dos veces un `globals.css` viejo en `next dev`. Si algo de CSS "no se aplica" en
+> local, borra `.next/` y vuelve a arrancar antes de buscar el error en el código.
 
-**Corregido el 2026-09-25.** Este archivo declaraba como instaladas cuatro skills
-(`react-best-practices`, `web-design-guidelines`, `composition-patterns`,
-`react-native-skills`) cuyos symlinks en `.claude/skills/` apuntaban a `../../.agents/skills/`,
-un directorio que no existe. Estaban rotas desde enero y no cargaban nada.
+## 🤖 Skills de diseño
 
 ### Instalada y vigente
 
 - **`frontend-design`** (oficial de Anthropic, desde `claude-plugins-official`), en
-  `.claude/skills/frontend-design/`. Es la que manda para cualquier trabajo visual en este
-  proyecto: dirección estética, tipografía y la lista de clichés generativos a evitar.
+  `.claude/skills/frontend-design/`: dirección estética, tipografía y clichés a evitar.
+- **UI/UX Pro Max** (`npm install -g ui-ux-pro-max-cli`, luego `uipro init --ai claude`).
+  Su base de datos se consulta con
+  `python3 "$(npm root -g)/ui-ux-pro-max-cli/assets/scripts/search.py" "<consulta>" --domain ux`
+  (dominios: `ux`, `landing`, `typography`, `color`, `react`, `web`…; `--stack nextjs`).
+  Úsala para pautas de UX, accesibilidad y movimiento. Sus recomendaciones de paleta y
+  tipografía son genéricas: las decisiones de marca de abajo mandan.
 
-### Sistema visual
+### Sistema visual (v2, sep 2026)
 
-Antes de tocar estilos, lee
-`../../../changes/rediseno-landing-octubre/sistema-visual.md`. Contiene los tokens, la
-escala tipográfica, el wireframe de cada bloque y —lo importante— **la autocrítica contra los
-cinco clichés de diseño generado por IA**, con qué se corrigió y por qué.
+Los tokens y su contraste calculado están comentados al inicio de `app/globals.css`.
 
-Reglas duras que salen de ahí y que aplican a todo código nuevo de UI:
+- **Tipografía**: Bricolage Grotesque 600 para titulares (`font-titular`), Geist para cuerpo y
+  UI, Geist Mono para eyebrows, etiquetas y la terminal. La palabra clave de cada titular se
+  marca **solo con color** (Bricolage no tiene cursiva real; nada de cursiva sintética).
+- **Color**: neutro claro (`--papel` #F7F6F3, `--arena` #EEECE6) y un único acento,
+  **petróleo** (`--marca` #0B6571 en claro, #5CC3CC en oscuro). El petróleo va en la palabra
+  clave, enlaces, foco, íconos de servicio, barra de progreso y botón principal
+  (`--boton`). Única excepción de color: el verde de WhatsApp en su botón flotante.
+- **Tema**: claro/oscuro con `<html data-tema>`. Lo resuelve un script en el `<head>` antes
+  del primer pintado; el botón del header lo fija (`shared/lib/tema.ts`). Todo color de un
+  componente sale de un token que tiene valor en ambos temas; nada de hex fijos que solo
+  funcionen en uno.
+- **Contraste**: todo texto ≥ 4,5:1 en ambos temas. Si agregas un par nuevo, calcúlalo y
+  anótalo junto al token.
+- **Estructura**: bloques con eyebrow numerado + titular en dos líneas (`EncabezadoSeccion`),
+  filas con filete para listas; las tarjetas se reservan para el carrusel de ejemplos.
+- **Afirmaciones**: cero cifras inventadas, cero sellos, cero superlativos. Todo ejemplo va
+  rotulado como tal. `scripts/verificar-landing.sh` lo comprueba sobre el build.
 
-- Cero gradientes, cero glassmorphism, cero `shadow-*`.
-- La estructura son **filas con reglas** (`.fila`), no tarjetas. Un grid de tarjetas
-  idénticas es el cliché generativo más reconocible.
-- Cero etiquetas en VERSALITAS, cero cadenas tipo `A · B · C`, cero `→` pegado al texto de un
-  botón.
-- Una sola animación en toda la página: el registro operativo del hero. Nada de entradas
-  animadas por sección.
-- Tipografía: IBM Plex Sans para texto, IBM Plex Mono **solo** donde hay un dato que se
-  alinea en columna (horas, números de fase). Nunca como etiqueta decorativa.
-- Todo alineado a la izquierda, incluido el hero.
+### Movimiento
+
+- Revelados al hacer scroll y la entrada del hero: **CSS** (`.revelar`, `.linea-mascara`,
+  `useRevelado`). Su estado oculto vive bajo `html.js` y
+  `prefers-reduced-motion: no-preference`, así el contenido se ve sin JS.
+- **Motion** solo donde aporta algo que CSS no resuelve bien: salidas animadas
+  (`AnimatePresence`: menú móvil, burbuja de WhatsApp, ícono de tema), resortes ligados al
+  scroll (línea de fases, barra de progreso) y gestos (`whileHover`/`whileTap` del botón de
+  WhatsApp). Usa los componentes `m.*`, no `motion.*` (`LazyMotion` va en modo `strict`).
+- `MotionConfig reducedMotion="user"` aplica el movimiento reducido a todo Motion; en CSS,
+  cada animación nueva va dentro de `@media (prefers-reduced-motion: no-preference)`.
+- Solo `transform` y `opacity`. Desplazamientos de hover < 2 px. Todo movimiento que dure
+  más de 5 s debe poder pausarse (la cinta de tecnologías tiene su botón).
 
 ## 📝 Development Guidelines
 
@@ -173,10 +187,10 @@ npm run lint
 
 ## 🎨 Styling Conventions
 
-- Use Tailwind utility classes
-- Create custom utilities in `tailwind.config.ts` when needed
-- Keep component-specific styles in the component file
-- Use CSS variables for theme values
+- Utilidades de Tailwind para layout; tokens de `globals.css` para color y tipografía.
+- Las clases del sistema (`.accion`, `.eyebrow`, `.titular`…) viven en `@layer components`
+  para que una utilidad pueda sobrescribirlas.
+- No hay `tailwind.config.ts`: Tailwind 4 se configura con `@theme` en `globals.css`.
 
 ## 🔄 State Management with Zustand
 
@@ -303,5 +317,5 @@ When adding new features:
 
 ---
 
-**Last Updated**: 2026-09-25
-**Version**: 1.1.0
+**Last Updated**: 2026-09-28
+**Version**: 2.0.0

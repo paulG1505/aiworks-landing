@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion';
+import { useRef, useState } from 'react';
+import { useMotionValueEvent, useReducedMotion, useScroll, useSpring } from 'motion/react';
 
 /**
  * La única animación del sitio ligada al scroll: la línea de "Cómo trabajamos" se llena
@@ -9,48 +9,32 @@ import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion'
  * alcanza (fase i en i/total). Las fases reveladas se quedan; la línea sí sigue al scroll
  * en ambos sentidos.
  *
- * El progreso se escribe como variable CSS directamente en el nodo (sin re-render por
- * frame); solo el número de fases alcanzadas pasa por el estado de React. Con
- * movimiento reducido no hay listener: la línea queda llena y las fases visibles (CSS).
+ * Motion mide el scroll (useScroll) y lo suaviza con un resorte (useSpring), así la línea
+ * no salta con cada golpe de rueda. El progreso llega al CSS como la variable --progreso
+ * del contenedor, sin re-render por frame. Con movimiento reducido la línea queda llena
+ * (regla en globals.css) y las fases visibles.
  */
 export function useProgresoFases(total: number) {
   const ref = useRef<HTMLDivElement>(null);
   const [alcanzadas, setAlcanzadas] = useState(0);
-  const reducido = usePrefersReducedMotion();
+  const reducido = useReducedMotion();
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || reducido) return;
+  // 0 cuando el borde superior del bloque cruza el 75% de la pantalla; 1 cuando lo cruza
+  // el borde inferior.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.75', 'end 0.75'] });
+  const progreso = useSpring(scrollYProgress, { stiffness: 120, damping: 28, restDelta: 0.001 });
 
-    let frame = 0;
-    const medir = () => {
-      frame = 0;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // Empieza cuando el borde superior cruza el 75% del viewport y termina tras
-      // recorrer la altura del bloque (o 40% de pantalla si el bloque es más bajo).
-      const bruto = (vh * 0.75 - rect.top) / Math.max(rect.height, vh * 0.4);
-      const progreso = Math.min(1, Math.max(0, bruto));
-      el.style.setProperty('--progreso', progreso.toFixed(4));
-      if (progreso > 0) {
-        const n = Math.min(total, Math.floor(progreso * total + 1e-6) + 1);
-        setAlcanzadas((previas) => Math.max(previas, n));
-      }
-    };
-    const alScroll = () => {
-      if (!frame) frame = requestAnimationFrame(medir);
-    };
+  useMotionValueEvent(scrollYProgress, 'change', (valor) => {
+    if (valor <= 0) return;
+    const n = Math.min(total, Math.floor(valor * total + 1e-6) + 1);
+    setAlcanzadas((previas) => Math.max(previas, n));
+  });
 
-    medir();
-    window.addEventListener('scroll', alScroll, { passive: true });
-    window.addEventListener('resize', alScroll);
-    return () => {
-      window.removeEventListener('scroll', alScroll);
-      window.removeEventListener('resize', alScroll);
-      if (frame) cancelAnimationFrame(frame);
-      el.style.removeProperty('--progreso');
-    };
-  }, [reducido, total]);
-
-  return { ref, alcanzadas: reducido ? total : alcanzadas };
+  return {
+    ref,
+    alcanzadas: reducido ? total : alcanzadas,
+    // Siempre el mismo MotionValue: Motion no cambia bien de un MotionValue a un número
+    // fijo. Con movimiento reducido, globals.css ignora la variable y deja la línea llena.
+    estilo: { '--progreso': progreso } as unknown as React.CSSProperties,
+  };
 }

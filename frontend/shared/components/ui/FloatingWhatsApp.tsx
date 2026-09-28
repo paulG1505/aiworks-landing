@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { AnimatePresence, m } from 'motion/react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
@@ -21,6 +22,10 @@ const CLAVE_CERRADA = 'aiworks-burbuja-whatsapp';
  *
  * La burbuja se puede cerrar y no vuelve en esa visita (sessionStorage). Botón y burbuja
  * se ocultan mientras el cierre de contacto está en pantalla, que ya tiene su propio CTA.
+ *
+ * Movimiento (Motion): la burbuja entra desde abajo con un resorte corto y sale al
+ * cerrarla; el botón crece apenas al pasar el mouse y se hunde al pulsar. Con
+ * prefers-reduced-motion, MotionConfig deja solo el cambio de opacidad.
  */
 export function FloatingWhatsApp() {
   const { t, locale } = useTranslation();
@@ -79,34 +84,58 @@ export function FloatingWhatsApp() {
       }`}
       aria-hidden={enContacto || undefined}
     >
-      {burbuja && !cerrada && (
-        <div className="wa-burbuja relative flex max-w-[calc(100vw-7rem)] items-start gap-3 rounded-2xl border border-regla bg-papel py-3.5 pl-4 pr-10 text-tinta shadow-[0_18px_40px_-20px_rgb(0_0_0/0.45)]">
-          <span className="mt-1.5 size-2.5 shrink-0 rounded-full bg-[#25D366] shadow-[0_0_0_3px_rgb(37_211_102/0.25)]" aria-hidden="true" />
-          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={etiqueta} className="flex flex-col">
-            <span className="font-semibold leading-snug">{t.whatsappFlotante.titulo}</span>
-            <span className="text-[0.9375rem] leading-snug text-tinta-media">{t.whatsappFlotante.texto}</span>
-          </a>
-          <button
-            type="button"
-            onClick={cerrar}
-            aria-label={t.whatsappFlotante.cerrar}
-            className="absolute right-2 top-2 cursor-pointer rounded-full p-1.5 text-tinta-media transition-colors duration-150 hover:bg-arena hover:text-tinta"
+      <AnimatePresence>
+        {burbuja && !cerrada && (
+          <m.div
+            key="burbuja"
+            initial={{ opacity: 0, y: 16, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96, transition: { duration: 0.18 } }}
+            transition={{ type: 'spring', stiffness: 420, damping: 30 }}
+            style={{ transformOrigin: 'bottom right' }}
+            className="relative flex max-w-[calc(100vw-7rem)] items-start gap-3 rounded-2xl border border-regla bg-papel py-3.5 pl-4 pr-10 text-tinta shadow-[0_18px_40px_-20px_rgb(0_0_0/0.45)]"
           >
-            <X className="size-4" aria-hidden="true" />
-          </button>
-        </div>
-      )}
+            <span
+              className="mt-1.5 size-2.5 shrink-0 rounded-full bg-[#25D366] shadow-[0_0_0_3px_rgb(37_211_102/0.25)]"
+              aria-hidden="true"
+            />
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={etiqueta}
+              className="flex flex-col"
+            >
+              <span className="font-semibold leading-snug">{t.whatsappFlotante.titulo}</span>
+              <span className="text-[0.9375rem] leading-snug text-tinta-media">
+                {t.whatsappFlotante.texto}
+              </span>
+            </a>
+            <button
+              type="button"
+              onClick={cerrar}
+              aria-label={t.whatsappFlotante.cerrar}
+              className="absolute right-2 top-2 cursor-pointer rounded-full p-1.5 text-tinta-media transition-colors duration-150 hover:bg-arena hover:text-tinta"
+            >
+              <X className="size-4" aria-hidden="true" />
+            </button>
+          </m.div>
+        )}
+      </AnimatePresence>
 
-      <a
+      <m.a
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 28 }}
         href={href}
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={enContacto ? -1 : undefined}
-        className="flex size-14 shrink-0 items-center justify-center rounded-full border border-[#128C4A] bg-[#25D366] text-[#0B3D1F] shadow-[0_12px_28px_-12px_rgb(0_0_0/0.45)] transition-colors duration-150 hover:bg-[#20BD5A] lg:size-16"
+        className="flex size-14 shrink-0 items-center justify-center rounded-full border border-[#128C4A] bg-[#25D366] text-[#0B3D1F] shadow-[0_12px_28px_-12px_rgb(0_0_0/0.45)] hover:bg-[#20BD5A] lg:size-16"
         aria-label={etiqueta}
       >
         <LogoWhatsApp className="size-7 lg:size-8" />
-      </a>
+      </m.a>
     </div>
   );
 }

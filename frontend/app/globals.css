@@ -25,6 +25,10 @@
   --regla-arena: #CFCAC0;
   --marca: #0B6571;
   --arena-hover: #E6E3DC;
+  /* Botón principal: petróleo. Blanco sobre #0B6571 6,7:1; sobre el hover 9,1:1. */
+  --boton: #0B6571;
+  --boton-hover: #08505A;
+  --sobre-boton: #FFFFFF;
 
   /* Oscuros: bandas de "Cómo trabajamos" y del cierre */
   --noche: #171513;
@@ -87,6 +91,9 @@ html[data-tema="oscuro"] {
   --regla: #2E2B27;
   --regla-arena: #34302B;
   --marca: #5CC3CC;
+  --boton: #5CC3CC;
+  --boton-hover: #86D6DC;
+  --sobre-boton: #0E1B1D;
   --noche: #221F1C;
   --regla-noche: #36322D;
   --pista-noche: #403B35;
@@ -103,6 +110,9 @@ html[data-tema="oscuro"] {
     --regla: #2E2B27;
     --regla-arena: #34302B;
     --marca: #5CC3CC;
+    --boton: #5CC3CC;
+    --boton-hover: #86D6DC;
+    --sobre-boton: #0E1B1D;
     --noche: #221F1C;
     --regla-noche: #36322D;
     --pista-noche: #403B35;
@@ -315,21 +325,23 @@ section[id] {
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
+/* Botón principal en petróleo: es el color de la marca y el punto de acción de cada
+   vista. Sobre las bandas oscuras usa el petróleo claro con texto casi negro (8,5:1). */
 .accion-primaria {
   padding: 1.0625rem 1.625rem;
   font-size: 1.0625rem;
-  background: var(--tinta);
-  color: var(--papel);
+  background: var(--boton);
+  color: var(--sobre-boton);
 }
 .accion-primaria:hover {
-  background: color-mix(in srgb, var(--tinta) 82%, var(--papel));
+  background: var(--boton-hover);
 }
 .oscuro .accion-primaria {
-  background: var(--hueso);
-  color: var(--noche);
+  background: var(--marca-clara);
+  color: #0E1B1D;
 }
 .oscuro .accion-primaria:hover {
-  background: #fff;
+  background: #86D6DC;
 }
 
 .accion-contorno {
@@ -430,11 +442,6 @@ section[id] {
     animation-delay: var(--d, 0ms);
   }
 
-  /* Burbuja de WhatsApp: entra desde abajo (fadeInUp). */
-  .wa-burbuja {
-    animation: revelar 500ms var(--curva) both;
-  }
-
   /* FAQ: el texto de la respuesta baja con un fundido mientras el panel se abre. */
   .respuesta-texto {
     transition: opacity 350ms var(--curva) 60ms, transform 350ms var(--curva) 60ms;
@@ -444,6 +451,19 @@ section[id] {
     transform: translateY(-10px);
   }
 
+  /* Botones: suben 1 px al pasar el mouse y se hunden al pulsar. Menos de 2 px: se lee
+     como respuesta, no como movimiento. */
+  .accion {
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+      transform 0.2s var(--curva);
+  }
+  .accion:hover {
+    transform: translateY(-1px);
+  }
+  .accion:active {
+    transform: translateY(0) scale(0.98);
+  }
+
   /* Tarjetas del carrusel: se elevan apenas al pasar el mouse. */
   .tarjeta-ejemplo {
     transition: opacity 700ms var(--curva), transform 700ms var(--curva), background-color 200ms ease;
@@ -451,6 +471,8 @@ section[id] {
   }
   .tarjeta-ejemplo:hover {
     background-color: var(--arena-hover);
+    transform: translateY(-2px);
+    transition-delay: 0ms;
   }
 
   /* Revelados al hacer scroll: transición desde el estado oculto al entrar data-visible. */
@@ -497,6 +519,33 @@ section[id] {
   }
 }
 
+/* Navegación del header: subrayado en petróleo que se dibuja de izquierda a derecha. */
+.nav-enlace {
+  position: relative;
+}
+.nav-enlace::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: var(--marca);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--curva);
+}
+.nav-enlace:hover::after,
+.nav-enlace:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Texto seleccionado en petróleo. */
+::selection {
+  background: color-mix(in srgb, var(--marca) 28%, transparent);
+  color: inherit;
+}
+
 /* Carrusel: scroll nativo sin barra visible (se navega con swipe, flechas o botones). */
 .carrusel {
   scrollbar-width: none;
@@ -531,6 +580,11 @@ section[id] {
 @media (min-width: 768px) {
   .fases-progreso {
     transform: scaleX(var(--progreso, 1));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fases-progreso {
+    transform: none;
   }
 }
 

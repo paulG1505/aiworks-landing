@@ -5,6 +5,7 @@ import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
+import { ProveedorMovimiento } from "@/shared/components/providers/ProveedorMovimiento";
 import { SITE_URL } from "@/shared/constants/site";
 import { CLAVE_TEMA } from "@/shared/lib/tema";
 import "./globals.css";
@@ -124,10 +125,12 @@ export default function RootLayout({
         </a>
         <StoreRehydrate />
         <StructuredData />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <FloatingWhatsApp />
+        <ProveedorMovimiento>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+          <FloatingWhatsApp />
+        </ProveedorMovimiento>
       </body>
     </html>
   );

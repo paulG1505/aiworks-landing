@@ -1,5 +1,6 @@
 'use client';
 
+import { m } from 'motion/react';
 import { Container } from '@/shared/components/ui/Container';
 import { EncabezadoSeccion } from '@/shared/components/ui/EncabezadoSeccion';
 import { useTranslation } from '@/shared/hooks/useTranslation';
@@ -14,7 +15,7 @@ import { CintaTecnologias } from './CintaTecnologias';
  */
 export function Proceso() {
   const { t } = useTranslation();
-  const { ref, alcanzadas } = useProgresoFases(t.proceso.fases.length);
+  const { ref, alcanzadas, estilo } = useProgresoFases(t.proceso.fases.length);
 
   return (
     <section id="proceso" className="oscuro seccion">
@@ -27,7 +28,7 @@ export function Proceso() {
           introClassName="text-[var(--hueso-tenue)]"
         />
 
-        <div ref={ref} className="relative mt-16 pl-6 md:mt-20 md:pl-0 md:pt-8">
+        <m.div ref={ref} style={estilo} className="relative mt-16 pl-6 md:mt-20 md:pl-0 md:pt-8">
           <div
             aria-hidden="true"
             className="absolute left-0 top-0 h-full w-px bg-[var(--pista-noche)] md:h-px md:w-full"
@@ -49,7 +50,7 @@ export function Proceso() {
               />
             ))}
           </ol>
-        </div>
+        </m.div>
 
         <div className="mt-20 border-t border-[var(--regla-noche)] pt-10 md:mt-24">
           <CintaTecnologias
