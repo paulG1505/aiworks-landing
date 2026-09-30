@@ -98,7 +98,7 @@ export function StructuredData() {
         name: '¿Qué pasa con los datos de mi empresa?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Se quedan donde usted decida, y firmamos confidencialidad antes de ver nada. Trabajamos bajo la Ley Orgánica de Protección de Datos Personales del Ecuador, y en el diagnóstico no necesitamos datos reales para decirle si el proceso se puede automatizar.',
+          text: 'Se quedan donde usted decida, y acordamos confidencialidad al iniciar el proyecto. Trabajamos bajo la Ley Orgánica de Protección de Datos Personales del Ecuador, y en el diagnóstico no necesitamos datos reales para decirle si el proceso se puede automatizar.',
         },
       },
     ],

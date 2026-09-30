@@ -239,7 +239,7 @@ export const en = {
       {
         pregunta: "What happens to my company's data?",
         respuesta:
-          "It stays wherever you decide, and we sign a confidentiality agreement before seeing anything. We work under Ecuador's data protection law, and the assessment does not need real data for us to tell you whether the process can be automated.",
+          "It stays wherever you decide, and we agree on confidentiality when the project starts. We work under Ecuador's data protection law, and the assessment does not need real data for us to tell you whether the process can be automated.",
       },
     ],
   },
