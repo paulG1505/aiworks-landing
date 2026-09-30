@@ -82,7 +82,7 @@ export function StructuredData() {
         name: '¿Cuánto demora?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'El descubrimiento toma entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.',
+          text: 'El descubrimiento suele tomar entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.',
         },
       },
       {

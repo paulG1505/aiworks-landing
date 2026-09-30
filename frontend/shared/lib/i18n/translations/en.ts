@@ -161,7 +161,7 @@ export const en = {
           "Every automated decision is recorded with its timestamp, and the ones that matter go through a person before they execute. You can reconstruct why the system did what it did.",
       },
       {
-        titulo: "From concept to production in weeks",
+        titulo: "From concept to production usually takes weeks",
         descripcion:
           "We work in short increments on your real data. There is no six-month phase where you see nothing.",
       },
@@ -229,7 +229,7 @@ export const en = {
       {
         pregunta: "How long does it take?",
         respuesta:
-          "Discovery takes one to two weeks. After that, the first working version on your data is usually weeks away rather than months, because we deliver in parts.",
+          "Discovery usually takes one to two weeks. After that, the first working version on your data is usually weeks away rather than months, because we deliver in parts.",
       },
       {
         pregunta: "What if the AI gets it wrong?",
