@@ -165,7 +165,7 @@ export const es = {
           "Toda decisión automática queda registrada, con su hora, y las que importan pasan por una persona antes de ejecutarse. Usted puede reconstruir por qué el sistema hizo lo que hizo.",
       },
       {
-        titulo: "Del concepto a producción en semanas",
+        titulo: "Del concepto a producción suele tomar semanas",
         descripcion:
           "Trabajamos en entregas cortas sobre sus datos reales. No hay una fase de seis meses en la que usted no ve nada.",
       },
@@ -234,7 +234,7 @@ export const es = {
       {
         pregunta: "¿Cuánto demora?",
         respuesta:
-          "El descubrimiento toma entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.",
+          "El descubrimiento suele tomar entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.",
       },
       {
         pregunta: "¿Qué pasa si la IA se equivoca?",
