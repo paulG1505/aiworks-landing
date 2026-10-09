@@ -12,8 +12,7 @@ export const es = {
     cta: "Hablar por WhatsApp",
   },
   hero: {
-    // La categoría es la primera línea del titular: un visitante frío tiene que leer
-    // "software con IA" antes que cualquier beneficio.
+    // The category is the first headline line: a cold visitor must read "software con IA" before any benefit.
     categoria: { antes: "Software con ", clave: "inteligencia artificial", despues: "." },
     beneficio: "Hecho para el trabajo que su equipo hoy hace a mano.",
     subtitle:
@@ -27,8 +26,7 @@ export const es = {
   registro: {
     titulo: "Registro operativo",
     etiqueta: "Ejemplo de flujo",
-    // Un lead que llega por WhatsApp fuera de horario: se entiende sin contexto técnico y
-    // muestra en seis líneas qué hace la IA y dónde entra una persona.
+    // A WhatsApp lead outside business hours: understandable without technical context.
     ventana: "aiworks — lead-whatsapp",
     comando: "analizar-lead --canal=whatsapp",
     lineas: [
@@ -175,7 +173,7 @@ export const es = {
           "Código probado, documentado y suyo. Si mañana decide llevárselo a otro equipo, puede hacerlo.",
       },
     ],
-    // Ejemplos de lo que se puede automatizar, no clientes: el titular del carrusel lo dice.
+    // Examples of what can be automated, not clients.
     casos: {
       titulo: "Ejemplos de automatización",
       anterior: "Ejemplo anterior",

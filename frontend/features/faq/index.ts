@@ -1,1 +1,1 @@
-export { Preguntas } from './components/Preguntas';
+export { Faq } from './components/Faq';

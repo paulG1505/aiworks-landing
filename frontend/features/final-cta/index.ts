@@ -1,1 +1,1 @@
-export { CTAFinal } from './components/CTAFinal';
+export { FinalCta } from './components/FinalCta';

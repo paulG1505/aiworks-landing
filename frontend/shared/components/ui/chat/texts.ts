@@ -1,105 +1,102 @@
 import type { Locale } from '@/shared/lib/i18n/translations';
 
-/**
- * Copy del chat. Vive aparte de `shared/lib/i18n/translations` a propósito: ese archivo
- * entra completo al JS de la primera carga, y el chat (que se descarga solo al hacer clic)
- * no debe engordarlo. Este módulo solo lo importa el panel, que es un chunk aparte.
- * El lanzador, que sí va en la primera carga, tiene sus dos frases en `ChatLauncher`.
- */
-export interface TextosChat {
-  titulo: string;
-  etiqueta: string;
-  cerrar: string;
-  bienvenida: string;
-  sugerencias: [string, string, string];
-  sugerenciasTitulo: string;
-  campo: string;
+// Chat copy lives apart from shared/lib/i18n/translations on purpose: that file ships in the
+// first-load JS and the chat is a separate chunk. ChatLauncher holds its own two strings.
+
+export interface ChatTexts {
+  title: string;
+  label: string;
+  close: string;
+  welcome: string;
+  suggestions: [string, string, string];
+  suggestionsTitle: string;
+  field: string;
   placeholder: string;
-  enviar: string;
-  escribiendo: string;
-  rolUsuario: string;
-  rolAsistente: string;
-  continuarWhatsapp: string;
-  codigo: string;
-  respaldo: string;
-  respaldoSinWhatsapp: string;
-  pieValores: string;
-  pieCierre: string;
-  caracteres: (n: number, max: number) => string;
+  send: string;
+  typing: string;
+  userRole: string;
+  assistantRole: string;
+  continueOnWhatsapp: string;
+  code: string;
+  fallback: string;
+  fallbackNoWhatsapp: string;
+  footerPrices: string;
+  footerClosing: string;
+  characters: (n: number, max: number) => string;
 }
 
-export const TEXTOS_CHAT: Record<Locale, TextosChat> = {
+export const CHAT_TEXTS: Record<Locale, ChatTexts> = {
   es: {
-    titulo: 'AIworks',
-    etiqueta: 'Asistente · IA',
-    cerrar: 'Cerrar el chat',
-    bienvenida:
+    title: 'AIworks',
+    label: 'Asistente · IA',
+    close: 'Cerrar el chat',
+    welcome:
       'Hola, soy el asistente de AIworks. Le cuento qué construimos, cuánto cuesta y, si quiere, le ayudo a agendar una llamada.',
-    sugerencias: [
+    suggestions: [
       '¿Cuánto cuesta el asistente de WhatsApp?',
       '¿Qué es un sistema a medida?',
       'Quiero agendar una llamada',
     ],
-    sugerenciasTitulo: 'Puede empezar por aquí',
-    campo: 'Su mensaje',
+    suggestionsTitle: 'Puede empezar por aquí',
+    field: 'Su mensaje',
     placeholder: 'Escriba su pregunta',
-    enviar: 'Enviar',
-    escribiendo: 'Escribiendo',
-    rolUsuario: 'Usted',
-    rolAsistente: 'Asistente',
-    continuarWhatsapp: 'Continuar por WhatsApp',
-    codigo: 'Código',
-    respaldo:
+    send: 'Enviar',
+    typing: 'Escribiendo',
+    userRole: 'Usted',
+    assistantRole: 'Asistente',
+    continueOnWhatsapp: 'Continuar por WhatsApp',
+    code: 'Código',
+    fallback:
       'No pudimos responder en este momento. Escríbanos por WhatsApp y le atendemos ahí.',
-    respaldoSinWhatsapp: 'No pudimos responder en este momento. Intente de nuevo en unos segundos.',
-    pieValores: 'Los valores oficiales van en la proforma.',
-    pieCierre: 'Este asistente lo construimos nosotros.',
-    caracteres: (n, max) => `${n} de ${max} caracteres`,
+    fallbackNoWhatsapp: 'No pudimos responder en este momento. Intente de nuevo en unos segundos.',
+    footerPrices: 'Los valores oficiales van en la proforma.',
+    footerClosing: 'Este asistente lo construimos nosotros.',
+    characters: (n, max) => `${n} de ${max} caracteres`,
   },
   en: {
-    titulo: 'AIworks',
-    etiqueta: 'Assistant · AI',
-    cerrar: 'Close the chat',
-    bienvenida:
+    title: 'AIworks',
+    label: 'Assistant · AI',
+    close: 'Close the chat',
+    welcome:
       "Hi, I'm the AIworks assistant. I can tell you what we build, what it costs and, if you like, help you book a call.",
-    sugerencias: [
+    suggestions: [
       'How much does the WhatsApp assistant cost?',
       'What is a custom system?',
       'I want to book a call',
     ],
-    sugerenciasTitulo: 'You can start here',
-    campo: 'Your message',
+    suggestionsTitle: 'You can start here',
+    field: 'Your message',
     placeholder: 'Type your question',
-    enviar: 'Send',
-    escribiendo: 'Typing',
-    rolUsuario: 'You',
-    rolAsistente: 'Assistant',
-    continuarWhatsapp: 'Continue on WhatsApp',
-    codigo: 'Code',
-    respaldo: "We couldn't answer right now. Message us on WhatsApp and we'll help you there.",
-    respaldoSinWhatsapp: "We couldn't answer right now. Please try again in a few seconds.",
-    pieValores: 'Official prices are in the quote.',
-    pieCierre: 'We built this assistant ourselves.',
-    caracteres: (n, max) => `${n} of ${max} characters`,
+    send: 'Send',
+    typing: 'Typing',
+    userRole: 'You',
+    assistantRole: 'Assistant',
+    continueOnWhatsapp: 'Continue on WhatsApp',
+    code: 'Code',
+    fallback: "We couldn't answer right now. Message us on WhatsApp and we'll help you there.",
+    fallbackNoWhatsapp: "We couldn't answer right now. Please try again in a few seconds.",
+    footerPrices: 'Official prices are in the quote.',
+    footerClosing: 'We built this assistant ourselves.',
+    characters: (n, max) => `${n} of ${max} characters`,
   },
 };
 
-/** Sugerencias y bienvenida de la demo: hablan como el negocio, no como AIworks. */
-export const TEXTOS_DEMO: Record<
+// The demo speaks as the business, not as AIworks.
+export const DEMO_TEXTS: Record<
   Locale,
-  { bienvenida: (negocio: string) => string; sugerencias: [string, string, string] }
+  { welcome: (business: string) => string; suggestions: [string, string, string] }
 > = {
   es: {
-    bienvenida: (negocio) => `Hola, le habla el asistente de ${negocio}. ¿En qué le puedo ayudar?`,
-    sugerencias: [
+    welcome: (business) => `Hola, le habla el asistente de ${business}. ¿En qué le puedo ayudar?`,
+    suggestions: [
       '¿Qué productos o servicios ofrecen?',
       '¿Cuál es su horario de atención?',
       '¿Cómo puedo contactarlos?',
     ],
   },
   en: {
-    bienvenida: (negocio) => `Hi, this is the ${negocio} assistant. How can I help you?`,
-    sugerencias: [
+    welcome: (business) => `Hi, this is the ${business} assistant. How can I help you?`,
+    suggestions: [
       'What products or services do you offer?',
       'What are your opening hours?',
       'How can I get in touch?',

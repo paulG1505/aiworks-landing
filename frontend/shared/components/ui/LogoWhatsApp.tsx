@@ -1,4 +1,4 @@
-/** Logo de WhatsApp (simple-icons, CC0-1.0), pintado con currentColor. */
+// WhatsApp logo from simple-icons (CC0-1.0), painted with currentColor.
 export function LogoWhatsApp({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">

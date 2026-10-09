@@ -2,52 +2,44 @@
 
 import { Bot, Cloud, FileText, Workflow } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
-import { EncabezadoSeccion } from '@/shared/components/ui/EncabezadoSeccion';
+import { SectionHeading } from '@/shared/components/ui/SectionHeading';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { useRevelado } from '@/shared/hooks/useRevelado';
+import { useReveal } from '@/shared/hooks/useReveal';
 
-const ICONOS = {
+const ICONS = {
   procesos: Workflow,
   chatbots: Bot,
   documentos: FileText,
   nube: Cloud,
 } as const;
 
-type Retardo = React.CSSProperties & { '--d': string };
+type Delay = React.CSSProperties & { '--d': string };
 
-/**
- * Qué construimos: las cuatro líneas de servicio, justo después del hero. Hace explícito
- * lo que antes solo se deducía (los chatbots, el despliegue en la nube del cliente) y
- * prepara el terreno para los procesos concretos del bloque siguiente.
- *
- * Filas con filete superior en dos columnas, no tarjetas: cada una dice qué es, un
- * ejemplo concreto y con qué se construye.
- */
-export function Servicios() {
+export function Services() {
   const { t } = useTranslation();
-  const revelado = useRevelado<HTMLUListElement>();
+  const reveal = useReveal<HTMLUListElement>();
 
   return (
     <section id="servicios" className="seccion bg-arena [--c-regla:var(--regla-arena)]">
       <Container>
-        <EncabezadoSeccion
-          numero="01"
+        <SectionHeading
+          number="01"
           eyebrow={t.servicios.eyebrow}
-          titulo={t.servicios.titulo}
+          title={t.servicios.titulo}
           intro={t.servicios.subtitle}
         />
 
-        <ul {...revelado} className="mt-14 grid grid-cols-1 gap-x-12 gap-y-14 md:grid-cols-2 lg:mt-[72px]">
+        <ul {...reveal} className="mt-14 grid grid-cols-1 gap-x-12 gap-y-14 md:grid-cols-2 lg:mt-[72px]">
           {t.servicios.items.map((item, index) => {
-            const Icono = ICONOS[item.icono];
+            const Icon = ICONS[item.icono];
             return (
               <li
                 key={item.titulo}
                 className="revelar flex flex-col gap-4 border-t border-tinta pt-6"
-                style={{ '--d': `${index * 90}ms` } as Retardo}
+                style={{ '--d': `${index * 90}ms` } as Delay}
               >
                 <div className="flex items-center justify-between">
-                  <Icono className="size-7 text-marca" strokeWidth={1.5} aria-hidden="true" />
+                  <Icon className="size-7 text-marca" strokeWidth={1.5} aria-hidden="true" />
                   <span className="tabular text-[0.8125rem] text-tinta-media">
                     {String(index + 1).padStart(2, '0')}
                   </span>
@@ -59,12 +51,12 @@ export function Servicios() {
                   {item.ejemplo}
                 </p>
                 <ul className="flex flex-wrap gap-2" aria-label={t.proceso.stackLabel}>
-                  {item.tecnologias.map((tec) => (
+                  {item.tecnologias.map((tech) => (
                     <li
-                      key={tec}
+                      key={tech}
                       className="rounded-full border border-[var(--c-regla)] px-3 py-1 font-mono text-xs text-tinta-media"
                     >
-                      {tec}
+                      {tech}
                     </li>
                   ))}
                 </ul>

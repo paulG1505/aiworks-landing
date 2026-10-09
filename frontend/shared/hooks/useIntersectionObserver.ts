@@ -18,11 +18,9 @@ export function useIntersectionObserver<T extends Element = HTMLDivElement>({
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef<T>(null);
 
-  // Store options in ref to avoid recreating observer (rerender-dependencies)
-  // This prevents unnecessary re-renders when options objects change
+  // Options live in a ref so a new options object does not recreate the observer.
   const optionsRef = useRef({ threshold, root, rootMargin, freezeOnceVisible });
 
-  // Update options ref when values change
   useEffect(() => {
     optionsRef.current = { threshold, root, rootMargin, freezeOnceVisible };
   }, [threshold, root, rootMargin, freezeOnceVisible]);
@@ -33,7 +31,6 @@ export function useIntersectionObserver<T extends Element = HTMLDivElement>({
 
     const options = optionsRef.current;
 
-    // If already visible and freezeOnceVisible is true, don't observe
     if (options.freezeOnceVisible && isVisible) return;
 
     const observer = new IntersectionObserver(
@@ -41,7 +38,6 @@ export function useIntersectionObserver<T extends Element = HTMLDivElement>({
         const isIntersecting = entry.isIntersecting;
         setIsVisible(isIntersecting);
 
-        // If freezeOnceVisible and now visible, disconnect observer
         if (options.freezeOnceVisible && isIntersecting) {
           observer.disconnect();
         }
@@ -58,7 +54,6 @@ export function useIntersectionObserver<T extends Element = HTMLDivElement>({
     return () => {
       observer.disconnect();
     };
-    // Only depend on isVisible to avoid recreating observer unnecessarily
   }, [isVisible]);
 
   return { ref: elementRef, isVisible };

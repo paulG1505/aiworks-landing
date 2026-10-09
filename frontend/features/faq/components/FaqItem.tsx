@@ -2,25 +2,16 @@
 
 import { useId, useState } from 'react';
 
-interface PreguntaProps {
-  indice: number;
-  pregunta: string;
-  respuesta: string;
+interface FaqItemProps {
+  index: number;
+  question: string;
+  answer: string;
   defaultOpen?: boolean;
 }
 
-/**
- * Item de acordeón sin caja: la única separación es el filete inferior. El disparador
- * es un <button> real dentro de un <h3>, con aria-expanded y aria-controls, y el panel
- * es una región etiquetada por el botón.
- *
- * Apertura con altura (grid-template-rows 0fr → 1fr, 350ms; ver .respuesta en
- * globals.css). El panel cerrado lleva visibility: hidden, que —igual que `hidden`— lo
- * saca del árbol de accesibilidad y del orden de Tab, pero sí se puede animar. El "+"
- * rota a "–" y el texto de la respuesta baja con un fundido (fadeInDown de
- * animate.style) mientras el panel se abre. Con movimiento reducido no hay transición.
- */
-export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: PreguntaProps) {
+// The closed panel uses visibility: hidden, which like `hidden` removes it from the
+// accessibility tree and Tab order but, unlike `hidden`, can be animated (see .respuesta in globals.css).
+export function FaqItem({ index, question, answer, defaultOpen = false }: FaqItemProps) {
   const [open, setOpen] = useState(defaultOpen);
   const reactId = useId();
   const buttonId = `preguntas-trigger-${reactId}`;
@@ -29,7 +20,7 @@ export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: P
   return (
     <div
       className="revelar border-b border-[var(--c-regla)]"
-      style={{ '--d': `${indice * 90}ms` } as React.CSSProperties}
+      style={{ '--d': `${index * 90}ms` } as React.CSSProperties}
     >
       <h3>
         <button
@@ -40,7 +31,7 @@ export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: P
           onClick={() => setOpen((prev) => !prev)}
           className="flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left font-titular text-[1.25rem] font-medium leading-[1.25] tracking-[-0.015em] text-tinta sm:py-[26px] lg:text-[1.5rem]"
         >
-          <span>{pregunta}</span>
+          <span>{question}</span>
           <span aria-hidden="true" className="relative size-4 shrink-0">
             <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-current" />
             <span
@@ -57,7 +48,7 @@ export function Pregunta({ indice, pregunta, respuesta, defaultOpen = false }: P
         data-abierta={open ? '' : undefined}
       >
         <div>
-          <p className="respuesta-texto medida pb-7 pr-0 leading-[1.6] text-tinta-media sm:pr-12">{respuesta}</p>
+          <p className="respuesta-texto medida pb-7 pr-0 leading-[1.6] text-tinta-media sm:pr-12">{answer}</p>
         </div>
       </div>
     </div>

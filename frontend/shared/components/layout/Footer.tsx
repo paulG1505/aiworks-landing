@@ -5,34 +5,31 @@ import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
 import { CONTACT_INFO } from '@/shared/constants';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
+import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
 
-const CLASE_ENLACE =
+const LINK_CLASS =
   'break-words text-[var(--hueso-tenue)] transition-colors duration-150 hover:text-hueso';
 
-interface Enlace {
+interface FooterLink {
   label: string;
   href: string;
-  externo?: boolean;
+  external?: boolean;
   ariaLabel?: string;
 }
 
-/**
- * Pie en cuatro columnas —Servicios, La empresa, Contacto, Legal— sobre la banda oscura
- * que continúa el cierre. Los enlaces a secciones van a "/#seccion" para que funcionen
- * también desde /privacidad. No hay fila de redes sociales hasta que existan perfiles.
- */
+// Section links use "/#section" so they also work from /privacidad.
+
 export function Footer() {
   const { t, locale } = useTranslation();
 
-  const columnas: { titulo: string; enlaces: Enlace[] }[] = [
+  const columns: { title: string; links: FooterLink[] }[] = [
     {
-      titulo: t.footer.columnas.servicios,
-      enlaces: t.servicios.items.map((item) => ({ label: item.titulo, href: '/#servicios' })),
+      title: t.footer.columnas.servicios,
+      links: t.servicios.items.map((item) => ({ label: item.titulo, href: '/#servicios' })),
     },
     {
-      titulo: t.footer.columnas.empresa,
-      enlaces: [
+      title: t.footer.columnas.empresa,
+      links: [
         { label: t.header.nav.procesos, href: '/#procesos' },
         { label: t.header.nav.proceso, href: '/#proceso' },
         { label: t.header.nav.porque, href: '/#porque' },
@@ -41,21 +38,21 @@ export function Footer() {
       ],
     },
     {
-      titulo: t.footer.columnas.contacto,
-      enlaces: [
+      title: t.footer.columnas.contacto,
+      links: [
         {
           label: 'WhatsApp',
-          href: enlaceWhatsApp(locale),
-          externo: true,
-          ariaLabel: `WhatsApp ${avisoPestanaNueva(locale)}`,
+          href: whatsappLink(locale),
+          external: true,
+          ariaLabel: `WhatsApp ${newTabNotice(locale)}`,
         },
         { label: CONTACT_INFO.email, href: `mailto:${CONTACT_INFO.email}` },
         { label: CONTACT_INFO.phone, href: `tel:${CONTACT_INFO.phone.replace(/\s/g, '')}` },
       ],
     },
     {
-      titulo: t.footer.columnas.legal,
-      enlaces: [{ label: t.footer.privacidad, href: '/privacidad' }],
+      title: t.footer.columnas.legal,
+      links: [{ label: t.footer.privacidad, href: '/privacidad' }],
     },
   ];
 
@@ -70,24 +67,24 @@ export function Footer() {
             <p className="max-w-[32ch] text-[0.9375rem] text-hueso-medio">{t.footer.descripcion}</p>
           </div>
 
-          {columnas.map((columna) => (
-            <nav key={columna.titulo} aria-label={columna.titulo} className="flex flex-col gap-4">
-              <h2 className="eyebrow">{columna.titulo}</h2>
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={column.title} className="flex flex-col gap-4">
+              <h2 className="eyebrow">{column.title}</h2>
               <ul className="flex flex-col gap-2.5 text-[0.9375rem]">
-                {columna.enlaces.map((enlace) => (
-                  <li key={enlace.label}>
-                    {enlace.href.startsWith('/') ? (
-                      <Link href={enlace.href} className={CLASE_ENLACE}>
-                        {enlace.label}
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    {link.href.startsWith('/') ? (
+                      <Link href={link.href} className={LINK_CLASS}>
+                        {link.label}
                       </Link>
                     ) : (
                       <a
-                        href={enlace.href}
-                        {...(enlace.externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                        aria-label={enlace.ariaLabel}
-                        className={CLASE_ENLACE}
+                        href={link.href}
+                        {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        aria-label={link.ariaLabel}
+                        className={LINK_CLASS}
                       >
-                        {enlace.label}
+                        {link.label}
                       </a>
                     )}
                   </li>

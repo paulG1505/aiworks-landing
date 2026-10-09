@@ -5,55 +5,52 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 
-// El panel es un chunk aparte: no se descarga hasta el primer clic.
-const PanelChat = dynamic(() => import('./PanelChat'), { ssr: false });
+// Separate chunk: not downloaded until the first click.
+const ChatPanel = dynamic(() => import('./ChatPanel'), { ssr: false });
 
-// Estas dos frases viven aquí y no en textos.ts porque el lanzador va en la primera carga.
-const ETIQUETA = { es: 'Pregúntenos', en: 'Ask us' } as const;
+// These strings live here rather than in texts.ts because the launcher ships in the first load.
+const LABEL = { es: 'Pregúntenos', en: 'Ask us' } as const;
 const ARIA = {
   es: 'Abrir el chat con el asistente de AIworks',
   en: 'Open the chat with the AIworks assistant',
 } as const;
 
-/**
- * Botón principal flotante. El de WhatsApp queda encima, más chico, como alternativa.
- * En la página de demo no se muestra: allí el chat ya está en la página.
- */
+// Hidden on the demo page, where the chat is already part of the page.
 export function ChatLauncher() {
   const { locale } = useTranslation();
-  const ruta = usePathname();
-  const [cargado, setCargado] = useState(false);
-  const [abierto, setAbierto] = useState(false);
-  const boton = useRef<HTMLButtonElement>(null);
-  const habiaAbierto = useRef(false);
+  const pathname = usePathname();
+  const [loaded, setLoaded] = useState(false);
+  const [open, setOpen] = useState(false);
+  const button = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
-  // Al cerrar, el foco vuelve al botón que abrió el panel.
+  // On close, focus returns to the button that opened the panel.
   useEffect(() => {
-    if (habiaAbierto.current && !abierto) boton.current?.focus();
-    habiaAbierto.current = abierto;
-  }, [abierto]);
+    if (wasOpen.current && !open) button.current?.focus();
+    wasOpen.current = open;
+  }, [open]);
 
-  if (ruta?.startsWith('/demo')) return null;
+  if (pathname?.startsWith('/demo')) return null;
 
   return (
     <>
       <button
-        ref={boton}
+        ref={button}
         type="button"
         onClick={() => {
-          setCargado(true);
-          setAbierto(true);
+          setLoaded(true);
+          setOpen(true);
         }}
         aria-label={ARIA[locale]}
         aria-haspopup="dialog"
-        aria-expanded={abierto}
+        aria-expanded={open}
         className={`accion accion-primaria fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] right-5 z-40 cursor-pointer !px-6 !py-4 lg:bottom-8 lg:right-8 ${
-          abierto ? 'invisible' : ''
+          open ? 'invisible' : ''
         }`}
       >
-        {ETIQUETA[locale]}
+        {LABEL[locale]}
       </button>
-      {cargado && <PanelChat abierto={abierto} alCerrar={() => setAbierto(false)} />}
+      {loaded && <ChatPanel open={open} onClose={() => setOpen(false)} />}
     </>
   );
 }

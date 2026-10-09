@@ -1,7 +1,6 @@
 import { ContactInfo } from '@/shared/types';
 
-// Único dato de negocio que la página consume desde constantes. El resto del
-// contenido vive en shared/lib/i18n/translations, que es la fuente del copy.
+// All other copy lives in shared/lib/i18n/translations.
 export const CONTACT_INFO: ContactInfo = {
   email: 'contacto@aiworks.lat',
   phone: '+593 97 892 3586',

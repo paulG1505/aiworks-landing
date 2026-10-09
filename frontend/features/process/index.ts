@@ -1,1 +1,1 @@
-export { Proceso } from './components/Proceso';
+export { Process } from './components/Process';

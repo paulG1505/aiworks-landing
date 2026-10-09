@@ -1,127 +1,124 @@
 import { CONTACT_INFO } from '@/shared/constants';
 
-/**
- * Única variable pública: la URL de la API. En desarrollo apunta al servidor local (o al
- * mock de `scripts/mock-chat-api.mjs`); en producción, a api.aiworks.lat. Ningún secreto
- * vive en el navegador: la clave del modelo y el token de Notion se quedan en el servidor.
- */
+// The only public variable. Development defaults to the local server (or the mock in
+// `scripts/mock-chat-api.mjs`); no secret ever reaches the browser.
 export const API_URL = (
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'https://api.aiworks.lat')
 ).replace(/\/+$/, '');
 
-export const MAX_CARACTERES = 1000;
+export const MAX_CHARS = 1000;
 export const TIMEOUT_MS = 20_000;
 
-export interface AccionChat {
-  tipo: 'whatsapp';
+export interface ChatAction {
+  type: 'whatsapp';
   url: string;
-  codigo: string | null;
+  code: string | null;
 }
 
-export type ResultadoChat =
-  | { ok: true; sesionId: string | null; respuesta: string; accion: AccionChat | null }
-  | { ok: false; motivo: 'limite' | 'timeout' | 'red' | 'error' };
+export type ChatResult =
+  | { ok: true; sessionId: string | null; reply: string; action: ChatAction | null }
+  | { ok: false; reason: 'limit' | 'timeout' | 'network' | 'error' };
 
-/** Solo se acepta una acción hacia wa.me: nada que venga de la red abre otro destino. */
-function normalizarAccion(valor: unknown): AccionChat | null {
-  if (!valor || typeof valor !== 'object') return null;
-  const { tipo, url, codigo } = valor as Record<string, unknown>;
+// Only wa.me actions are accepted: nothing coming from the network may open another destination.
+function normalizeAction(value: unknown): ChatAction | null {
+  if (!value || typeof value !== 'object') return null;
+  const { tipo, url, codigo } = value as Record<string, unknown>;
   if (tipo !== 'whatsapp' || typeof url !== 'string' || !url.startsWith('https://wa.me/')) return null;
-  return { tipo: 'whatsapp', url, codigo: typeof codigo === 'string' && codigo ? codigo : null };
+  return { type: 'whatsapp', url, code: typeof codigo === 'string' && codigo ? codigo : null };
 }
 
-export async function enviarMensaje(
+export async function sendMessage(
   tenant: string,
-  datos: { sesionId: string | null; mensaje: string; idioma: string },
-  senal?: AbortSignal,
-): Promise<ResultadoChat> {
-  const control = new AbortController();
-  let vencio = false;
-  const temporizador = window.setTimeout(() => {
-    vencio = true;
-    control.abort();
+  data: { sessionId: string | null; message: string; language: string },
+  signal?: AbortSignal,
+): Promise<ChatResult> {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timer = window.setTimeout(() => {
+    timedOut = true;
+    controller.abort();
   }, TIMEOUT_MS);
-  const cancelar = () => control.abort();
-  senal?.addEventListener('abort', cancelar);
+  const abortFromCaller = () => controller.abort();
+  signal?.addEventListener('abort', abortFromCaller);
 
   try {
-    const respuesta = await fetch(`${API_URL}/chat/${tenant}`, {
+    const response = await fetch(`${API_URL}/chat/${tenant}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        ...(datos.sesionId ? { sesion_id: datos.sesionId } : {}),
-        mensaje: datos.mensaje,
-        idioma: datos.idioma,
+        ...(data.sessionId ? { sesion_id: data.sessionId } : {}),
+        mensaje: data.message,
+        idioma: data.language,
       }),
-      signal: control.signal,
+      signal: controller.signal,
     });
-    if (respuesta.status === 429) return { ok: false, motivo: 'limite' };
-    if (!respuesta.ok) return { ok: false, motivo: 'error' };
-    const cuerpo = (await respuesta.json()) as Record<string, unknown>;
-    if (typeof cuerpo.respuesta !== 'string' || !cuerpo.respuesta) return { ok: false, motivo: 'error' };
+    if (response.status === 429) return { ok: false, reason: 'limit' };
+    if (!response.ok) return { ok: false, reason: 'error' };
+    const body = (await response.json()) as Record<string, unknown>;
+    if (typeof body.respuesta !== 'string' || !body.respuesta) return { ok: false, reason: 'error' };
     return {
       ok: true,
-      sesionId: typeof cuerpo.sesion_id === 'string' ? cuerpo.sesion_id : null,
-      respuesta: cuerpo.respuesta,
-      accion: normalizarAccion(cuerpo.accion),
+      sessionId: typeof body.sesion_id === 'string' ? body.sesion_id : null,
+      reply: body.respuesta,
+      action: normalizeAction(body.accion),
     };
   } catch {
-    return { ok: false, motivo: vencio ? 'timeout' : 'red' };
+    return { ok: false, reason: timedOut ? 'timeout' : 'network' };
   } finally {
-    window.clearTimeout(temporizador);
-    senal?.removeEventListener('abort', cancelar);
+    window.clearTimeout(timer);
+    signal?.removeEventListener('abort', abortFromCaller);
   }
 }
 
-export interface InfoTenant {
-  nombre_negocio: string;
-  tipo: string;
-  vence: string | null;
+export interface TenantInfo {
+  businessName: string;
+  type: string;
+  expires: string | null;
 }
 
-export type ResultadoInfo =
-  | { estado: 'ok'; info: InfoTenant }
-  | { estado: 'no-disponible' }
-  | { estado: 'error' };
+export type InfoResult =
+  | { status: 'ok'; info: TenantInfo }
+  | { status: 'unavailable' }
+  | { status: 'error' };
 
-export async function pedirInfo(tenant: string, senal?: AbortSignal): Promise<ResultadoInfo> {
+export async function fetchTenantInfo(tenant: string, signal?: AbortSignal): Promise<InfoResult> {
   try {
-    const respuesta = await fetch(`${API_URL}/chat/${tenant}/info`, { signal: senal });
-    if (respuesta.status === 404) return { estado: 'no-disponible' };
-    if (!respuesta.ok) return { estado: 'error' };
-    const cuerpo = (await respuesta.json()) as Record<string, unknown>;
-    if (typeof cuerpo.nombre_negocio !== 'string') return { estado: 'error' };
+    const response = await fetch(`${API_URL}/chat/${tenant}/info`, { signal });
+    if (response.status === 404) return { status: 'unavailable' };
+    if (!response.ok) return { status: 'error' };
+    const body = (await response.json()) as Record<string, unknown>;
+    if (typeof body.nombre_negocio !== 'string') return { status: 'error' };
     return {
-      estado: 'ok',
+      status: 'ok',
       info: {
-        nombre_negocio: cuerpo.nombre_negocio,
-        tipo: typeof cuerpo.tipo === 'string' ? cuerpo.tipo : 'demo',
-        vence: typeof cuerpo.vence === 'string' ? cuerpo.vence : null,
+        businessName: body.nombre_negocio,
+        type: typeof body.tipo === 'string' ? body.tipo : 'demo',
+        expires: typeof body.vence === 'string' ? body.vence : null,
       },
     };
   } catch {
-    return { estado: 'error' };
+    return { status: 'error' };
   }
 }
 
-const claveSesion = (tenant: string) => `aiworks-chat-${tenant}`;
+const sessionKey = (tenant: string) => `aiworks-chat-${tenant}`;
 
-/** sessionStorage puede lanzar (ventana privada, datos bloqueados): siempre en try/catch. */
-export function leerSesion(tenant: string): string | null {
+// sessionStorage can throw (private window, blocked data), so every access is in try/catch.
+export function readSession(tenant: string): string | null {
   try {
-    return sessionStorage.getItem(claveSesion(tenant));
+    return sessionStorage.getItem(sessionKey(tenant));
   } catch {
     return null;
   }
 }
 
-export function guardarSesion(tenant: string, id: string) {
+export function saveSession(tenant: string, id: string) {
   try {
-    sessionStorage.setItem(claveSesion(tenant), id);
+    sessionStorage.setItem(sessionKey(tenant), id);
   } catch {
-    // Sin almacenamiento, la conversación sigue mientras la página esté abierta.
+    // Without storage the conversation lasts while the page stays open.
   }
 }
 
-export const URL_WHATSAPP_RESPALDO = `https://wa.me/${CONTACT_INFO.whatsapp}`;
+export const WHATSAPP_FALLBACK_URL = `https://wa.me/${CONTACT_INFO.whatsapp}`;

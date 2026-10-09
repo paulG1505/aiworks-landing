@@ -2,77 +2,67 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePrefersReducedMotion } from '@/shared/hooks/usePrefersReducedMotion';
-import { TECNOLOGIAS } from '../data/tecnologias';
+import { TECHNOLOGIES } from '../data/technologies';
 
-interface CintaTecnologiasProps {
+interface TechTickerProps {
   label: string;
-  pausar: string;
-  reanudar: string;
+  pauseLabel: string;
+  resumeLabel: string;
 }
 
-/** Segundos que tarda la cinta en recorrer una vuelta completa. */
-const VUELTA_S = 28;
+const LOOP_SECONDS = 28;
 
-/** Los logos se desvanecen en los bordes en lugar de cortarse en seco. */
-const MASCARA = 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)';
+// Logos fade at the edges instead of being cut off.
+const EDGE_MASK = 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)';
 
-/**
- * Cinta de logos en movimiento horizontal continuo. La pista lleva la lista dos veces y
- * se desplaza -50%, así el bucle no tiene salto.
- *
- * El movimiento usa la Web Animations API y no una animación de globals.css: vive y se
- * controla desde el propio componente, sin depender del orden de la hoja de estilos ni
- * de que el navegador tenga la versión actual en caché.
- *
- * Se detiene al pasar el mouse, al enfocar un elemento dentro o con el botón (WCAG
- * 2.2.2: todo movimiento de más de 5s debe poder pausarse). Con prefers-reduced-motion
- * no se crea la animación: los logos se reparten en filas y no se duplican. La copia es
- * aria-hidden; el nombre de cada tecnología está en el <title> del SVG.
- */
-export function CintaTecnologias({ label, pausar, reanudar }: CintaTecnologiasProps) {
-  const pistaRef = useRef<HTMLDivElement>(null);
-  const animacionRef = useRef<Animation | null>(null);
-  const [pausadaPorBoton, setPausadaPorBoton] = useState(false);
-  const [encima, setEncima] = useState(false);
-  const reducido = usePrefersReducedMotion();
+// The track holds the list twice and moves -50%, so the loop has no jump. It uses the Web
+// Animations API instead of a globals.css animation so it does not depend on stylesheet
+// order or a stale browser cache. Paused on hover, focus or the button (WCAG 2.2.2). With
+// reduced motion no animation is created and logos wrap into rows without duplicates.
+export function TechTicker({ label, pauseLabel, resumeLabel }: TechTickerProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<Animation | null>(null);
+  const [pausedByButton, setPausedByButton] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    const pista = pistaRef.current;
-    if (!pista || reducido || typeof pista.animate !== 'function') return;
-    const animacion = pista.animate(
+    const track = trackRef.current;
+    if (!track || reducedMotion || typeof track.animate !== 'function') return;
+    const animation = track.animate(
       [{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }],
-      { duration: VUELTA_S * 1000, iterations: Infinity, easing: 'linear' },
+      { duration: LOOP_SECONDS * 1000, iterations: Infinity, easing: 'linear' },
     );
-    animacionRef.current = animacion;
+    animationRef.current = animation;
     return () => {
-      animacion.cancel();
-      animacionRef.current = null;
+      animation.cancel();
+      animationRef.current = null;
     };
-  }, [reducido]);
+  }, [reducedMotion]);
 
   useEffect(() => {
-    const animacion = animacionRef.current;
-    if (!animacion) return;
-    if (pausadaPorBoton || encima) animacion.pause();
-    else animacion.play();
-  }, [pausadaPorBoton, encima, reducido]);
+    const animation = animationRef.current;
+    if (!animation) return;
+    if (pausedByButton || hovered) animation.pause();
+    else animation.play();
+  }, [pausedByButton, hovered, reducedMotion]);
 
-  const lista = (copia: boolean) => (
+  const list = (isCopy: boolean) => (
     <ul
-      className={`flex shrink-0 items-center gap-12 pr-12 sm:gap-16 sm:pr-16 ${reducido ? 'flex-wrap gap-y-6' : ''}`}
-      aria-hidden={copia || undefined}
-      aria-label={copia ? undefined : label}
+      className={`flex shrink-0 items-center gap-12 pr-12 sm:gap-16 sm:pr-16 ${reducedMotion ? 'flex-wrap gap-y-6' : ''}`}
+      aria-hidden={isCopy || undefined}
+      aria-label={isCopy ? undefined : label}
     >
-      {TECNOLOGIAS.map((tec) => (
-        <li key={tec.nombre} className="shrink-0">
+      {TECHNOLOGIES.map((tech) => (
+        <li key={tech.name} className="shrink-0">
           <svg
             role="img"
             viewBox="0 0 24 24"
-            fillRule={tec.evenodd ? 'evenodd' : undefined}
+            fillRule={tech.evenodd ? 'evenodd' : undefined}
             className="size-8 fill-current text-hueso opacity-90 transition-opacity duration-150 hover:opacity-100 sm:size-9"
           >
-            <title>{tec.nombre}</title>
-            {tec.trazados.map((d) => (
+            <title>{tech.name}</title>
+            {tech.paths.map((d) => (
               <path key={d.slice(0, 24)} d={d} />
             ))}
           </svg>
@@ -85,14 +75,14 @@ export function CintaTecnologias({ label, pausar, reanudar }: CintaTecnologiasPr
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between gap-4">
         <p className="eyebrow">{label}</p>
-        {!reducido && (
+        {!reducedMotion && (
           <button
             type="button"
-            onClick={() => setPausadaPorBoton((p) => !p)}
-            aria-pressed={pausadaPorBoton}
+            onClick={() => setPausedByButton((p) => !p)}
+            aria-pressed={pausedByButton}
             className="cursor-pointer rounded-full border border-[var(--regla-noche)] px-3 py-1.5 font-mono text-xs text-hueso-medio transition-colors duration-150 hover:border-hueso-medio hover:text-hueso"
           >
-            {pausadaPorBoton ? reanudar : pausar}
+            {pausedByButton ? resumeLabel : pauseLabel}
           </button>
         )}
       </div>
@@ -100,15 +90,15 @@ export function CintaTecnologias({ label, pausar, reanudar }: CintaTecnologiasPr
       <div
         data-cinta=""
         className="overflow-hidden"
-        style={reducido ? undefined : { WebkitMaskImage: MASCARA, maskImage: MASCARA }}
-        onMouseEnter={() => setEncima(true)}
-        onMouseLeave={() => setEncima(false)}
-        onFocus={() => setEncima(true)}
-        onBlur={() => setEncima(false)}
+        style={reducedMotion ? undefined : { WebkitMaskImage: EDGE_MASK, maskImage: EDGE_MASK }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={() => setHovered(true)}
+        onBlur={() => setHovered(false)}
       >
-        <div ref={pistaRef} className={`flex ${reducido ? '' : 'w-max'}`}>
-          {lista(false)}
-          {!reducido && lista(true)}
+        <div ref={trackRef} className={`flex ${reducedMotion ? '' : 'w-max'}`}>
+          {list(false)}
+          {!reducedMotion && list(true)}
         </div>
       </div>
     </div>

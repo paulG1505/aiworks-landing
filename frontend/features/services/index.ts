@@ -1,1 +1,1 @@
-export { Servicios } from './components/Servicios';
+export { Services } from './components/Services';

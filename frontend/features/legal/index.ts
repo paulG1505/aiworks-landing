@@ -1,1 +1,1 @@
-export { Privacidad } from './components/Privacidad';
+export { Privacy } from './components/Privacy';

@@ -2,22 +2,11 @@
 
 import { useTranslation } from '@/shared/hooks/useTranslation';
 
-/**
- * El registro operativo, presentado como una ventana de terminal: la demostración de
- * "software con IA" en el primer vistazo. Es un ejemplo y lo dice en la barra de la
- * ventana (rótulo punteado), no una demo que finge ser real.
- *
- * Cuenta un caso que se entiende sin contexto técnico: un lead que escribe por WhatsApp
- * fuera de horario. Aparece el comando, luego el registro escribe una línea cada 500ms
- * y al final saltan las etiquetas del resultado. Todo una sola vez, sin bucle.
- *
- * La terminal es oscura en ambos temas: es un objeto, no una superficie de la página.
- * La animación es CSS pura (globals.css): el HTML exportado ya trae el contenido
- * completo, así que sin JS o con prefers-reduced-motion se ve entero y estático.
- */
-const INTERVALO_MS = 500;
+// The animation is pure CSS (globals.css): the exported HTML already contains the full
+// content, so without JS or with reduced motion it renders complete and static.
+const LINE_INTERVAL_MS = 500;
 
-const COLOR_ETIQUETA = {
+const LABEL_COLOR = {
   entrada: 'text-[var(--term-entrada)]',
   ia: 'text-[var(--term-ia)]',
   decision: 'text-[var(--term-ok)]',
@@ -25,20 +14,21 @@ const COLOR_ETIQUETA = {
   registro: 'text-[var(--term-texto)]',
 } as const;
 
-type Retardo = React.CSSProperties & { '--d': string };
-const retardo = (ms: number): Retardo => ({ '--d': `${ms}ms` });
+type Delay = React.CSSProperties & { '--d': string };
+const delay = (ms: number): Delay => ({ '--d': `${ms}ms` });
 
-interface RegistroOperativoProps {
-  /** Retardo del comando, para encadenar con la entrada del titular. */
-  inicioMs?: number;
+interface OperationalLogProps {
+  /** Delay of the command, to chain with the headline entrance. */
+  startMs?: number;
 }
 
-export function RegistroOperativo({ inicioMs = 0 }: RegistroOperativoProps) {
+// Terminal-style window that is dark in both themes: it is an object, not a page surface.
+export function OperationalLog({ startMs = 0 }: OperationalLogProps) {
   const { t } = useTranslation();
   const { lineas, resultado } = t.registro;
 
-  const inicioLineas = inicioMs + 400;
-  const inicioResultado = inicioLineas + lineas.length * INTERVALO_MS + 150;
+  const linesStartMs = startMs + 400;
+  const resultStartMs = linesStartMs + lineas.length * LINE_INTERVAL_MS + 150;
 
   return (
     <div>
@@ -46,7 +36,6 @@ export function RegistroOperativo({ inicioMs = 0 }: RegistroOperativoProps) {
         aria-label={t.registro.titulo}
         className="terminal overflow-hidden rounded-xl bg-[var(--term-fondo)] font-mono text-[var(--term-texto)]"
       >
-        {/* Barra de la ventana: semáforo, título y rótulo de ejemplo. */}
         <div className="flex items-center gap-3 border-b border-[var(--term-regla)] bg-[var(--term-barra)] px-4 py-3">
           <span className="flex shrink-0 gap-2" aria-hidden="true">
             <span className="size-3 rounded-full bg-[#FF5F57]" />
@@ -62,7 +51,7 @@ export function RegistroOperativo({ inicioMs = 0 }: RegistroOperativoProps) {
         </div>
 
         <div className="flex flex-col gap-2.5 px-4 py-4 text-[0.8125rem] leading-[1.5] sm:px-5 sm:py-5 sm:text-[0.875rem]">
-          <p className="registro-linea break-all" style={retardo(inicioMs)}>
+          <p className="registro-linea break-all" style={delay(startMs)}>
             <span className="text-[var(--term-media)]">$ </span>
             {t.registro.comando}
           </p>
@@ -72,32 +61,31 @@ export function RegistroOperativo({ inicioMs = 0 }: RegistroOperativoProps) {
               <li
                 key={index}
                 className="registro-linea flex flex-col gap-0.5 sm:grid sm:grid-cols-[48px_84px_minmax(0,1fr)] sm:gap-3"
-                style={retardo(inicioLineas + index * INTERVALO_MS)}
+                style={delay(linesStartMs + index * LINE_INTERVAL_MS)}
               >
-                {/* En móvil hora y etiqueta comparten línea y el texto baja; desde sm son tres columnas. */}
+                {/* On mobile, time and label share a line; from sm they are three columns. */}
                 <span className="text-[var(--term-media)]">
                   <span className="tabular">{linea.hora}</span>
                   <span className="sm:hidden">
                     {'  '}
-                    <span className={COLOR_ETIQUETA[linea.tipo]}>{linea.etiqueta}</span>
+                    <span className={LABEL_COLOR[linea.tipo]}>{linea.etiqueta}</span>
                   </span>
                 </span>
-                <span className={`hidden sm:inline ${COLOR_ETIQUETA[linea.tipo]}`}>{linea.etiqueta}</span>
+                <span className={`hidden sm:inline ${LABEL_COLOR[linea.tipo]}`}>{linea.etiqueta}</span>
                 <span>{linea.texto}</span>
               </li>
             ))}
           </ol>
 
-          {/* Resultado: las etiquetas saltan al final, cuando el flujo ya terminó. */}
           <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-[var(--term-regla)] pt-4">
-            <span className="registro-linea mr-1 text-[var(--term-ok)]" style={retardo(inicioResultado)}>
+            <span className="registro-linea mr-1 text-[var(--term-ok)]" style={delay(resultStartMs)}>
               ✓ {resultado.label}
             </span>
             {resultado.items.map((item, index) => (
               <span
                 key={item}
                 className="registro-chip rounded-md border border-[var(--term-regla-fuerte)] px-2.5 py-1 text-[0.8125rem] leading-none"
-                style={retardo(inicioResultado + 120 + index * 140)}
+                style={delay(resultStartMs + 120 + index * 140)}
               >
                 {item}
               </span>

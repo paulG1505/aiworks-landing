@@ -2,12 +2,8 @@
 
 import { m, useScroll, useSpring } from 'motion/react';
 
-/**
- * Barra fina en petróleo al pie del header que indica cuánto de la página se ha leído.
- * Va ligada al scroll (no se mueve sola), así que no cuenta como movimiento autónomo; el
- * resorte solo suaviza los saltos de la rueda del mouse.
- */
-export function BarraProgreso() {
+// Scroll-linked, so it does not count as autonomous motion; the spring only smooths wheel jumps.
+export function ProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 30, restDelta: 0.001 });
 

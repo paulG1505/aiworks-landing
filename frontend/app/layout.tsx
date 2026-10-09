@@ -6,36 +6,31 @@ import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
 import { ChatLauncher } from "@/shared/components/ui/chat/ChatLauncher";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
-import { ProveedorMovimiento } from "@/shared/components/providers/ProveedorMovimiento";
+import { MotionProvider } from "@/shared/components/providers/MotionProvider";
 import { SITE_URL } from "@/shared/constants/site";
-import { CLAVE_TEMA } from "@/shared/lib/tema";
+import { THEME_KEY } from "@/shared/lib/theme";
 import "./globals.css";
 
-// Tres voces, una por función: Bricolage Grotesque para titulares, Geist para cuerpo y
-// UI, Geist Mono para eyebrows y el registro operativo. next/font las sirve desde el
-// propio dominio (sin petición a Google en el navegador) y reserva su métrica para evitar
-// saltos de layout. Bricolage es variable: se carga el eje de tamaño óptico (opsz), que
-// abre el espaciado en tamaños chicos y lo cierra en el titular grande.
-const titular = Bricolage_Grotesque({
+// Bricolage is variable: the optical size axis (opsz) loosens spacing at small sizes and
+// tightens it in large headlines.
+const headlineFont = Bricolage_Grotesque({
   subsets: ["latin"],
   axes: ["opsz"],
   variable: "--fuente-titular",
   display: "swap",
 });
-const sans = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display: "swap" });
+const sansFont = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
+const monoFont = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  // En la pestaña solo el nombre. El título descriptivo queda en openGraph/twitter, que es
-  // lo que se ve al compartir el enlace; las demás rutas usan "%s | AIworks".
+  // The tab shows only the name; the descriptive title lives in openGraph/twitter, which is
+  // what appears when the link is shared.
   title: {
     default: "AIworks",
     template: "%s | AIworks"
   },
   description: "Su equipo copia datos de un Excel a otro. Construimos el software que hace ese trabajo solo, con revisión humana y registro auditable de cada decisión. Diagnóstico de 15 minutos sin costo.",
-  // Alineadas con los tres procesos que la página desarrolla de verdad. Antes
-  // apuntaban a "chatbots" como producto genérico, que ahora es solo uno de los tres.
   keywords: [
     "automatización de procesos con IA",
     "conciliación bancaria automática",
@@ -94,7 +89,7 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
-const SCRIPT_INICIAL = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${CLAVE_TEMA}')}catch(e){}if(t!=='claro'&&t!=='oscuro'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'}d.setAttribute('data-tema',t)})()`;
+const INITIAL_SCRIPT = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${THEME_KEY}')}catch(e){}if(t!=='claro'&&t!=='oscuro'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'}d.setAttribute('data-tema',t)})()`;
 
 export default function RootLayout({
   children,
@@ -102,24 +97,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning className={`${titular.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${headlineFont.variable} ${sansFont.variable} ${monoFont.variable}`}>
       <head>
-        {/*
-          * Antes del primer pintado:
-          * 1. Marca que hay JavaScript. Los revelados al hacer scroll solo ocultan contenido
-          *    bajo `html.js`: sin JS, o si el script falla, todo se ve.
-          * 2. Resuelve el tema (elección guardada o, si no hay, la del sistema) para que
-          *    la página no parpadee en claro antes de pasar a oscuro.
-          */}
-        <script dangerouslySetInnerHTML={{ __html: SCRIPT_INICIAL }} />
+        {/* Runs before first paint: flags JS support (reveals only hide content under `html.js`) and resolves the theme to avoid a light flash. */}
+        <script dangerouslySetInnerHTML={{ __html: INITIAL_SCRIPT }} />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
       <body className="antialiased font-sans">
-        {/*
-          * Saltar al contenido: con el header fijo, quien navega con teclado tenía que
-          * pasar por el logo, cinco enlaces, el selector de idioma y el CTA antes de
-          * llegar al contenido. Visible solo al recibir foco.
-          */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
@@ -128,13 +112,13 @@ export default function RootLayout({
         </a>
         <StoreRehydrate />
         <StructuredData />
-        <ProveedorMovimiento>
+        <MotionProvider>
           <Header />
           <main id="main">{children}</main>
           <Footer />
           <FloatingWhatsApp />
           <ChatLauncher />
-        </ProveedorMovimiento>
+        </MotionProvider>
       </body>
     </html>
   );

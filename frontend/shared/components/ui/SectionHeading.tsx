@@ -1,33 +1,24 @@
 'use client';
 
-import { useRevelado } from '@/shared/hooks/useRevelado';
+import { useReveal } from '@/shared/hooks/useReveal';
 import { cn } from '@/shared/lib/utils';
 
-interface EncabezadoSeccionProps {
-  numero: string;
+interface SectionHeadingProps {
+  number: string;
   eyebrow: string;
-  titulo: { antes: string; clave: string };
-  /** Párrafo de entrada. En escritorio va en una segunda columna, a la derecha del titular. */
+  title: { antes: string; clave: string };
+  /** Intro paragraph. On desktop it sits in a second column to the right of the title. */
   intro?: string;
   introClassName?: string;
   className?: string;
 }
 
-/**
- * Patrón de cada bloque: eyebrow numerado y titular en dos líneas, la segunda en
- * cursiva con el acento. Al revelarse, el eyebrow aparece primero y cada línea sube
- * desde su máscara con 110ms de diferencia.
- *
- * Con `intro`, desde lg el encabezado se parte en dos columnas —titular a la izquierda,
- * párrafo a la derecha alineado abajo— para que las pantallas anchas no queden vacías a
- * la derecha. En móvil y tablet todo sigue en una columna.
- */
-export function EncabezadoSeccion({ numero, eyebrow, titulo, intro, introClassName, className }: EncabezadoSeccionProps) {
-  const revelado = useRevelado();
+export function SectionHeading({ number, eyebrow, title, intro, introClassName, className }: SectionHeadingProps) {
+  const reveal = useReveal();
 
   return (
     <div
-      {...revelado}
+      {...reveal}
       className={cn(
         intro && 'lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-end lg:gap-16',
         className,
@@ -36,18 +27,18 @@ export function EncabezadoSeccion({ numero, eyebrow, titulo, intro, introClassNa
       <div className="flex max-w-[900px] flex-col gap-5">
         <p className="eyebrow revelar">
           <span>
-            <span className="tabular">{numero}</span> — {eyebrow}
+            <span className="tabular">{number}</span> — {eyebrow}
           </span>
         </p>
         <h2 className="titular">
           <span className="linea-mascara revelar-mascara">
             <span className="linea" style={{ '--d': '100ms' } as React.CSSProperties}>
-              {titulo.antes}
+              {title.antes}
             </span>
           </span>
           <span className="linea-mascara revelar-mascara">
             <span className="linea clave" style={{ '--d': '210ms' } as React.CSSProperties}>
-              {titulo.clave}
+              {title.clave}
             </span>
           </span>
         </h2>

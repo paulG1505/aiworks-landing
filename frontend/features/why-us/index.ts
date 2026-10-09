@@ -1,1 +1,1 @@
-export { Porque } from './components/Porque';
+export { WhyUs } from './components/WhyUs';

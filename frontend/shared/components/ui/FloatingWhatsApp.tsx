@@ -5,95 +5,79 @@ import { usePathname } from 'next/navigation';
 import { AnimatePresence, m } from 'motion/react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
+import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
 import { LogoWhatsApp } from './LogoWhatsApp';
 
-/** La burbuja aparece a los 8 s o al 40 % de scroll, lo que ocurra primero. */
-const RETARDO_BURBUJA_MS = 8000;
-const SCROLL_BURBUJA = 0.4;
-const CLAVE_CERRADA = 'aiworks-burbuja-whatsapp';
+const BUBBLE_DELAY_MS = 8000;
+const BUBBLE_SCROLL_RATIO = 0.4;
+const DISMISSED_KEY = 'aiworks-burbuja-whatsapp';
 
-/**
- * Botón flotante de WhatsApp, en móvil y escritorio, con una burbuja de invitación.
- * Es la alternativa al chat: va encima del botón del chat (ChatLauncher), que es el principal.
- *
- * Lleva el verde de WhatsApp: es la marca que la gente reconoce al instante, y aquí es
- * la única excepción al acento único. El logo va en verde muy oscuro y no en blanco:
- * blanco sobre #25D366 da 1,98:1 y #0B3D1F da 6,2:1. El borde más oscuro separa el botón
- * del fondo claro, donde el verde solo daría 1,84:1.
- *
- * La burbuja se puede cerrar y no vuelve en esa visita (sessionStorage). Botón y burbuja
- * se ocultan mientras el cierre de contacto está en pantalla, que ya tiene su propio CTA.
- *
- * Movimiento (Motion): la burbuja entra desde abajo con un resorte corto y sale al
- * cerrarla; el botón crece apenas al pasar el mouse y se hunde al pulsar. Con
- * prefers-reduced-motion, MotionConfig deja solo el cambio de opacidad.
- */
+// Sits above the chat launcher (ChatLauncher), which is the primary button. The logo is dark
+// green rather than white for contrast: white on #25D366 is 1.98:1, #0B3D1F is 6.2:1.
 export function FloatingWhatsApp() {
   const { t, locale } = useTranslation();
-  const ruta = usePathname();
-  const [burbuja, setBurbuja] = useState(false);
-  // Se lee al montar; como la burbuja arranca oculta, el HTML inicial es el mismo en
-  // servidor y cliente y no hay desajuste de hidratación.
-  const [cerrada, setCerrada] = useState(() => {
+  const pathname = usePathname();
+  const [bubbleVisible, setBubbleVisible] = useState(false);
+  // Read on mount; the bubble starts hidden, so server and client HTML match.
+  const [dismissed, setDismissed] = useState(() => {
     if (typeof window === 'undefined') return false;
     try {
-      return !!sessionStorage.getItem(CLAVE_CERRADA);
+      return !!sessionStorage.getItem(DISMISSED_KEY);
     } catch {
       return false;
     }
   });
-  const [enContacto, setEnContacto] = useState(false);
+  const [inContactSection, setInContactSection] = useState(false);
 
   useEffect(() => {
-    const temporizador = window.setTimeout(() => setBurbuja(true), RETARDO_BURBUJA_MS);
+    const timer = window.setTimeout(() => setBubbleVisible(true), BUBBLE_DELAY_MS);
     let frame = 0;
-    const medir = () => {
+    const measure = () => {
       frame = 0;
-      const recorrido = document.documentElement.scrollHeight - window.innerHeight;
-      if (recorrido > 0 && window.scrollY / recorrido >= SCROLL_BURBUJA) setBurbuja(true);
-      const contacto = document.getElementById('contacto');
-      setEnContacto(!!contacto && contacto.getBoundingClientRect().top < window.innerHeight * 0.85);
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable > 0 && window.scrollY / scrollable >= BUBBLE_SCROLL_RATIO) setBubbleVisible(true);
+      const contact = document.getElementById('contacto');
+      setInContactSection(!!contact && contact.getBoundingClientRect().top < window.innerHeight * 0.85);
     };
-    const alScroll = () => {
-      if (!frame) frame = requestAnimationFrame(medir);
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
     };
-    window.addEventListener('scroll', alScroll, { passive: true });
-    window.addEventListener('resize', alScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
-      window.clearTimeout(temporizador);
-      window.removeEventListener('scroll', alScroll);
-      window.removeEventListener('resize', alScroll);
+      window.clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 
-  const cerrar = () => {
-    setCerrada(true);
+  const dismiss = () => {
+    setDismissed(true);
     try {
-      sessionStorage.setItem(CLAVE_CERRADA, '1');
+      sessionStorage.setItem(DISMISSED_KEY, '1');
     } catch {
-      // Ídem: sin almacenamiento, el cierre dura hasta recargar.
+      // Without storage the dismissal lasts until reload.
     }
   };
 
-  // La página de demo trae su propio llamado a la acción y su propio chat.
-  if (ruta?.startsWith('/demo')) return null;
+  // The demo page has its own call to action and its own chat.
+  if (pathname?.startsWith('/demo')) return null;
 
-  const href = enlaceWhatsApp(locale);
-  const etiqueta = `${t.header.cta} ${avisoPestanaNueva(locale)}`;
+  const href = whatsappLink(locale);
+  const label = `${t.header.cta} ${newTabNotice(locale)}`;
 
   return (
     <div
       className={`fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-5 z-40 flex items-end gap-3 transition-opacity duration-200 lg:bottom-[6.75rem] lg:right-8 ${
-        enContacto ? 'pointer-events-none opacity-0' : 'opacity-100'
+        inContactSection ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
-      aria-hidden={enContacto || undefined}
+      aria-hidden={inContactSection || undefined}
     >
       <AnimatePresence>
-        {burbuja && !cerrada && (
+        {bubbleVisible && !dismissed && (
           <m.div
-            key="burbuja"
+            key="bubble"
             initial={{ opacity: 0, y: 16, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96, transition: { duration: 0.18 } }}
@@ -109,7 +93,7 @@ export function FloatingWhatsApp() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={etiqueta}
+              aria-label={label}
               className="flex flex-col"
             >
               <span className="font-semibold leading-snug">{t.whatsappFlotante.titulo}</span>
@@ -119,7 +103,7 @@ export function FloatingWhatsApp() {
             </a>
             <button
               type="button"
-              onClick={cerrar}
+              onClick={dismiss}
               aria-label={t.whatsappFlotante.cerrar}
               className="absolute right-2 top-2 cursor-pointer rounded-full p-1.5 text-tinta-media transition-colors duration-150 hover:bg-arena hover:text-tinta"
             >
@@ -136,9 +120,9 @@ export function FloatingWhatsApp() {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        tabIndex={enContacto ? -1 : undefined}
+        tabIndex={inContactSection ? -1 : undefined}
         className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#128C4A] bg-[#25D366] text-[#0B3D1F] shadow-[0_12px_28px_-12px_rgb(0_0_0/0.45)] hover:bg-[#20BD5A]"
-        aria-label={etiqueta}
+        aria-label={label}
       >
         <LogoWhatsApp className="size-6" />
       </m.a>

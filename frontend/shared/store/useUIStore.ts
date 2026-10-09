@@ -33,12 +33,3 @@ export const useUIStore = create<UIState>()(
     { name: 'UIStore' }
   )
 );
-
-// Note: For optimal re-render prevention, use direct selectors in components:
-// const isMenuOpen = useUIStore((state) => state.isMenuOpen);
-// const toggleMenu = useUIStore((state) => state.toggleMenu);
-//
-// This approach ensures:
-// 1. Components only re-render when their specific state slice changes
-// 2. No object creation on every render (avoids infinite loops)
-// 3. Better performance with primitive value subscriptions

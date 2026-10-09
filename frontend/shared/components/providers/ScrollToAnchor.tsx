@@ -2,31 +2,25 @@
 
 import { useEffect } from 'react';
 
-/** Cuánto esperar a que aparezca la sección antes de rendirse. */
-const ESPERA_MAXIMA_MS = 4000;
+const MAX_WAIT_MS = 4000;
 
-/**
- * Al entrar a la página con un ancla (p. ej. /#servicios desde /privacidad o desde un
- * enlace compartido), el navegador intenta desplazarse antes de que existan las
- * secciones, que se cargan con next/dynamic. Este componente espera a que el elemento
- * aparezca y entonces se desplaza hasta él, una sola vez.
- */
-export function ScrollAlAncla() {
+// Sections load through next/dynamic, so the browser's own anchor scroll fires before they exist.
+export function ScrollToAnchor() {
   useEffect(() => {
     const id = decodeURIComponent(window.location.hash.slice(1));
     if (!id) return;
 
-    const inicio = performance.now();
+    const start = performance.now();
     let frame = 0;
-    const buscar = () => {
-      const destino = document.getElementById(id);
-      if (destino) {
-        destino.scrollIntoView({ behavior: 'auto', block: 'start' });
+    const find = () => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'auto', block: 'start' });
         return;
       }
-      if (performance.now() - inicio < ESPERA_MAXIMA_MS) frame = requestAnimationFrame(buscar);
+      if (performance.now() - start < MAX_WAIT_MS) frame = requestAnimationFrame(find);
     };
-    frame = requestAnimationFrame(buscar);
+    frame = requestAnimationFrame(find);
     return () => cancelAnimationFrame(frame);
   }, []);
 

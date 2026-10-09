@@ -6,29 +6,22 @@ import { Container } from '@/shared/components/ui/Container';
 import { CONTACT_INFO } from '@/shared/constants';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 
-/**
- * Política de privacidad (LOPDP, Ecuador). Describe solo lo que el sitio hace de verdad:
- * un asistente de chat (conversación 30 días, IP solo como huella diaria), sin analítica,
- * contacto por WhatsApp y correo, y preferencias locales en el navegador. Si eso cambia (p. ej. se agrega analítica o un formulario),
- * este texto tiene que cambiar en el mismo commit.
- *
- * El texto es un borrador razonable, no asesoría legal: debe revisarlo quien responda
- * legalmente por AIworks antes de publicarse.
- */
-export function Privacidad() {
+// The policy must describe only what the site really does: if analytics or a form is added,
+// update the text in the same commit. It is a draft, not legal advice.
+export function Privacy() {
   const { t } = useTranslation();
   const p = t.legal.privacidad;
 
-  const conCorreo = (texto: string) => {
-    const [antes, despues] = texto.split('{correo}');
-    if (despues === undefined) return texto;
+  const withEmail = (text: string) => {
+    const [before, after] = text.split('{correo}');
+    if (after === undefined) return text;
     return (
       <>
-        {antes}
+        {before}
         <a href={`mailto:${CONTACT_INFO.email}`} className="enlace text-tinta">
           {CONTACT_INFO.email}
         </a>
-        {despues}
+        {after}
       </>
     );
   };
@@ -51,7 +44,7 @@ export function Privacidad() {
                 <h2 className="titular-3">{seccion.titulo}</h2>
                 {seccion.parrafos.map((parrafo) => (
                   <p key={parrafo.slice(0, 40)} className="text-tinta-media">
-                    {conCorreo(parrafo)}
+                    {withEmail(parrafo)}
                   </p>
                 ))}
               </section>

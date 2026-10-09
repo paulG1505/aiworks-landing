@@ -1,57 +1,48 @@
-/**
- * Tema claro / oscuro. El tema resuelto vive en el atributo `data-tema` de <html>, que
- * pone el script inicial de app/layout.tsx antes del primer pintado. Este módulo lo lee,
- * lo cambia y avisa de los cambios, para que el botón del header se sincronice sin
- * guardar una copia del estado en React.
- *
- * Por defecto se sigue al sistema operativo. Al pulsar el botón, la elección se guarda
- * en localStorage y deja de seguir al sistema.
- */
-export type Tema = 'claro' | 'oscuro';
+// The resolved theme lives in the `data-tema` attribute of <html>, set by the inline
+// script in app/layout.tsx before first paint. The stored values stay in Spanish
+// because they are persisted in visitors' localStorage.
+export type Theme = 'claro' | 'oscuro';
 
-export const CLAVE_TEMA = 'aiworks-tema';
+export const THEME_KEY = 'aiworks-tema';
 
-const CONSULTA_OSCURO = '(prefers-color-scheme: dark)';
+const DARK_QUERY = '(prefers-color-scheme: dark)';
 
-export function temaActual(): Tema {
+export function currentTheme(): Theme {
   return document.documentElement.getAttribute('data-tema') === 'oscuro' ? 'oscuro' : 'claro';
 }
 
-function temaGuardado(): Tema | null {
+function storedTheme(): Theme | null {
   try {
-    const t = localStorage.getItem(CLAVE_TEMA);
-    return t === 'claro' || t === 'oscuro' ? t : null;
+    const stored = localStorage.getItem(THEME_KEY);
+    return stored === 'claro' || stored === 'oscuro' ? stored : null;
   } catch {
     return null;
   }
 }
 
-export function fijarTema(tema: Tema) {
-  document.documentElement.setAttribute('data-tema', tema);
+export function setTheme(theme: Theme) {
+  document.documentElement.setAttribute('data-tema', theme);
   try {
-    localStorage.setItem(CLAVE_TEMA, tema);
+    localStorage.setItem(THEME_KEY, theme);
   } catch {
-    // Sin almacenamiento, la elección dura hasta recargar.
+    // Without storage the choice lasts until reload.
   }
 }
 
-/**
- * Se suscribe a los cambios de tema: los del botón (atributo de <html>) y, mientras el
- * usuario no haya elegido, los del sistema operativo.
- */
-export function suscribirTema(avisar: () => void) {
-  const observador = new MutationObserver(avisar);
-  observador.observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
+// Follows the OS theme only while the visitor has not made an explicit choice.
+export function subscribeTheme(notify: () => void) {
+  const observer = new MutationObserver(notify);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-tema'] });
 
-  const sistema = window.matchMedia(CONSULTA_OSCURO);
-  const alCambiarSistema = () => {
-    if (temaGuardado()) return;
-    document.documentElement.setAttribute('data-tema', sistema.matches ? 'oscuro' : 'claro');
+  const systemQuery = window.matchMedia(DARK_QUERY);
+  const onSystemChange = () => {
+    if (storedTheme()) return;
+    document.documentElement.setAttribute('data-tema', systemQuery.matches ? 'oscuro' : 'claro');
   };
-  sistema.addEventListener('change', alCambiarSistema);
+  systemQuery.addEventListener('change', onSystemChange);
 
   return () => {
-    observador.disconnect();
-    sistema.removeEventListener('change', alCambiarSistema);
+    observer.disconnect();
+    systemQuery.removeEventListener('change', onSystemChange);
   };
 }

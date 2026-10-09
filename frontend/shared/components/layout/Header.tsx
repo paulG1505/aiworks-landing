@@ -6,28 +6,26 @@ import { AnimatePresence, m } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
-import { SelectorTema } from '@/shared/components/layout/SelectorTema';
-import { BarraProgreso } from '@/shared/components/layout/BarraProgreso';
+import { ThemeToggle } from '@/shared/components/layout/ThemeToggle';
+import { ProgressBar } from '@/shared/components/layout/ProgressBar';
 import { useUIStore } from '@/shared/store/useUIStore';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
+import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
 
-// Menú móvil: el panel se despliega en altura y los enlaces entran uno tras otro.
 const PANEL = {
-  cerrado: { height: 0, opacity: 0 },
-  abierto: {
+  closed: { height: 0, opacity: 0 },
+  open: {
     height: 'auto',
     opacity: 1,
     transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1], when: 'beforeChildren', staggerChildren: 0.04 },
   },
 } as const;
 const ITEM = {
-  cerrado: { opacity: 0, y: -8 },
-  abierto: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } },
+  closed: { opacity: 0, y: -8 },
+  open: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } },
 } as const;
 
 export function Header() {
-  // Suscripciones selectivas a Zustand para no re-renderizar de más.
   const isMenuOpen = useUIStore((state) => state.isMenuOpen);
   const toggleMenu = useUIStore((state) => state.toggleMenu);
   const closeMenu = useUIStore((state) => state.closeMenu);
@@ -41,43 +39,40 @@ export function Header() {
     { label: t.header.nav.preguntas, href: '/#preguntas' },
   ];
 
-  // Los enlaces apuntan a "/#seccion" para que también funcionen desde otras rutas
-  // (p. ej. /privacidad). Si la sección está en esta página, se desplaza suave sin recargar.
-  // Con el menú móvil abierto, el desplazamiento espera a que termine su animación de
-  // salida: si arranca mientras el menú se desmonta, Chrome cancela el scroll suave.
-  const destinoPendiente = useRef<HTMLElement | null>(null);
-  const desplazarA = (destino: HTMLElement) => destino.scrollIntoView({ behavior: 'smooth' });
+  // With the mobile menu open, scrolling waits for its exit animation: Chrome cancels a
+  // smooth scroll that starts while the menu is unmounting.
+  const pendingTarget = useRef<HTMLElement | null>(null);
+  const scrollTo = (target: HTMLElement) => target.scrollIntoView({ behavior: 'smooth' });
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    const destino = document.getElementById(href.split('#')[1] ?? '');
-    if (!destino) {
+    const target = document.getElementById(href.split('#')[1] ?? '');
+    if (!target) {
       closeMenu();
       return;
     }
     e.preventDefault();
     if (isMenuOpen) {
-      destinoPendiente.current = destino;
+      pendingTarget.current = target;
       closeMenu();
     } else {
-      desplazarA(destino);
+      scrollTo(target);
     }
   };
 
-  const alCerrarMenu = () => {
-    if (destinoPendiente.current) desplazarA(destinoPendiente.current);
-    destinoPendiente.current = null;
+  const onMenuExitComplete = () => {
+    if (pendingTarget.current) scrollTo(pendingTarget.current);
+    pendingTarget.current = null;
   };
 
-  // El export estático no tiene backend: el CTA del header lleva directo a WhatsApp.
-  const whatsappUrl = enlaceWhatsApp(locale);
-  const whatsappAriaLabel = `${t.header.cta} ${avisoPestanaNueva(locale)}`;
+  const whatsappUrl = whatsappLink(locale);
+  const whatsappAriaLabel = `${t.header.cta} ${newTabNotice(locale)}`;
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-regla bg-papel">
       <Container>
         <nav aria-label={locale === 'en' ? 'Main' : 'Principal'} className="py-3.5 lg:py-[18px]">
           <div className="flex items-center justify-between gap-4">
-            {/* Wordmark tipográfico: placeholder hasta que exista un logo. */}
+            {/* Typographic wordmark: placeholder until a logo exists. */}
             <Link
               href="/"
               className="text-[1.0625rem] font-semibold tracking-[-0.02em] text-tinta lg:text-[1.25rem]"
@@ -102,7 +97,7 @@ export function Header() {
 
               <div className="flex items-center gap-2.5 lg:gap-4">
                 <LanguageSelector />
-                <SelectorTema />
+                <ThemeToggle />
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -135,20 +130,16 @@ export function Header() {
             </div>
           </div>
 
-          {/*
-            Accesibilidad: cerrado, el menú se desmonta (AnimatePresence lo saca del DOM al
-            terminar la salida), así no queda alcanzable con Tab ni legible para un lector
-            de pantalla.
-          */}
-          <AnimatePresence initial={false} onExitComplete={alCerrarMenu}>
+          {/* Closed, the menu is unmounted so it is unreachable by Tab and screen readers. */}
+          <AnimatePresence initial={false} onExitComplete={onMenuExitComplete}>
             {isMenuOpen && (
               <m.div
                 id="menu-movil"
                 className="overflow-hidden lg:hidden"
                 variants={PANEL}
-                initial="cerrado"
-                animate="abierto"
-                exit="cerrado"
+                initial="closed"
+                animate="open"
+                exit="closed"
               >
                 <ul className="mt-4 flex flex-col border-t border-regla pb-2 pt-2">
                   {navLinks.map((link) => (
@@ -179,7 +170,7 @@ export function Header() {
           </AnimatePresence>
         </nav>
       </Container>
-      <BarraProgreso />
+      <ProgressBar />
     </header>
   );
 }

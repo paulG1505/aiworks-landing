@@ -2,170 +2,163 @@
 
 import { useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { avisoPestanaNueva, enlaceWhatsApp } from '@/shared/lib/whatsapp';
+import { newTabNotice, whatsappLink } from '@/shared/lib/whatsapp';
 import {
-  MAX_CARACTERES,
-  enviarMensaje,
-  guardarSesion,
-  leerSesion,
-  type AccionChat,
+  MAX_CHARS,
+  sendMessage,
+  saveSession,
+  readSession,
+  type ChatAction,
 } from './api';
-import { TEXTOS_CHAT } from './textos';
+import { CHAT_TEXTS } from './texts';
 
-interface Mensaje {
+interface Message {
   id: number;
-  rol: 'usuario' | 'asistente';
-  texto: string;
-  accion?: AccionChat | null;
+  role: 'user' | 'assistant';
+  text: string;
+  action?: ChatAction | null;
 }
 
 interface Props {
-  /** `aiworks` o `demo-<código>`: el tenant al que se escribe. */
+  /** `aiworks` or `demo-<code>`: the tenant being written to. */
   tenant: string;
-  bienvenida?: string;
-  sugerencias?: readonly string[];
-  /** Pie propio de AIworks. La demo habla como el negocio y lo oculta. */
-  conPie?: boolean;
-  /** Si falla la red, ofrecer el WhatsApp de AIworks. La demo no lo ofrece dentro del chat. */
-  respaldoWhatsapp?: boolean;
-  /** Pone el foco en el campo al montar o al volver a mostrarse. */
-  enfocar?: boolean;
+  welcome?: string;
+  suggestions?: readonly string[];
+  /** AIworks' own footer. The demo speaks as the business and hides it. */
+  showFooter?: boolean;
+  /** On network failure, offer AIworks' WhatsApp. The demo does not offer it inside the chat. */
+  whatsappFallback?: boolean;
+  /** Focuses the field on mount or when shown again. */
+  autoFocus?: boolean;
 }
 
-/**
- * Núcleo del chat: lista de mensajes, sugerencias, campo y pie. Lo usan el panel flotante
- * (PanelChat) y la página de demo, que lo incrusta tal cual.
- *
- * Estilo: sin burbujas ni tarjetas. Cada mensaje es una fila con filete y un rótulo en
- * mono; lo del visitante lleva una regla fina de petróleo a la izquierda.
- */
-export function Conversacion({
+/** Chat core shared by the floating panel (ChatPanel) and the demo page. */
+export function Conversation({
   tenant,
-  bienvenida,
-  sugerencias,
-  conPie = true,
-  respaldoWhatsapp = true,
-  enfocar = false,
+  welcome,
+  suggestions,
+  showFooter = true,
+  whatsappFallback = true,
+  autoFocus = false,
 }: Props) {
   const { locale } = useTranslation();
-  const tx = TEXTOS_CHAT[locale];
-  const [mensajes, setMensajes] = useState<Mensaje[]>([]);
-  const [texto, setTexto] = useState('');
-  const [enviando, setEnviando] = useState(false);
-  const idCampo = useId();
-  const idContador = useId();
-  const lista = useRef<HTMLDivElement>(null);
-  const campo = useRef<HTMLTextAreaElement>(null);
-  const siguienteId = useRef(1);
-  const sesion = useRef<string | null>(null);
-  const abortar = useRef<AbortController | null>(null);
+  const tx = CHAT_TEXTS[locale];
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [text, setText] = useState('');
+  const [sending, setSending] = useState(false);
+  const fieldId = useId();
+  const counterId = useId();
+  const list = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLTextAreaElement>(null);
+  const nextId = useRef(1);
+  const session = useRef<string | null>(null);
+  const abort = useRef<AbortController | null>(null);
 
-  const textoBienvenida = bienvenida ?? tx.bienvenida;
-  const opciones = sugerencias ?? tx.sugerencias;
-  const sinConversar = mensajes.length === 0;
+  const welcomeText = welcome ?? tx.welcome;
+  const options = suggestions ?? tx.suggestions;
+  const noMessagesYet = messages.length === 0;
 
   useEffect(() => {
-    sesion.current = leerSesion(tenant);
-    const control = new AbortController();
-    abortar.current = control;
-    return () => control.abort();
+    session.current = readSession(tenant);
+    const controller = new AbortController();
+    abort.current = controller;
+    return () => controller.abort();
   }, [tenant]);
 
   useEffect(() => {
-    if (enfocar) campo.current?.focus();
-  }, [enfocar]);
+    if (autoFocus) field.current?.focus();
+  }, [autoFocus]);
 
-  // Cada mensaje nuevo (o el indicador) lleva la lista al final.
   useEffect(() => {
-    const el = lista.current;
+    const el = list.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [mensajes, enviando]);
+  }, [messages, sending]);
 
-  // El campo crece con el texto hasta 5 líneas.
+  // The field grows with its text up to 5 lines.
   useEffect(() => {
-    const el = campo.current;
+    const el = field.current;
     if (!el) return;
     el.style.height = 'auto';
     el.style.height = `${Math.min(el.scrollHeight, 132)}px`;
-  }, [texto]);
+  }, [text]);
 
-  const agregar = (m: Omit<Mensaje, 'id'>) =>
-    setMensajes((previos) => [...previos, { ...m, id: siguienteId.current++ }]);
+  const append = (message: Omit<Message, 'id'>) =>
+    setMessages((previous) => [...previous, { ...message, id: nextId.current++ }]);
 
-  const enviar = async (contenido: string) => {
-    const mensaje = contenido.trim();
-    if (!mensaje || enviando || mensaje.length > MAX_CARACTERES) return;
-    agregar({ rol: 'usuario', texto: mensaje });
-    setTexto('');
-    setEnviando(true);
+  const send = async (content: string) => {
+    const message = content.trim();
+    if (!message || sending || message.length > MAX_CHARS) return;
+    append({ role: 'user', text: message });
+    setText('');
+    setSending(true);
 
-    const resultado = await enviarMensaje(
+    const result = await sendMessage(
       tenant,
-      { sesionId: sesion.current, mensaje, idioma: locale },
-      abortar.current?.signal,
+      { sessionId: session.current, message, language: locale },
+      abort.current?.signal,
     );
-    if (abortar.current?.signal.aborted) return;
+    if (abort.current?.signal.aborted) return;
 
-    if (resultado.ok) {
-      if (resultado.sesionId) {
-        sesion.current = resultado.sesionId;
-        guardarSesion(tenant, resultado.sesionId);
+    if (result.ok) {
+      if (result.sessionId) {
+        session.current = result.sessionId;
+        saveSession(tenant, result.sessionId);
       }
-      agregar({ rol: 'asistente', texto: resultado.respuesta, accion: resultado.accion });
-    } else if (respaldoWhatsapp) {
-      agregar({
-        rol: 'asistente',
-        texto: tx.respaldo,
-        accion: { tipo: 'whatsapp', url: enlaceWhatsApp(locale), codigo: null },
+      append({ role: 'assistant', text: result.reply, action: result.action });
+    } else if (whatsappFallback) {
+      append({
+        role: 'assistant',
+        text: tx.fallback,
+        action: { type: 'whatsapp', url: whatsappLink(locale), code: null },
       });
     } else {
-      agregar({ rol: 'asistente', texto: tx.respaldoSinWhatsapp });
+      append({ role: 'assistant', text: tx.fallbackNoWhatsapp });
     }
-    setEnviando(false);
-    campo.current?.focus();
+    setSending(false);
+    field.current?.focus();
   };
 
-  const alEnviar = (e: FormEvent) => {
+  const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    void enviar(texto);
+    void send(text);
   };
 
-  const alTeclear = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
-      void enviar(texto);
+      void send(text);
     }
   };
 
-  const restantes = MAX_CARACTERES - texto.length;
-  const casiLleno = restantes <= 100;
+  const remaining = MAX_CHARS - text.length;
+  const nearLimit = remaining <= 100;
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <div
-        ref={lista}
+        ref={list}
         role="log"
         aria-live="polite"
         aria-relevant="additions"
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-2 pt-1"
       >
-        <Fila rol="asistente" etiqueta={tx.rolAsistente} primero>
-          {textoBienvenida}
-        </Fila>
+        <MessageRow role="assistant" label={tx.assistantRole} first>
+          {welcomeText}
+        </MessageRow>
 
-        {sinConversar && (
+        {noMessagesYet && (
           <div className="mt-5">
-            <p className="eyebrow !text-[0.6875rem]">{tx.sugerenciasTitulo}</p>
+            <p className="eyebrow !text-[0.6875rem]">{tx.suggestionsTitle}</p>
             <ul className="mt-3">
-              {opciones.map((s) => (
-                <li key={s} className="border-t border-regla last:border-b">
+              {options.map((option) => (
+                <li key={option} className="border-t border-regla last:border-b">
                   <button
                     type="button"
-                    onClick={() => void enviar(s)}
-                    disabled={enviando}
+                    onClick={() => void send(option)}
+                    disabled={sending}
                     className="w-full cursor-pointer py-3 text-left text-[0.9375rem] leading-snug text-tinta transition-colors duration-150 hover:text-marca disabled:cursor-default"
                   >
-                    {s}
+                    {option}
                   </button>
                 </li>
               ))}
@@ -173,88 +166,88 @@ export function Conversacion({
           </div>
         )}
 
-        {mensajes.map((m) => (
-          <Fila
-            key={m.id}
-            rol={m.rol}
-            etiqueta={m.rol === 'usuario' ? tx.rolUsuario : tx.rolAsistente}
+        {messages.map((message) => (
+          <MessageRow
+            key={message.id}
+            role={message.role}
+            label={message.role === 'user' ? tx.userRole : tx.assistantRole}
           >
-            {m.texto}
-            {m.accion && (
+            {message.text}
+            {message.action && (
               <div className="mt-4 flex flex-col items-start gap-2.5">
                 <a
-                  href={m.accion.url}
+                  href={message.action.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`${tx.continuarWhatsapp} ${avisoPestanaNueva(locale)}`}
+                  aria-label={`${tx.continueOnWhatsapp} ${newTabNotice(locale)}`}
                   className="accion accion-primaria !px-5 !py-3 !text-[0.9375rem]"
                 >
-                  {tx.continuarWhatsapp}
+                  {tx.continueOnWhatsapp}
                 </a>
-                {m.accion.codigo && (
+                {message.action.code && (
                   <p className="text-[0.8125rem] text-tinta-media">
-                    {tx.codigo}{' '}
+                    {tx.code}{' '}
                     <span className="tabular rounded-sm border border-regla px-1.5 py-0.5 text-[0.8125rem] font-medium text-tinta">
-                      {m.accion.codigo}
+                      {message.action.code}
                     </span>
                   </p>
                 )}
               </div>
             )}
-          </Fila>
+          </MessageRow>
         ))}
 
-        {enviando && (
+        {sending && (
           <div className="chat-mensaje border-t border-regla py-4" role="status">
-            <p className="eyebrow !text-[0.6875rem]">{tx.rolAsistente}</p>
+            <p className="eyebrow !text-[0.6875rem]">{tx.assistantRole}</p>
             <p className="mt-2 flex items-center gap-2 text-[0.875rem] text-tinta-media">
               <span className="flex gap-1" aria-hidden="true">
                 <span className="escribiendo-punto" style={{ ['--d' as string]: '0ms' }} />
                 <span className="escribiendo-punto" style={{ ['--d' as string]: '160ms' }} />
                 <span className="escribiendo-punto" style={{ ['--d' as string]: '320ms' }} />
               </span>
-              {tx.escribiendo}
+              {tx.typing}
             </p>
           </div>
         )}
       </div>
 
-      <form onSubmit={alEnviar} className="border-t border-regla px-5 pb-4 pt-4">
-        <label htmlFor={idCampo} className="sr-only">
-          {tx.campo}
+      <form onSubmit={onSubmit} className="border-t border-regla px-5 pb-4 pt-4">
+        <label htmlFor={fieldId} className="sr-only">
+          {tx.field}
         </label>
         <textarea
-          id={idCampo}
-          ref={campo}
+          id={fieldId}
+          ref={field}
           rows={1}
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
-          onKeyDown={alTeclear}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={onKeyDown}
           placeholder={tx.placeholder}
-          aria-describedby={idContador}
-          maxLength={MAX_CARACTERES}
+          aria-describedby={counterId}
+          maxLength={MAX_CHARS}
           className="block max-h-[132px] w-full resize-none rounded-md border border-[var(--regla-arena)] bg-transparent px-3.5 py-3 text-[1rem] leading-snug text-tinta placeholder:text-tinta-media focus:border-marca focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marca"
         />
         <div className="mt-3 flex items-center justify-between gap-4">
           <p
-            id={idContador}
-            aria-label={tx.caracteres(texto.length, MAX_CARACTERES)}
-            className={`tabular text-[0.75rem] ${casiLleno ? 'text-tinta' : 'text-tinta-media'}`}
+            id={counterId}
+            aria-label={tx.characters(text.length, MAX_CHARS)}
+            className={`tabular text-[0.75rem] ${nearLimit ? 'text-tinta' : 'text-tinta-media'}`}
           >
-            {texto.length}/{MAX_CARACTERES.toLocaleString('es-EC')}
+            {text.length}/{MAX_CHARS.toLocaleString('es-EC')}
           </p>
           <button
             type="submit"
-            disabled={enviando || !texto.trim()}
+            disabled={sending || !text.trim()}
             className="accion accion-primaria cursor-pointer !px-5 !py-2.5 !text-[0.9375rem] disabled:cursor-not-allowed disabled:bg-arena disabled:text-tinta-media disabled:hover:translate-y-0"
           >
-            {tx.enviar}
+            {tx.send}
           </button>
         </div>
-        {conPie && (
+        {showFooter && (
           <div className="mt-4 border-t border-regla pt-3 text-[0.75rem] leading-snug text-tinta-media">
-            <p>{tx.pieValores}</p>
-            <p className="mt-0.5 text-tinta">{tx.pieCierre}</p>
+            <p>{tx.footerPrices}</p>
+            <p className="mt-0.5 text-tinta">{tx.footerClosing}</p>
           </div>
         )}
       </form>
@@ -262,30 +255,30 @@ export function Conversacion({
   );
 }
 
-function Fila({
-  rol,
-  etiqueta,
-  primero = false,
+function MessageRow({
+  role,
+  label,
+  first = false,
   children,
 }: {
-  rol: 'usuario' | 'asistente';
-  etiqueta: string;
-  primero?: boolean;
+  role: 'user' | 'assistant';
+  label: string;
+  first?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div
-      className={`chat-mensaje relative py-4 ${primero ? '' : 'border-t border-regla'} ${
-        rol === 'usuario'
+      className={`chat-mensaje relative py-4 ${first ? '' : 'border-t border-regla'} ${
+        role === 'user'
           ? 'pl-4 before:absolute before:bottom-4 before:left-0 before:top-4 before:w-px before:bg-marca'
           : ''
       }`}
     >
-      {/* Quién habla: lo marca el filete petróleo del visitante; el rótulo queda para lectores de pantalla */}
-      <p className="sr-only">{etiqueta}</p>
+      {/* The visitor's rule marks who is speaking; the label is for screen readers only. */}
+      <p className="sr-only">{label}</p>
       <div
         className={`whitespace-pre-line text-[1rem] leading-relaxed ${
-          rol === 'usuario' ? 'text-tinta-media' : 'text-tinta'
+          role === 'user' ? 'text-tinta-media' : 'text-tinta'
         }`}
       >
         {children}
