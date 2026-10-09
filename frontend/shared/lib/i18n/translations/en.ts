@@ -302,7 +302,7 @@ export const en = {
         {
           title: "Where it is kept and for how long",
           paragraphs: [
-            "Messages stay in the services you chose to contact us through (Meta's WhatsApp or our email provider), which may process data outside Ecuador. We keep the conversation for as long as the business relationship lasts or until you ask us to delete it.",
+            "Messages stay in the services you chose to contact us through (Meta's WhatsApp or our email provider), which may process data outside Ecuador. Chat messages are processed by our artificial intelligence provider (Anthropic, in the United States), and our sales records live in Notion; neither uses your data for any other purpose. We keep the conversation for as long as the business relationship lasts or until you ask us to delete it.",
           ],
         },
         {

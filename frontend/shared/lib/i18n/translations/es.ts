@@ -302,7 +302,7 @@ export const es = {
         {
           title: "Dónde se guardan y por cuánto tiempo",
           paragraphs: [
-            "Los mensajes quedan en los servicios que usted eligió para escribirnos (WhatsApp de Meta o nuestro proveedor de correo), que pueden procesar datos fuera del Ecuador. Conservamos la conversación mientras dure la relación comercial o hasta que usted pida su eliminación.",
+            "Los mensajes quedan en los servicios que usted eligió para escribirnos (WhatsApp de Meta o nuestro proveedor de correo), que pueden procesar datos fuera del Ecuador. Los mensajes del chat los procesa nuestro proveedor de inteligencia artificial (Anthropic, en Estados Unidos) y el registro comercial vive en Notion; ninguno usa sus datos para otros fines. Conservamos la conversación mientras dure la relación comercial o hasta que usted pida su eliminación.",
           ],
         },
         {
