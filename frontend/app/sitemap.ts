@@ -3,11 +3,6 @@ import { SITE_URL } from '@/shared/constants/site';
 
 export const dynamic = 'force-static';
 
-/**
- * Las anclas tienen que coincidir con los id que la página renderiza de verdad.
- * Antes del rediseño apuntaban a #servicios, #tecnologias y #proyectos, secciones
- * que ya no existen: eran 404 internos que el sitemap le declaraba a Google.
- */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date('2026-09-28');
 

@@ -4,56 +4,66 @@ import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
+import { useUIStore } from '@/shared/store/useUIStore';
 
-// El panel es un chunk aparte: no se descarga hasta el primer clic.
-const PanelChat = dynamic(() => import('./PanelChat'), { ssr: false });
+const ChatPanel = dynamic(() => import('./ChatPanel'), { ssr: false });
 
-// Estas dos frases viven aquí y no en textos.ts porque el lanzador va en la primera carga.
-const ETIQUETA = { es: 'Pregúntenos', en: 'Ask us' } as const;
-const ARIA = {
+const LABEL = { es: 'Pregúntenos', en: 'Ask us' } as const;
+const ARIA_LABEL = {
   es: 'Abrir el chat con el asistente de AIworks',
   en: 'Open the chat with the AIworks assistant',
 } as const;
 
-/**
- * Botón principal flotante. El de WhatsApp queda encima, más chico, como alternativa.
- * En la página de demo no se muestra: allí el chat ya está en la página.
- */
 export function ChatLauncher() {
   const { locale } = useTranslation();
-  const ruta = usePathname();
-  const [cargado, setCargado] = useState(false);
-  const [abierto, setAbierto] = useState(false);
-  const boton = useRef<HTMLButtonElement>(null);
-  const habiaAbierto = useRef(false);
+  const pathname = usePathname();
+  const isOpen = useUIStore((s) => s.isChatOpen);
+  const openChat = useUIStore((s) => s.openChat);
+  const closeChat = useUIStore((s) => s.closeChat);
+  const [loaded, setLoaded] = useState(false);
+  if (isOpen && !loaded) setLoaded(true);
+  const chatOpener = useUIStore((s) => s.chatOpener);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
-  // Al cerrar, el foco vuelve al botón que abrió el panel.
   useEffect(() => {
-    if (habiaAbierto.current && !abierto) boton.current?.focus();
-    habiaAbierto.current = abierto;
-  }, [abierto]);
+    if (wasOpen.current && !isOpen) {
+      const isValid = chatOpener && chatOpener !== document.body && document.contains(chatOpener);
+      const target = isValid ? chatOpener : buttonRef.current;
+      target?.focus();
+    }
+    wasOpen.current = isOpen;
+  }, [isOpen, chatOpener]);
 
-  if (ruta?.startsWith('/demo')) return null;
+  const [ctaVisible, setCtaVisible] = useState(false);
+  useEffect(() => {
+    const cta = document.getElementById('assistant-cta');
+    if (!cta || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => setCtaVisible(e.isIntersecting), { threshold: 0.1 });
+    io.observe(cta);
+    return () => io.disconnect();
+  }, [pathname]);
+
+  if (pathname?.startsWith('/demo')) return null;
 
   return (
     <>
       <button
-        ref={boton}
+        ref={buttonRef}
         type="button"
-        onClick={() => {
-          setCargado(true);
-          setAbierto(true);
-        }}
-        aria-label={ARIA[locale]}
+        onClick={openChat}
+        aria-label={ARIA_LABEL[locale]}
         aria-haspopup="dialog"
-        aria-expanded={abierto}
-        className={`accion accion-primaria fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] right-5 z-40 cursor-pointer !px-6 !py-4 lg:bottom-8 lg:right-8 ${
-          abierto ? 'invisible' : ''
+        aria-expanded={isOpen}
+        className={`action action-primary fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] right-5 z-40 cursor-pointer !px-6 !py-4 lg:bottom-8 lg:right-8 ${
+          isOpen || ctaVisible ? 'invisible' : ''
         }`}
+        aria-hidden={ctaVisible && !isOpen ? true : undefined}
+        tabIndex={ctaVisible && !isOpen ? -1 : undefined}
       >
-        {ETIQUETA[locale]}
+        {LABEL[locale]}
       </button>
-      {cargado && <PanelChat abierto={abierto} alCerrar={() => setAbierto(false)} />}
+      {loaded && <ChatPanel isOpen={isOpen} onClose={closeChat} />}
     </>
   );
 }

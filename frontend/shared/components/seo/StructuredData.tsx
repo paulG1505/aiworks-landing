@@ -3,23 +3,9 @@ import { SITE_URL } from '@/shared/constants/site';
 import { CONTACT_INFO } from '@/shared/constants';
 import { es } from '@/shared/lib/i18n/translations/es';
 
-/**
- * Datos estructurados. Regla que ordena este archivo: **solo se declara lo que la
- * página dice de verdad.**
- *
- * La versión anterior al rediseño declaraba un catálogo de cuatro servicios
- * genéricos ("Análisis de Datos con IA", "Consultoría en IA") y un FAQ que
- * prometía capacidades por industria —"Fintech (análisis de riesgo, detección de
- * fraude), Retail (recomendaciones personalizadas), Logística (optimización de
- * rutas), Salud (diagnóstico asistido)"— que el contenido visible nunca afirmó.
- * Era la misma clase de afirmación sin respaldo que este cambio retira del texto,
- * escondida en el JSON-LD: mal para Google, que exige que los datos estructurados
- * reflejen el contenido visible, y peor si un prospecto la lee.
- *
- * El FAQ de abajo es palabra por palabra el que ve el visitante en español.
- */
+// Only declare what the visible page says; the FAQ matches the Spanish copy word for word.
 export function StructuredData() {
-  const organizacion = {
+  const organization = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'AIworks',
@@ -43,9 +29,7 @@ export function StructuredData() {
     },
   };
 
-  // Las cuatro líneas de servicio son exactamente las del bloque "Qué construimos" de la
-  // página, con el mismo texto que ve el visitante en español. Ni una más.
-  const servicio = {
+  const service = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     serviceType: 'Desarrollo de software con inteligencia artificial',
@@ -54,18 +38,18 @@ export function StructuredData() {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Qué construimos',
-      itemListElement: es.servicios.items.map((item) => ({
+      itemListElement: es.services.items.map((item) => ({
         '@type': 'Offer',
         itemOffered: {
           '@type': 'Service',
-          name: item.titulo,
-          description: item.descripcion,
+          name: item.title,
+          description: item.description,
         },
       })),
     },
   };
 
-  const preguntas = {
+  const faq = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [
@@ -110,19 +94,19 @@ export function StructuredData() {
         id="ld-organizacion"
         type="application/ld+json"
         strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizacion) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
       />
       <Script
         id="ld-servicio"
         type="application/ld+json"
         strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicio) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
       />
       <Script
         id="ld-preguntas"
         type="application/ld+json"
         strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(preguntas) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }}
       />
     </>
   );

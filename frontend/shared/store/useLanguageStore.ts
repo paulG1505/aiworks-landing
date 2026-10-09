@@ -15,7 +15,6 @@ export const useLanguageStore = create<LanguageState>()(
     }),
     {
       name: 'aiworks-language',
-      // Prevents hydration mismatch: store uses default state until client rehydrates
       skipHydration: true,
     }
   )
