@@ -519,6 +519,37 @@ section[id] {
   }
 }
 
+/* Chat: indicador de "escribiendo" (tres cuadros, como el marcador del eyebrow) y entrada
+   de mensajes. Todo el movimiento va solo con movimiento permitido; con movimiento
+   reducido quedan los cuadros quietos y la palabra "Escribiendo". */
+.escribiendo-punto {
+  display: block;
+  width: 5px;
+  height: 5px;
+  background: var(--c-media);
+  opacity: 0.7;
+}
+@keyframes escribiendo {
+  0%, 80%, 100% { opacity: 0.2; }
+  40% { opacity: 1; }
+}
+@keyframes chat-entra {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .escribiendo-punto {
+    animation: escribiendo 1.2s ease-in-out infinite;
+    animation-delay: var(--d, 0ms);
+  }
+  .chat-mensaje {
+    animation: revelar 400ms var(--curva) both;
+  }
+  .chat-panel:not([hidden]) {
+    animation: chat-entra 320ms var(--curva) both;
+  }
+}
+
 /* Navegación del header: subrayado en petróleo que se dibuja de izquierda a derecha. */
 .nav-enlace {
   position: relative;

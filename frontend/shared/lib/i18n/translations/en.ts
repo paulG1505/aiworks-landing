@@ -274,7 +274,7 @@ export const en = {
     volver: "Back to home",
     privacidad: {
       titulo: "Privacy policy",
-      actualizado: "Last updated: September 28, 2026",
+      actualizado: "Last updated: October 8, 2026",
       intro:
         "This policy explains which personal data AIworks receives through this website, what it is used for, and how you can exercise your rights under Ecuador's Organic Law on Personal Data Protection (LOPDP).",
       secciones: [
@@ -287,8 +287,9 @@ export const en = {
         {
           titulo: "What data we receive",
           parrafos: [
-            "This website has no forms or user accounts. We only receive the data you choose to send us when you message us on WhatsApp or by email: your name, your phone number or email address, and the content of your message.",
-            "The website uses no tracking cookies or analytics tools. Your browser stores three local preferences — language, light or dark mode, and whether you dismissed the WhatsApp prompt — which never leave your device and cannot identify you.",
+            "This website has a chat assistant. If you use it, we keep the conversation for 30 days to improve the answers and then delete it. We do not store your IP address in plain form: only a fingerprint that changes every day and is used to limit abuse.",
+            "If you ask for a call, the company and job title you give us go into our sales records. Your phone number only reaches us if you message us on WhatsApp. By email we receive what you choose to send us: your address and the content of your message.",
+            "The website uses no tracking cookies or analytics tools. Your browser stores three local preferences — language, light or dark mode, and whether you dismissed the WhatsApp prompt — and, while the tab stays open, a chat session identifier. None of it can identify you.",
           ],
         },
         {

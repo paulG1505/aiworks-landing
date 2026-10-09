@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
 import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
+import { ChatLauncher } from "@/shared/components/ui/chat/ChatLauncher";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
 import { ProveedorMovimiento } from "@/shared/components/providers/ProveedorMovimiento";
@@ -132,6 +133,7 @@ export default function RootLayout({
           <main id="main">{children}</main>
           <Footer />
           <FloatingWhatsApp />
+          <ChatLauncher />
         </ProveedorMovimiento>
       </body>
     </html>

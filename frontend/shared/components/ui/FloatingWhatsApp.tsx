@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence, m } from 'motion/react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
@@ -14,6 +15,7 @@ const CLAVE_CERRADA = 'aiworks-burbuja-whatsapp';
 
 /**
  * Botón flotante de WhatsApp, en móvil y escritorio, con una burbuja de invitación.
+ * Es la alternativa al chat: va encima del botón del chat (ChatLauncher), que es el principal.
  *
  * Lleva el verde de WhatsApp: es la marca que la gente reconoce al instante, y aquí es
  * la única excepción al acento único. El logo va en verde muy oscuro y no en blanco:
@@ -29,6 +31,7 @@ const CLAVE_CERRADA = 'aiworks-burbuja-whatsapp';
  */
 export function FloatingWhatsApp() {
   const { t, locale } = useTranslation();
+  const ruta = usePathname();
   const [burbuja, setBurbuja] = useState(false);
   // Se lee al montar; como la burbuja arranca oculta, el HTML inicial es el mismo en
   // servidor y cliente y no hay desajuste de hidratación.
@@ -74,12 +77,15 @@ export function FloatingWhatsApp() {
     }
   };
 
+  // La página de demo trae su propio llamado a la acción y su propio chat.
+  if (ruta?.startsWith('/demo')) return null;
+
   const href = enlaceWhatsApp(locale);
   const etiqueta = `${t.header.cta} ${avisoPestanaNueva(locale)}`;
 
   return (
     <div
-      className={`fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] right-5 z-40 flex items-end gap-3 transition-opacity duration-200 lg:bottom-8 lg:right-8 ${
+      className={`fixed bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] right-5 z-40 flex items-end gap-3 transition-opacity duration-200 lg:bottom-[6.75rem] lg:right-8 ${
         enContacto ? 'pointer-events-none opacity-0' : 'opacity-100'
       }`}
       aria-hidden={enContacto || undefined}
@@ -131,10 +137,10 @@ export function FloatingWhatsApp() {
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={enContacto ? -1 : undefined}
-        className="flex size-14 shrink-0 items-center justify-center rounded-full border border-[#128C4A] bg-[#25D366] text-[#0B3D1F] shadow-[0_12px_28px_-12px_rgb(0_0_0/0.45)] hover:bg-[#20BD5A] lg:size-16"
+        className="flex size-12 shrink-0 items-center justify-center rounded-full border border-[#128C4A] bg-[#25D366] text-[#0B3D1F] shadow-[0_12px_28px_-12px_rgb(0_0_0/0.45)] hover:bg-[#20BD5A]"
         aria-label={etiqueta}
       >
-        <LogoWhatsApp className="size-7 lg:size-8" />
+        <LogoWhatsApp className="size-6" />
       </m.a>
     </div>
   );

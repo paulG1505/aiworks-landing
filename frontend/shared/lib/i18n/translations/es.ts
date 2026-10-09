@@ -279,7 +279,7 @@ export const es = {
     volver: "Volver al inicio",
     privacidad: {
       titulo: "Política de privacidad",
-      actualizado: "Última actualización: 28 de septiembre de 2026",
+      actualizado: "Última actualización: 8 de octubre de 2026",
       intro:
         "Esta política explica qué datos personales recibe AIworks a través de este sitio, para qué los usa y cómo puede ejercer sus derechos según la Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP).",
       secciones: [
@@ -292,8 +292,9 @@ export const es = {
         {
           titulo: "Qué datos recibimos",
           parrafos: [
-            "Este sitio no tiene formularios ni cuentas de usuario. Solo recibimos los datos que usted decide enviarnos al escribirnos por WhatsApp o por correo: su nombre, su número o su dirección de correo, y el contenido de su mensaje.",
-            "El sitio no usa cookies de seguimiento ni herramientas de analítica. Su navegador guarda tres preferencias locales —idioma, modo claro u oscuro y si cerró el aviso de WhatsApp— que no salen de su dispositivo ni sirven para identificarle.",
+            "Este sitio tiene un asistente de chat. Si usted lo usa, guardamos la conversación durante 30 días para mejorar las respuestas y después la borramos. No guardamos su dirección IP en claro: solo una huella que cambia cada día y que sirve para limitar abusos.",
+            "Si usted pide una llamada, la empresa y el cargo que indique pasan a nuestro registro comercial. Su número de teléfono solo nos llega si usted nos escribe por WhatsApp. Por correo recibimos lo que decida enviarnos: su dirección y el contenido de su mensaje.",
+            "El sitio no usa cookies de seguimiento ni herramientas de analítica. Su navegador guarda tres preferencias locales —idioma, modo claro u oscuro y si cerró el aviso de WhatsApp— y, mientras la pestaña esté abierta, un identificador de la sesión del chat. Nada de eso sirve para identificarle.",
           ],
         },
         {

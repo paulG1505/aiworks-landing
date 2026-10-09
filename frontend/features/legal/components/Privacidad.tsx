@@ -8,8 +8,8 @@ import { useTranslation } from '@/shared/hooks/useTranslation';
 
 /**
  * Política de privacidad (LOPDP, Ecuador). Describe solo lo que el sitio hace de verdad:
- * sin formularios, sin analítica, contacto por WhatsApp y correo, y tres preferencias
- * locales en el navegador. Si eso cambia (p. ej. se agrega analítica o un formulario),
+ * un asistente de chat (conversación 30 días, IP solo como huella diaria), sin analítica,
+ * contacto por WhatsApp y correo, y preferencias locales en el navegador. Si eso cambia (p. ej. se agrega analítica o un formulario),
  * este texto tiene que cambiar en el mismo commit.
  *
  * El texto es un borrador razonable, no asesoría legal: debe revisarlo quien responda
