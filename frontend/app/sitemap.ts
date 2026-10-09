@@ -3,6 +3,7 @@ import { SITE_URL } from '@/shared/constants/site';
 
 export const dynamic = 'force-static';
 
+// Anchors must match the section ids the page actually renders.
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date('2026-09-28');
 
