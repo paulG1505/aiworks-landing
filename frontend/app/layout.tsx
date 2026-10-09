@@ -2,39 +2,30 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/shared/components/layout/Header";
 import { Footer } from "@/shared/components/layout/Footer";
-import { FloatingWhatsApp } from "@/shared/components/ui/FloatingWhatsApp";
+import { ChatLauncher } from "@/shared/components/ui/chat/ChatLauncher";
 import { StructuredData } from "@/shared/components/seo/StructuredData";
 import { StoreRehydrate } from "@/shared/components/providers/StoreRehydrate";
-import { ProveedorMovimiento } from "@/shared/components/providers/ProveedorMovimiento";
+import { MotionProvider } from "@/shared/components/providers/MotionProvider";
 import { SITE_URL } from "@/shared/constants/site";
-import { CLAVE_TEMA } from "@/shared/lib/tema";
+import { THEME_INIT_SCRIPT } from "@/shared/lib/theme";
 import "./globals.css";
 
-// Tres voces, una por función: Bricolage Grotesque para titulares, Geist para cuerpo y
-// UI, Geist Mono para eyebrows y el registro operativo. next/font las sirve desde el
-// propio dominio (sin petición a Google en el navegador) y reserva su métrica para evitar
-// saltos de layout. Bricolage es variable: se carga el eje de tamaño óptico (opsz), que
-// abre el espaciado en tamaños chicos y lo cierra en el titular grande.
-const titular = Bricolage_Grotesque({
+const displayFont = Bricolage_Grotesque({
   subsets: ["latin"],
   axes: ["opsz"],
-  variable: "--fuente-titular",
+  variable: "--face-display",
   display: "swap",
 });
-const sans = Geist({ subsets: ["latin"], variable: "--fuente-sans", display: "swap" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--fuente-mono", display: "swap" });
+const sans = Geist({ subsets: ["latin"], variable: "--face-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--face-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  // En la pestaña solo el nombre. El título descriptivo queda en openGraph/twitter, que es
-  // lo que se ve al compartir el enlace; las demás rutas usan "%s | AIworks".
   title: {
     default: "AIworks",
     template: "%s | AIworks"
   },
   description: "Su equipo copia datos de un Excel a otro. Construimos el software que hace ese trabajo solo, con revisión humana y registro auditable de cada decisión. Diagnóstico de 15 minutos sin costo.",
-  // Alineadas con los tres procesos que la página desarrolla de verdad. Antes
-  // apuntaban a "chatbots" como producto genérico, que ahora es solo uno de los tres.
   keywords: [
     "automatización de procesos con IA",
     "conciliación bancaria automática",
@@ -93,32 +84,18 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
-const SCRIPT_INICIAL = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${CLAVE_TEMA}')}catch(e){}if(t!=='claro'&&t!=='oscuro'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'oscuro':'claro'}d.setAttribute('data-tema',t)})()`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" suppressHydrationWarning className={`${titular.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${displayFont.variable} ${sans.variable} ${mono.variable}`}>
       <head>
-        {/*
-          * Antes del primer pintado:
-          * 1. Marca que hay JavaScript. Los revelados al hacer scroll solo ocultan contenido
-          *    bajo `html.js`: sin JS, o si el script falla, todo se ve.
-          * 2. Resuelve el tema (elección guardada o, si no hay, la del sistema) para que
-          *    la página no parpadee en claro antes de pasar a oscuro.
-          */}
-        <script dangerouslySetInnerHTML={{ __html: SCRIPT_INICIAL }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="dns-prefetch" href="https://wa.me" />
       </head>
       <body className="antialiased font-sans">
-        {/*
-          * Saltar al contenido: con el header fijo, quien navega con teclado tenía que
-          * pasar por el logo, cinco enlaces, el selector de idioma y el CTA antes de
-          * llegar al contenido. Visible solo al recibir foco.
-          */}
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-[var(--tinta)] focus:px-4 focus:py-2 focus:text-[var(--papel)]"
@@ -127,12 +104,12 @@ export default function RootLayout({
         </a>
         <StoreRehydrate />
         <StructuredData />
-        <ProveedorMovimiento>
+        <MotionProvider>
           <Header />
           <main id="main">{children}</main>
           <Footer />
-          <FloatingWhatsApp />
-        </ProveedorMovimiento>
+          <ChatLauncher />
+        </MotionProvider>
       </body>
     </html>
   );
