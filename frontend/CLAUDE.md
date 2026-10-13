@@ -21,22 +21,23 @@ frontend/
 │
 ├── features/                     # Bloques de negocio (EL NÚCLEO)
 │   ├── hero/                    # Titular de categoría + terminal del registro operativo
-│   ├── servicios/               # 01 Qué construimos (4 líneas de servicio)
-│   ├── procesos/                # 02 Procesos que se automatizan (3 filas)
-│   ├── proceso/                 # 03 Cómo trabajamos (3 fases + cinta de 15 tecnologías)
-│   ├── porque/                  # 04 Por qué AIworks + carrusel de ejemplos
-│   ├── preguntas/               # 05 FAQ (acordeón accesible)
-│   ├── cta-final/               # 06 Cierre: WhatsApp + correo
+│   ├── services/                # 01 Qué construimos (4 líneas de servicio)
+│   ├── processes/               # 02 Procesos que se automatizan (3 filas)
+│   ├── how-we-work/             # 03 Cómo trabajamos (3 fases + cinta de 15 tecnologías)
+│   ├── why/                     # 04 Por qué AIworks + carrusel de ejemplos
+│   ├── faq/                     # 05 FAQ (acordeón accesible)
+│   ├── final-cta/               # 06 Cierre: WhatsApp + correo
+│   ├── demo/                    # Página /demo#<código>
 │   └── legal/                   # Página de privacidad
 │
 ├── shared/
 │   ├── components/
-│   │   ├── ui/                 # Container, EncabezadoSeccion, FloatingWhatsApp, LogoWhatsApp
-│   │   ├── layout/             # Header, Footer, LanguageSelector, SelectorTema, BarraProgreso
-│   │   ├── providers/          # StoreRehydrate, ProveedorMovimiento, ScrollAlAncla
+│   │   ├── ui/                 # Container, SectionHeading, WhatsAppLogo, chat/ (ChatLauncher, ChatPanel, Conversation)
+│   │   ├── layout/             # Header, Footer, LanguageSelector, ThemeToggle, ScrollProgressBar
+│   │   ├── providers/          # StoreRehydrate, MotionProvider, ScrollToAnchor
 │   │   └── seo/                # StructuredData (JSON-LD)
-│   ├── hooks/                   # useRevelado, useIntersectionObserver, useMediaQuery…
-│   ├── lib/                     # i18n (es/en), tema.ts, whatsapp.ts, utils.ts
+│   ├── hooks/                   # useReveal, useIntersectionObserver, useMediaQuery…
+│   ├── lib/                     # i18n (es/en), theme.ts, whatsapp.ts, utils.ts
 │   ├── store/                   # Zustand: idioma, UI
 │   ├── types/ · constants/
 │
@@ -96,28 +97,28 @@ frontend/
 
 Los tokens y su contraste calculado están comentados al inicio de `app/globals.css`.
 
-- **Tipografía**: Bricolage Grotesque 600 para titulares (`font-titular`), Geist para cuerpo y
+- **Tipografía**: Bricolage Grotesque 600 para titulares (`font-display`), Geist para cuerpo y
   UI, Geist Mono para eyebrows, etiquetas y la terminal. La palabra clave de cada titular se
   marca **solo con color** (Bricolage no tiene cursiva real; nada de cursiva sintética).
 - **Color**: neutro claro (`--papel` #F7F6F3, `--arena` #EEECE6) y un único acento,
   **petróleo** (`--marca` #0B6571 en claro, #5CC3CC en oscuro). El petróleo va en la palabra
   clave, enlaces, foco, íconos de servicio, barra de progreso y botón principal
   (`--boton`). Única excepción de color: el verde de WhatsApp en su botón flotante.
-- **Tema**: claro/oscuro con `<html data-tema>`. Lo resuelve un script en el `<head>` antes
-  del primer pintado; el botón del header lo fija (`shared/lib/tema.ts`). Todo color de un
+- **Tema**: claro/oscuro con `<html data-theme>`. Lo resuelve un script en el `<head>` antes
+  del primer pintado; el botón del header lo fija (`shared/lib/theme.ts`). Todo color de un
   componente sale de un token que tiene valor en ambos temas; nada de hex fijos que solo
   funcionen en uno.
 - **Contraste**: todo texto ≥ 4,5:1 en ambos temas. Si agregas un par nuevo, calcúlalo y
   anótalo junto al token.
-- **Estructura**: bloques con eyebrow numerado + titular en dos líneas (`EncabezadoSeccion`),
+- **Estructura**: bloques con eyebrow numerado + titular en dos líneas (`SectionHeading`),
   filas con filete para listas; las tarjetas se reservan para el carrusel de ejemplos.
 - **Afirmaciones**: cero cifras inventadas, cero sellos, cero superlativos. Todo ejemplo va
-  rotulado como tal. `scripts/verificar-landing.sh` lo comprueba sobre el build.
+  rotulado como tal. `scripts/verify-landing.sh` lo comprueba sobre el build.
 
 ### Movimiento
 
-- Revelados al hacer scroll y la entrada del hero: **CSS** (`.revelar`, `.linea-mascara`,
-  `useRevelado`). Su estado oculto vive bajo `html.js` y
+- Revelados al hacer scroll y la entrada del hero: **CSS** (`.reveal`, `.line-mask`,
+  `useReveal`). Su estado oculto vive bajo `html.js` y
   `prefers-reduced-motion: no-preference`, así el contenido se ve sin JS.
 - **Motion** solo donde aporta algo que CSS no resuelve bien: salidas animadas
   (`AnimatePresence`: menú móvil, burbuja de WhatsApp, ícono de tema), resortes ligados al
@@ -185,10 +186,21 @@ npm run lint
 - `start` - Start production server
 - `lint` - Run ESLint
 
+## Convenciones de código
+
+- **Todo el código en inglés**: identificadores, nombres de archivos y carpetas, tipos, claves de
+  i18n, clases CSS de componentes, comentarios. En español solo el texto visible (valores de
+  i18n, `aria-label`, copy) y la documentación.
+- **Comentarios mínimos**: el código se lee solo. Solo un "por qué" no obvio, en una línea.
+  Nada de comentarios narrativos, banners ni referencias a diseños o decisiones fechadas.
+- Se mantienen en español por contrato externo: rutas públicas y anclas (`/privacidad`,
+  `#servicios`, `#ejemplos`…), campos JSON de la API (`sesion_id`, `mensaje`…), tokens de
+  `globals.css` (`--papel`, `--tinta`, `--marca`…) y claves de `localStorage`.
+
 ## 🎨 Styling Conventions
 
 - Utilidades de Tailwind para layout; tokens de `globals.css` para color y tipografía.
-- Las clases del sistema (`.accion`, `.eyebrow`, `.titular`…) viven en `@layer components`
+- Las clases del sistema (`.action`, `.eyebrow`, `.heading`…) viven en `@layer components`
   para que una utilidad pueda sobrescribirlas.
 - No hay `tailwind.config.ts`: Tailwind 4 se configura con `@theme` en `globals.css`.
 

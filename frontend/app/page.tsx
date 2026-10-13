@@ -1,52 +1,48 @@
 import dynamic from 'next/dynamic';
-// Direct import for above-the-fold content (bundle-barrel-imports)
 import { Hero } from '@/features/hero/components/Hero';
-import { ScrollAlAncla } from '@/shared/components/providers/ScrollAlAncla';
+import { ScrollToAnchor } from '@/shared/components/providers/ScrollToAnchor';
 
-// Dynamic imports for below-the-fold sections (bundle-dynamic-imports)
-// No placeholder here: a min-h-[400px] box reserves blank space and causes
-// a layout shift when the section finally loads.
-const Servicios = dynamic(
-  () => import('@/features/servicios/components/Servicios').then((mod) => ({ default: mod.Servicios })),
+const Services = dynamic(
+  () => import('@/features/services/components/Services').then((mod) => ({ default: mod.Services })),
   { loading: () => null }
 );
 
-const Procesos = dynamic(
-  () => import('@/features/procesos/components/Procesos').then((mod) => ({ default: mod.Procesos })),
+const Processes = dynamic(
+  () => import('@/features/processes/components/Processes').then((mod) => ({ default: mod.Processes })),
   { loading: () => null }
 );
 
-const Proceso = dynamic(
-  () => import('@/features/proceso/components/Proceso').then((mod) => ({ default: mod.Proceso })),
+const HowWeWork = dynamic(
+  () => import('@/features/how-we-work/components/HowWeWork').then((mod) => ({ default: mod.HowWeWork })),
   { loading: () => null }
 );
 
-const Porque = dynamic(
-  () => import('@/features/porque/components/Porque').then((mod) => ({ default: mod.Porque })),
+const Why = dynamic(
+  () => import('@/features/why/components/Why').then((mod) => ({ default: mod.Why })),
   { loading: () => null }
 );
 
-const Preguntas = dynamic(
-  () => import('@/features/preguntas/components/Preguntas').then((mod) => ({ default: mod.Preguntas })),
+const Faq = dynamic(
+  () => import('@/features/faq/components/Faq').then((mod) => ({ default: mod.Faq })),
   { loading: () => null }
 );
 
-const CTAFinal = dynamic(
-  () => import('@/features/cta-final/components/CTAFinal').then((mod) => ({ default: mod.CTAFinal })),
+const FinalCta = dynamic(
+  () => import('@/features/final-cta/components/FinalCta').then((mod) => ({ default: mod.FinalCta })),
   { loading: () => null }
 );
 
 export default function Home() {
   return (
     <>
-      <ScrollAlAncla />
+      <ScrollToAnchor />
       <Hero />
-      <Servicios />
-      <Procesos />
-      <Proceso />
-      <Porque />
-      <Preguntas />
-      <CTAFinal />
+      <Services />
+      <Processes />
+      <HowWeWork />
+      <Why />
+      <Faq />
+      <FinalCta />
     </>
   );
 }

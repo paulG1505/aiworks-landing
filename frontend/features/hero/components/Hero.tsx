@@ -2,78 +2,72 @@
 
 import { Container } from '@/shared/components/ui/Container';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { ArrowRight } from 'lucide-react';
-import { enlaceWhatsApp, avisoPestanaNueva } from '@/shared/lib/whatsapp';
-import { RegistroOperativo } from './RegistroOperativo';
+import { ArrowUpRight } from 'lucide-react';
+import { useUIStore } from '@/shared/store/useUIStore';
+import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
+import { OperationsLog } from './OperationsLog';
 
-type Retardo = React.CSSProperties & { '--d': string };
-const retardo = (ms: number): Retardo => ({ '--d': `${ms}ms` });
+type DelayStyle = React.CSSProperties & { '--d': string };
+const delay = (ms: number): DelayStyle => ({ '--d': `${ms}ms` });
 
-/**
- * Hero 1b de la dirección visual: la categoría ES la primera línea del titular (en
- * tinta media, con "inteligencia artificial" en cursiva) y el beneficio la segunda, en
- * tinta.
- *
- * Secuencia al cargar —la única cinemática sin scroll—: línea 1 del titular sube desde
- * su máscara → línea 2 a +120ms → cuerpo y CTA a +200ms → el registro muestra el
- * mensaje entrante y escribe una línea cada 500ms (RegistroOperativo). Con movimiento
- * reducido todo está visible desde el principio.
- */
 export function Hero() {
   const { t, locale } = useTranslation();
-  const { categoria } = t.hero;
+  const openChat = useUIStore((s) => s.openChat);
+  const { category } = t.hero;
 
   return (
     <section className="pt-28 pb-24 sm:pt-36 lg:pt-48 lg:pb-40">
-      {/* Desde xl, dos columnas: titular y CTA a la izquierda, registro a la derecha. */}
       <Container className="xl:grid xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:items-end xl:gap-16">
         <div className="flex max-w-[900px] flex-col gap-4 sm:gap-6">
-          <h1 className="titular-display">
-            <span className="linea-mascara entrada-mascara">
-              <span className="linea text-tinta-media" style={retardo(100)}>
-                {categoria.antes}
-                <span className="clave">{categoria.clave}</span>
-                {categoria.despues}
+          <h1 className="display-heading">
+            <span className="line-mask enter-mask">
+              <span className="line text-tinta-media" style={delay(100)}>
+                {category.before}
+                <span className="highlight">{category.highlight}</span>
+                {category.after}
               </span>
             </span>
-            <span className="linea-mascara entrada-mascara">
-              <span className="linea" style={retardo(220)}>
-                {t.hero.beneficio}
+            <span className="line-mask enter-mask">
+              <span className="line" style={delay(220)}>
+                {t.hero.benefit}
               </span>
             </span>
           </h1>
 
-          <div className="entrada-revelar flex flex-col gap-6 sm:gap-10" style={retardo(420)}>
-            <p className="medida mt-2 text-[1.125rem] text-tinta-media lg:text-[1.3125rem]">{t.hero.subtitle}</p>
+          <div className="enter-reveal flex flex-col gap-6 sm:gap-10" style={delay(420)}>
+            <p className="measure mt-2 text-[1.125rem] text-tinta-media lg:text-[1.3125rem]">{t.hero.subtitle}</p>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-              <a
-                href={enlaceWhatsApp(locale)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${t.hero.cta.primary} ${avisoPestanaNueva(locale)}`}
-                className="accion accion-primaria"
+              <button
+                id="assistant-cta"
+                type="button"
+                onClick={openChat}
+                aria-haspopup="dialog"
+                className="action action-primary cursor-pointer"
               >
                 {t.hero.cta.primary}
-              </a>
+              </button>
               <a
-                href="#ejemplos"
+                href={whatsappLink(locale)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.hero.cta.whatsapp} ${newTabNotice(locale)}`}
                 className="group inline-flex items-center gap-2 self-center p-2 text-base font-medium text-tinta sm:self-auto sm:p-0 sm:text-[1.0625rem]"
               >
-                <span className="enlace">{t.hero.cta.ejemplos}</span>
-                <ArrowRight
-                  className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                <span className="link">{t.hero.cta.whatsapp}</span>
+                <ArrowUpRight
+                  className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   aria-hidden="true"
                 />
               </a>
             </div>
 
-            <p className="text-[0.9375rem] text-tinta-media">{t.hero.trayectoria}</p>
+            <p className="text-[0.9375rem] text-tinta-media">{t.hero.trackRecord}</p>
           </div>
         </div>
 
         <div className="mt-12 max-w-[760px] lg:mt-16 xl:mt-0 xl:max-w-none">
-          <RegistroOperativo inicioMs={700} />
+          <OperationsLog startMs={700} />
         </div>
       </Container>
     </section>

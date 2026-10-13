@@ -5,5 +5,5 @@
 # Build output (deployed by GitHub Actions)
 frontend/out
 
-# Capturas locales de scripts/e2e-landing.sh (no se versionan)
+# Local screenshots from scripts/e2e-landing.sh (not versioned)
 .e2e/

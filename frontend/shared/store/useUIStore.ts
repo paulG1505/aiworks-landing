@@ -8,6 +8,10 @@ interface UIState {
   isModalOpen: boolean;
   modalContent: string | null;
   activeSection: string | null;
+  isChatOpen: boolean;
+  chatOpener: HTMLElement | null;
+  openChat: () => void;
+  closeChat: () => void;
   toggleMenu: () => void;
   openMenu: () => void;
   closeMenu: () => void;
@@ -23,6 +27,15 @@ export const useUIStore = create<UIState>()(
       isModalOpen: false,
       modalContent: null,
       activeSection: null,
+      isChatOpen: false,
+      chatOpener: null,
+      openChat: () =>
+        set({
+          isChatOpen: true,
+          chatOpener:
+            typeof document !== 'undefined' ? (document.activeElement as HTMLElement | null) : null,
+        }),
+      closeChat: () => set({ isChatOpen: false }),
       toggleMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
       openMenu: () => set({ isMenuOpen: true }),
       closeMenu: () => set({ isMenuOpen: false }),
@@ -34,11 +47,3 @@ export const useUIStore = create<UIState>()(
   )
 );
 
-// Note: For optimal re-render prevention, use direct selectors in components:
-// const isMenuOpen = useUIStore((state) => state.isMenuOpen);
-// const toggleMenu = useUIStore((state) => state.toggleMenu);
-//
-// This approach ensures:
-// 1. Components only re-render when their specific state slice changes
-// 2. No object creation on every render (avoids infinite loops)
-// 3. Better performance with primitive value subscriptions

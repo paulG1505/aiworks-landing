@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Privacidad } from '@/features/legal/components/Privacidad';
+import { PrivacyPolicy } from '@/features/legal/components/PrivacyPolicy';
 import { SITE_URL } from '@/shared/constants/site';
 
 export const metadata: Metadata = {
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/privacidad` },
 };
 
-export default function PaginaPrivacidad() {
-  return <Privacidad />;
+export default function PrivacyPage() {
+  return <PrivacyPolicy />;
 }
