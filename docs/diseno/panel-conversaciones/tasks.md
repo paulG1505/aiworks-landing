@@ -73,7 +73,7 @@ grupo se proponen commits semánticos.
 
 ## 5. Interfaz: resumen y bandeja
 
-- [ ] 5.1 Franja de cifras, selector de mes y regla de chats por día (design 6.2 puntos 1 y 2).
+- [x] 5.1 Franja de cifras, selector de mes y regla de chats por día (design 6.2 puntos 1 y 2).
   - **Crear:** `components/MonthSummary.tsx`, `components/DailyChart.tsx`,
     `components/ZoneStatus.tsx`; montarlos en `ConsoleScreen`.
   - **Aceptación:** con el simulado, el mes actual muestra cifras y marcas; el mes anterior muestra
