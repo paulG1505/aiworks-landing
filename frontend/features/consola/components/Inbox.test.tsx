@@ -38,7 +38,7 @@ describe('Lista de conversaciones', () => {
     await user.click(screen.getByLabelText('Solo listos para llamada'));
 
     await waitFor(() => {
-      const [query] = api.listConversations.mock.lastCall as [Record<string, unknown>];
+      const query = api.listConversations.mock.lastCall?.[0] as unknown as Record<string, unknown>;
       expect(query).toMatchObject({ channel: 'whatsapp', readyOnly: true });
       expect(query.cursor).toBeUndefined();
     });
@@ -231,7 +231,7 @@ describe('Navegación por teclado', () => {
   }
 
   it('Siguiente conversación en escritorio', async () => {
-    const { user } = await ready();
+    const { api, user } = await ready();
     act(() => rowOf('c1').focus());
 
     await user.keyboard('j');
@@ -239,6 +239,7 @@ describe('Navegación por teclado', () => {
     expect(rowOf('c2')).toHaveFocus();
     expect(rowOf('c2')).toHaveAttribute('aria-current', 'true');
     expect(rowOf('c1')).not.toHaveAttribute('aria-current');
+    expect(api.getConversation).toHaveBeenCalledWith('c2', expect.any(AbortSignal));
     expect(search()).toBe('?c=c2');
   });
 

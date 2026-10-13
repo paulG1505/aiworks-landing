@@ -95,7 +95,7 @@ grupo se proponen commits semánticos.
 
 ## 6. Interfaz: lector de conversación y diseño adaptable
 
-- [ ] 6.1 Lector y reparto escritorio/móvil (design 6.2 punto 4, 6.3 y 6.4).
+- [x] 6.1 Lector y reparto escritorio/móvil (design 6.2 punto 4, 6.3 y 6.4).
   - **Crear:** `components/ConversationReader.tsx`, `components/SignalList.tsx`,
     `hooks/useIsDesktop.ts`, la clase `console-fade` en `globals.css`; el reparto en
     `ConsoleScreen`.
