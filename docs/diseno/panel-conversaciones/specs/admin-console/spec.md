@@ -100,12 +100,12 @@ While una sesión supera 12 horas desde su creación o 30 minutos sin actividad,
 #### Scenario: 401 a mitad de sesión [landing]
 - **GIVEN** la consola en `authenticated` mostrando la conversación `c1` con la URL `/consola?canal=whatsapp&c=c1`, y un `getConversation` falso que devuelve `unauthorized` para `c2`
 - **WHEN** se selecciona la fila de `c2`
-- **THEN** aparece el login con el aviso «Su sesión caducó. Vuelva a entrar.», en el documento no queda ningún texto de mensajes ni ningún contacto, y la URL sigue siendo `/consola?canal=whatsapp&c=c1`
+- **THEN** aparece el login con el aviso «Su sesión caducó. Vuelva a entrar.», en el documento no queda ningún texto de mensajes ni ningún contacto, y la URL es `/consola?canal=whatsapp&c=c2` (la selección se escribe en la URL antes de pedir la conversación; design 4.3/4.4)
 
 #### Scenario: Vuelta tras caducar [landing]
 - **GIVEN** el estado final del escenario anterior y un `login` falso correcto
 - **WHEN** se entra de nuevo
-- **THEN** el filtro «Canal» vale «WhatsApp», `listConversations` se llama con `channel: 'whatsapp'` y `getConversation` con `c1`
+- **THEN** el filtro «Canal» vale «WhatsApp», `listConversations` se llama con `channel: 'whatsapp'` y `getConversation` con `c2`
 
 #### Scenario: Corte de inactividad en el cliente [landing]
 - **GIVEN** la consola en `authenticated` con relojes falsos y la última petición correcta en `t`

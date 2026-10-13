@@ -252,8 +252,8 @@ Hecha con Chromium controlado por Playwright contra el simulado y `npm run dev`,
    spec dice que tras el 401 de `c2` la URL sigue en `…&c=c1` y que al volver se pide `c1`. Eso
    contradice design 4.3/4.4/6.4 (la URL se escribe al seleccionar) y el criterio de 6.1 con el
    simulado (`c_caduca` «al entrar de nuevo, vuelve a `c_caduca`»). Se implementó lo segundo: la URL
-   conserva `c2` y al volver se pide `c2`. Las pruebas llevan esos valores. Conviene corregir el
-   spec.
+   conserva `c2` y al volver se pide `c2`. Las pruebas llevan esos valores. El spec ya se corrigió para
+   que diga `c2`.
 2. **JSON-LD movido del layout a cada página.** `out/consola.html` contenía `contacto@aiworks.lat`
    dentro de los datos del `StructuredData` del layout, lo que incumple el escenario [build] «HTML
    estático sin datos ni sitio». Un componente de cliente que se oculte no sirve (el JSON-LD dejaba de
