@@ -234,7 +234,7 @@ h1, h2, h3 {
   .section { padding-block: 10rem; }
 }
 
-:where(a, button, [tabindex]):focus-visible {
+:where(a, button, input, select, [tabindex]):focus-visible {
   outline: 2px solid var(--c-clave);
   outline-offset: 4px;
   border-radius: 2px;
@@ -294,6 +294,20 @@ section[id] {
 }
 .link:hover {
   color: var(--c-clave);
+}
+
+.console-field {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--tinta-media);
+  border-radius: 0;
+  background: transparent;
+  padding: 0.5rem 0;
+  font: inherit;
+  color: var(--tinta);
+}
+.console-field:disabled {
+  opacity: 0.6;
 }
 }
 

@@ -2,12 +2,14 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence, m } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
 import { ThemeToggle } from '@/shared/components/layout/ThemeToggle';
 import { ScrollProgressBar } from '@/shared/components/layout/ScrollProgressBar';
+import { CONSOLE_PATH } from '@/shared/constants/site';
 import { useUIStore } from '@/shared/store/useUIStore';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
@@ -26,6 +28,7 @@ const ITEM_VARIANTS = {
 } as const;
 
 export function Header() {
+  const pathname = usePathname();
   const isMenuOpen = useUIStore((state) => state.isMenuOpen);
   const toggleMenu = useUIStore((state) => state.toggleMenu);
   const closeMenu = useUIStore((state) => state.closeMenu);
@@ -64,6 +67,8 @@ export function Header() {
 
   const whatsappUrl = whatsappLink(locale);
   const whatsappAriaLabel = `${t.header.cta} ${newTabNotice(locale)}`;
+
+  if (pathname?.startsWith(CONSOLE_PATH)) return null;
 
   return (
     <header className="fixed left-0 right-0 top-0 z-50 border-b border-regla bg-papel">

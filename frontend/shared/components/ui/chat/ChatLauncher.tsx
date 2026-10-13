@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { CONSOLE_PATH } from '@/shared/constants/site';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { useUIStore } from '@/shared/store/useUIStore';
 
@@ -44,7 +45,7 @@ export function ChatLauncher() {
     return () => io.disconnect();
   }, [pathname]);
 
-  if (pathname?.startsWith('/demo')) return null;
+  if (pathname?.startsWith('/demo') || pathname?.startsWith(CONSOLE_PATH)) return null;
 
   return (
     <>

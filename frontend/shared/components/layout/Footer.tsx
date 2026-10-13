@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Container } from '@/shared/components/ui/Container';
 import { LanguageSelector } from '@/shared/components/layout/LanguageSelector';
 import { CONTACT_INFO } from '@/shared/constants';
+import { CONSOLE_PATH } from '@/shared/constants/site';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
 
@@ -18,6 +20,7 @@ interface FooterLink {
 }
 
 export function Footer() {
+  const pathname = usePathname();
   const { t, locale } = useTranslation();
 
   const columns: { title: string; links: FooterLink[] }[] = [
@@ -53,6 +56,8 @@ export function Footer() {
       links: [{ label: t.footer.privacy, href: '/privacidad' }],
     },
   ];
+
+  if (pathname?.startsWith(CONSOLE_PATH)) return null;
 
   return (
     <footer className="dark-band">
