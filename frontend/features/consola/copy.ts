@@ -74,5 +74,13 @@ export const copy = {
   },
   reader: {
     label: 'Conversación',
+    back: 'Volver',
+    empty: 'Elija una conversación de la bandeja.',
+    visitor: 'VISITANTE',
+    assistant: 'ASISTENTE',
+    language: { es: 'ES', en: 'EN', none: '—' },
+    signals: 'Señales',
+    reached: 'Alcanzada',
+    pending: 'Pendiente',
   },
 } as const;

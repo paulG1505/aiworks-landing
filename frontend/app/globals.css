@@ -309,6 +309,12 @@ section[id] {
 .console-field:disabled {
   opacity: 0.6;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .console-fade {
+    animation: console-fade-in 120ms ease-out both;
+  }
+}
 }
 
 .line-mask {
@@ -326,6 +332,10 @@ section[id] {
   to   { transform: translateY(0); }
 }
 @keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes console-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
