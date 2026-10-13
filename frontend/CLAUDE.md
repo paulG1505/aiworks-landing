@@ -28,6 +28,7 @@ frontend/
 │   ├── faq/                     # 05 FAQ (acordeón accesible)
 │   ├── final-cta/               # 06 Cierre: WhatsApp + correo
 │   ├── demo/                    # Página /demo#<código>
+│   ├── consola/                 # Consola de conversaciones con login (/consola, noindex)
 │   └── legal/                   # Página de privacidad
 │
 ├── shared/
@@ -185,6 +186,7 @@ npm run lint
 - `build` - Build for production
 - `start` - Start production server
 - `lint` - Run ESLint
+- `test` - Run the Vitest suite once (`test:watch` to watch)
 
 ## Convenciones de código
 
@@ -297,11 +299,13 @@ With Next.js App Router, remember:
 - For server-side data, use Server Components and pass props
 - Use Zustand for client-side interactive state only
 
-## 🧪 Testing Strategy (Future)
+## 🧪 Testing Strategy
 
-- Unit tests: Feature-specific logic and hooks
-- Integration tests: Feature flows
-- E2E tests: Critical user journeys
+- Vitest + jsdom + Testing Library (`npm test`); config in `vitest.config.mts` and `vitest.setup.ts`.
+  Tests live next to the code (`*.test.ts(x)`) under `features/` and `shared/`.
+- `next/navigation` is mocked globally with a `window.history`-backed implementation
+  (`vitest.navigation.ts`); `setViewport("desktop" | "mobile")` from `vitest.viewport.ts` controls `matchMedia`.
+- The CI runs `npm test` before the build.
 
 ## 📚 Resources
 
