@@ -1,16 +1,10 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
 import Script from 'next/script';
-import { CONSOLE_PATH, SITE_URL } from '@/shared/constants/site';
+import { SITE_URL } from '@/shared/constants/site';
 import { CONTACT_INFO } from '@/shared/constants';
 import { es } from '@/shared/lib/i18n/translations/es';
 
 // Only declare what the visible page says; the FAQ matches the Spanish copy word for word.
 export function StructuredData() {
-  const pathname = usePathname();
-  if (pathname?.startsWith(CONSOLE_PATH)) return null;
-
   const organization = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

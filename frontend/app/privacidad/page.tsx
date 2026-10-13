@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { StructuredData } from '@/shared/components/seo/StructuredData';
 import { PrivacyPolicy } from '@/features/legal/components/PrivacyPolicy';
 import { SITE_URL } from '@/shared/constants/site';
 
@@ -10,5 +11,10 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  return <PrivacyPolicy />;
+  return (
+    <>
+      <StructuredData />
+      <PrivacyPolicy />
+    </>
+  );
 }

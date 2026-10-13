@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { Hero } from '@/features/hero/components/Hero';
+import { StructuredData } from '@/shared/components/seo/StructuredData';
 import { ScrollToAnchor } from '@/shared/components/providers/ScrollToAnchor';
 
 const Services = dynamic(
@@ -35,6 +36,7 @@ const FinalCta = dynamic(
 export default function Home() {
   return (
     <>
+      <StructuredData />
       <ScrollToAnchor />
       <Hero />
       <Services />
