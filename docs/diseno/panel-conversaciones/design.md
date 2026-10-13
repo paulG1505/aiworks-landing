@@ -804,7 +804,8 @@ lector tienen su propio desplazamiento vertical y son regiones con nombre (`<sec
    `--marca` cuya altura es proporcional al máximo del mes (máx. 48 px). Un día con 0 no tiene marca.
    Es un gráfico, no adorno. Accesible así:
    - el contenedor es `role="group"`, `aria-label="Chats por día de {mes}"`, `tabIndex={0}`;
-   - las flechas izquierda y derecha mueven el día marcado; `Home`/`End` van al primero y al último;
+   - las flechas izquierda y derecha mueven el día marcado (sin día marcado, la primera flecha marca
+     el día 1); `Home`/`End` van al primero y al último; no pasa de los bordes;
    - el ratón sobre una marca hace lo mismo;
    - una línea de lectura bajo la regla (`<p aria-live="polite">`, mono) dice «12 oct · 4 chats»;
      sin día marcado dice «Día con más chats: 12 oct · 7».
@@ -1026,8 +1027,9 @@ Mismo estilo que `scripts/mock-chat-api.mjs`: Node puro, sin dependencias, un ar
     `+593 ••• ••• 099`, salidos de `+593 99 000 00xx`); contactos web `web · ` más 6 caracteres
     hexadecimales. Textos inventados sobre horarios, precios de pan y citas de taller. Ningún nombre de
     persona real ni teléfono real.
-  - Conversaciones con id especial al principio del mes actual: `c_caduca` (su detalle responde 401 y
-    borra la sesión), `c_falla` (500), `c_lenta` (20 s), `c_purgada` (404 `no_encontrada`) y
+  - Cinco conversaciones más, las más recientes del mes (salen arriba en la bandeja): `c_caduca` (la primera lectura de su
+    detalle desde que arranca el simulado responde 401 y borra la sesión; las siguientes responden
+    normal, para poder volver a ella tras entrar), `c_falla` (500), `c_lenta` (20 s), `c_purgada` (404 `no_encontrada`) y
     `c_numero` (su `contacto` trae `+593 99 000 0000` completo, para ver que `safeContact` lo oculta).
   - `tenant=demo-limite` en `/conversaciones` o `/resumen`: 429 `demasiadas_peticiones` con
     `reintentar_en: 30`.
