@@ -20,8 +20,40 @@ export const copy = {
     lockedAnnouncement: 'Demasiados intentos. Espere antes de intentar de nuevo.',
     locked: (time: string) => `Demasiados intentos. Podrá intentar de nuevo en ${time}.`,
   },
+  zone: {
+    loading: 'Cargando…',
+    retry: 'Reintentar',
+    notFound: 'Esta conversación ya no existe. Puede haberse borrado por antigüedad.',
+    error: {
+      timeout: 'La API tardó demasiado en responder.',
+      network: 'No hay conexión con la API.',
+      server: 'La API devolvió un error.',
+      badResponse: 'La API devolvió un error.',
+      generic: 'No se pudo completar la petición.',
+      rateLimited: (seconds: number) => `Demasiadas peticiones. Espere ${seconds} s.`,
+    },
+  },
+  channel: {
+    web: 'Web',
+    whatsapp: 'WhatsApp',
+  },
   summary: {
     heading: (month: string) => `Resumen de ${month}`,
+    monthLabel: 'Mes',
+    labels: {
+      conversations: 'CHATS',
+      replies: 'RESPUESTAS',
+      cost: 'COSTO (USD)',
+      ready: 'LISTOS PARA LLAMADA',
+    },
+    allFilters: 'Todos los tenants y canales',
+    empty: (month: string) => `Sin datos en ${month}.`,
+    chart: {
+      label: (month: string) => `Chats por día de ${month}`,
+      busiest: (day: string, count: number) => `Día con más chats: ${day} · ${count}`,
+      day: (day: string, count: number) => `${day} · ${count} ${count === 1 ? 'chat' : 'chats'}`,
+      none: 'Sin chats en el mes.',
+    },
   },
   inbox: {
     label: 'Conversaciones',
