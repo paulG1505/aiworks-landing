@@ -56,7 +56,21 @@ export const copy = {
     },
   },
   inbox: {
+    region: 'Bandeja de conversaciones',
+    scroller: 'Lista de conversaciones',
     label: 'Conversaciones',
+    tenant: 'Tenant',
+    channel: 'Canal',
+    all: 'Todos',
+    readyOnly: 'Solo listos para llamada',
+    loadMore: 'Cargar más',
+    clearFilters: 'Quitar filtros',
+    ready: 'Listo para llamada',
+    empty: (month: string) => `Aún no hay conversaciones en ${month}.`,
+    emptyFiltered: (month: string, filters: string) =>
+      `Aún no hay conversaciones en ${month} con estos filtros: ${filters}.`,
+    turns: (count: number) => `${count} ${count === 1 ? 'turno' : 'turnos'}`,
+    signals: (reached: number, total: number) => `${reached} de ${total} señales`,
   },
   reader: {
     label: 'Conversación',

@@ -3,8 +3,11 @@
 import { useRef } from 'react';
 import { copy } from '../copy';
 import { useConsoleParams } from '../hooks/useConsoleParams';
+import { useInboxKeyboard } from '../hooks/useInboxKeyboard';
+import { useIsDesktop } from '../hooks/useIsDesktop';
 import type { SessionInfo } from '../types';
 import { ConsoleHeader } from './ConsoleHeader';
+import { Inbox, type InboxHandle } from './Inbox';
 import { MonthSummary } from './MonthSummary';
 
 interface ConsoleScreenProps {
@@ -14,10 +17,18 @@ interface ConsoleScreenProps {
 
 export function ConsoleScreen({ session, onSignOut }: ConsoleScreenProps) {
   const { params, update } = useConsoleParams(session.tenants.map((tenant) => tenant.id));
+  const isDesktop = useIsDesktop();
   const summaryHeading = useRef<HTMLHeadingElement>(null);
+  const inbox = useRef<InboxHandle>(null);
+
+  const onKeyDown = useInboxKeyboard({
+    isDesktop,
+    selectRow: (id) => update({ conversationId: id }),
+    focusSummary: () => summaryHeading.current?.focus(),
+  });
 
   return (
-    <div className="flex h-dvh flex-col bg-papel text-tinta">
+    <div onKeyDown={onKeyDown} className="flex h-dvh flex-col bg-papel text-tinta">
       <ConsoleHeader user={session.user} onSignOut={onSignOut} />
       <MonthSummary
         month={params.month}
@@ -28,7 +39,17 @@ export function ConsoleScreen({ session, onSignOut }: ConsoleScreenProps) {
         onMonthChange={(month) => update({ month })}
       />
       <div className="flex min-h-0 flex-1">
-        <section aria-label={copy.inbox.label} className="w-[38%] border-r border-regla" />
+        <Inbox
+          ref={inbox}
+          month={params.month}
+          tenantId={params.tenantId}
+          channel={params.channel}
+          readyOnly={params.readyOnly}
+          tenants={session.tenants}
+          selectedId={params.conversationId}
+          onSelect={(id) => update({ conversationId: id })}
+          onFiltersChange={(patch) => update(patch)}
+        />
         <section aria-label={copy.reader.label} className="flex-1" />
       </div>
     </div>
