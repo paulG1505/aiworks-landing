@@ -185,6 +185,132 @@ No se tocó ningún ADR aceptado. `proposal.md` y `MARCA.md` no cambian.
 
 ## 7. Resumen de implementación
 
-Pendiente: se completará al terminar la fase 2 (implementación de las tareas 4.1, 5.1, 5.2, 6.1 y
-6.2), con lo construido, las desviaciones respecto a este diseño y el resultado de la revisión manual
-de teclado y contraste.
+Fase 2 (frontend, tareas 4.1, 5.1, 5.2, 6.1 y 6.2), implementada el 2026-10-13 en la rama
+`docs/panel-conversaciones-diseno`. Resultado final en `frontend/`: `npm run lint` sin avisos,
+`npm test` 12 archivos y 110 pruebas en verde, `npm run build` correcto (genera `out/consola.html` y
+`out/consola/`), y `scripts/verify-landing.sh` con 41 comprobaciones y 0 fallos.
+
+### Qué se hizo, por tarea
+
+| Tarea | Commits | Contenido |
+|---|---|---|
+| 4.1 | `00a2f3f` herramientas de prueba y paso `npm test` en el CI · `d90cf1d` `API_URL` a `shared/lib/apiUrl.ts` · `48f76f9` `CONSOLE_PATH`, ocultar encabezado, pie y chat, estilos `console-field` y foco de `input`/`select` · `c146c05` cliente tipado, `wire.ts`, `format.ts`, `month.ts` y sus pruebas · `8ed51ad` guardia de sesión, login, ruta `/consola` y pruebas · `7a66c0f` servidor simulado y apartado «Consola» del `CLAUDE.md` · `9201198` bloque «hidden console» de `verify-landing.sh` | Ruta noindex, cliente con los 9 puntos de design 5.2 (una prueba por punto), máquina de estados de 4.3 con corte de inactividad, login con envío automático y cuenta atrás, URL como estado (`useConsoleParams`). |
+| 5.1 | `a1f89a4` `ZoneStatus` y `useApiResource` · `79d2726` `MonthSummary`, `DailyChart` y pruebas | Franja de cifras, selector de mes, regla de chats por día con flechas, `Home`/`End` y línea `aria-live`; estados de carga, vacío, error y 429 con espera. |
+| 5.2 | `4d25f18` bandeja, filtros y fila · `b04852f` teclado · `1c983fd` pruebas | Filtros en la URL, «Cargar más» (con error bajo la lista y recarga única ante `cursor_invalido`), vacío con «Quitar filtros», respuesta tardía descartada, `j`/`k`/flechas, `g` `r`. |
+| 6.1 | `aeab50c` lector y lista de señales · `acf807a` reparto escritorio/móvil y manejo del foco · `d550684` pruebas | Lector con texto plano `pre-wrap`, desvanecido de 120 ms bajo `no-preference`, «Volver»/`Esc` con foco a la fila, 401 a mitad de sesión y vuelta tras caducar de punta a punta. |
+| 6.2 | `bf414a3` JSON-LD por página · `cdb7880` revisión de marca, contraste y nombres accesibles | `brand.test.ts` (escenario «Revisión estática», animación única, clases `console-*`, contraste calculado de los pares de design 7 en ambos temas) y prueba de nombres accesibles con `toHaveAccessibleName`. |
+
+Pruebas: cada escenario **[landing]** de `specs/admin-console/spec.md` tiene una prueba con su nombre
+(salvo la deriva indicada abajo). Herramientas: Vitest 3 + jsdom + Testing Library + user-event +
+jest-dom + `@vitejs/plugin-react`; `next/navigation` se simula con una versión apoyada en
+`window.history` (`frontend/vitest.navigation.ts`) y `matchMedia` con `setViewport()`
+(`frontend/vitest.viewport.ts`).
+
+### Cómo probarlo en local
+
+```bash
+node scripts/mock-console-api.mjs         # http://127.0.0.1:8000/console/api
+cd frontend && npm run dev                # en otra terminal
+# abrir http://127.0.0.1:3000/consola (no localhost) y entrar con demo / consola-demo / 123456
+```
+
+Atajos del simulado (también en el encabezado del script y en el `CLAUDE.md` raíz): usuario
+`bloqueado` (429 al instante), 5 fallos (429 durante 60 s), `MOCK_IDLE_SECONDS=60`, `MOCK_DISABLED=1`,
+`MOCK_EMPTY=1`, meses `-1` (cifras, lista vacía), `-2` (500), `-3` (20 s), `tenant=demo-limite` (429),
+`c_caduca`, `c_falla`, `c_lenta`, `c_purgada`, `c_numero`. Con `npm test` se corren las pruebas y con
+`bash scripts/verify-landing.sh` (tras `npm run build`) las del build.
+
+### Revisión manual (tarea 6.2)
+
+Hecha con Chromium controlado por Playwright contra el simulado y `npm run dev`, solo con teclado
+(no es una prueba con lector de pantalla ni con una persona):
+
+- Flujo login → bandeja → lector → resumen → «Salir»: el foco inicial cae en «Usuario», el código
+  envía solo al sexto dígito, `j` abre la siguiente fila, `Enter` lleva el foco al título del lector,
+  `Esc` lo devuelve a la fila, `g` `r` va a «Resumen de octubre 2026» y «Salir» deja «Sesión cerrada.»
+  con la URL limpia. El orden de tabulación recorre cabecera, mes, regla, filtros, lista, «Cargar más»
+  y lector, y termina en el cuerpo de la página: sin trampas de foco.
+- Contorno de foco de 2 px sólido en cada parada: `rgb(11, 101, 113)` en claro y `rgb(92, 195, 204)`
+  en oscuro.
+- Capturas en claro y oscuro (1280 px) y en 390 px: sin desbordamiento horizontal, marca respetada
+  (sin cajas, sombras ni degradados), «Volver» y `Esc` devuelven el foco a la fila.
+- Contraste calculado desde `globals.css` (también lo comprueba `brand.test.ts`), claro / oscuro:
+  tinta/papel 16,2 / 15,6; tinta/arena 14,8 / 14,5; tinta media/papel 6,5 / 7,4; tinta media/arena
+  6,0 / 6,9; petróleo/papel 6,2 / 9,1; petróleo/arena 5,7 / 8,5; sobre-botón/botón 6,7 / 8,5. Todos
+  cumplen el mínimo; solo difieren en una décima de la tabla de design 7 (14,9 y 6,6 allí), que
+  conviene corregir.
+- Con el simulado: 50 filas del mes en tres cargas (20 + 20 + 10), cifras del mes anterior con lista
+  vacía, hace dos meses error con «Reintentar», hace tres meses timeout a los 16 s (15 s + latencia),
+  `demo-limite` con espera de 30 s, `demo-taller` con «Quitar filtros», `c_caduca` lleva al login y
+  vuelve a la misma conversación, `c_purgada` muestra el aviso, `c_numero` muestra «Contacto oculto».
+- No se comprobó `prefers-reduced-motion: reduce` en pantalla; solo de forma estática (la única
+  animación vive bajo `no-preference`).
+
+### Desviaciones del diseño y por qué
+
+1. **URL al seleccionar y caducidad (spec «401 a mitad de sesión» y «Vuelta tras caducar»).** El
+   spec dice que tras el 401 de `c2` la URL sigue en `…&c=c1` y que al volver se pide `c1`. Eso
+   contradice design 4.3/4.4/6.4 (la URL se escribe al seleccionar) y el criterio de 6.1 con el
+   simulado (`c_caduca` «al entrar de nuevo, vuelve a `c_caduca`»). Se implementó lo segundo: la URL
+   conserva `c2` y al volver se pide `c2`. Las pruebas llevan esos valores. Conviene corregir el
+   spec.
+2. **JSON-LD movido del layout a cada página.** `out/consola.html` contenía `contacto@aiworks.lat`
+   dentro de los datos del `StructuredData` del layout, lo que incumple el escenario [build] «HTML
+   estático sin datos ni sitio». Un componente de cliente que se oculte no sirve (el JSON-LD dejaba de
+   salir en el HTML). Se renderiza ahora en `/`, `/privacidad` y `/demo` (misma salida que antes) y no
+   en `/consola`; efecto lateral: `404.html` ya no lleva el JSON-LD de la organización.
+3. **`j`/`k` en móvil solo mueven el foco.** design 6.4 dice «mueve el foco y la selección»; abrir el
+   lector ocultaría la lista, así que se eligió la opción conservadora. En escritorio sí abren.
+4. **«Volver» en móvil vuelve a pedir la primera página de la bandeja** (la lista se desmonta, como
+   exige el spec): se pierde lo acumulado con «Cargar más». El foco vuelve a la fila si está en esa
+   primera página.
+5. **Cuenta atrás del login:** el texto visible se actualiza cada segundo sin ser región viva y un
+   `role="alert"` solo para lectores («Demasiados intentos. Espere antes de intentar de nuevo.»)
+   anuncia el bloqueo una vez, para que no se lea cada segundo.
+6. **Dependencias de prueba:** `vite` queda fijado en `^7` y `@vitejs/plugin-react` en `^5` porque
+   Vitest 3 usa Vite 7 y mezclar versiones rompía la comprobación de tipos de `next build`. Instalar
+   subió de versión algunos paquetes de Babel en `package-lock.json` (solo desarrollo). `jsdom` 29
+   exige Node 20.19 o superior: el CI usa `node-version: "20"`, que hoy resuelve a una 20.x válida.
+7. **Piezas añadidas no listadas:** `hooks/useApiResource.ts` (carga con aborto y descarte de
+   respuestas tardías), `testing/render.tsx`, `vitest.navigation.ts`, `vitest.viewport.ts` y un
+   estado `message` en `ZoneStatus`.
+8. **Textos:** `Intl` en `es-EC` abrevia septiembre como «sept» (design decía «sep»); el lector
+   muestra «Conversación» como título mientras carga, para que el foco no se pierda al llegar los
+   datos. El simulado pagina de 20 en 20 (design 9) y el motor usa 30 por defecto (design 1.4).
+9. **Historial de commits:** `4d25f18` importa `useInboxKeyboard`, que llega en el commit siguiente
+   (`b04852f`); el árbol compila desde `b04852f`.
+
+### Qué depende del repo del motor (no está construido aquí)
+
+- Todas las rutas de `design.md` sección 1: `POST /login`, `POST /logout`, `GET /yo`, `/resumen`,
+  `/conversaciones` y `/conversaciones/{id}`, con las formas JSON exactas, el sobre de error
+  `{detail:{codigo, mensaje, reintentar_en?}}`, 422 para parámetros inválidos y 405 para otros
+  métodos. El cliente trata como `bad_response` cualquier campo obligatorio ausente o de otro tipo
+  (por ejemplo `senales_alcanzadas > senales_total`) y ignora los campos extra.
+- Cookie `__Host-consola` (`HttpOnly; Secure; SameSite=Strict; Path=/`, sin `Domain`) y, en local,
+  `CONSOLE_INSECURE_DEV_COOKIE=1`; el cliente manda `credentials: "include"` y `cache: "no-store"` en
+  todo, y la landing debe abrirse en `http://127.0.0.1:3000` en desarrollo.
+- CORS solo en `/console/*`: origen exacto `CONSOLE_ALLOWED_ORIGIN` (`https://aiworks.lat`),
+  `Allow-Credentials: true`, `Expose-Headers: Retry-After`, `Vary: Origin` y preflight con
+  `Content-Type`; `POST` con `Content-Type: application/json` y `Origin` exacto (403 si no).
+- 404 en todo con la consola apagada (la interfaz lo muestra como «La consola no está activa.»),
+  `Cache-Control: no-store`, 429 `bloqueado` con `reintentar_en` y `Retry-After`, 429
+  `demasiadas_peticiones`, cursor opaco ligado a los filtros con 422 `cursor_invalido`, orden
+  `creada DESC, id DESC`.
+- `Sesion.tenants` completo y ordenado por nombre; `contacto` ya enmascarado (el cliente solo es red de
+  seguridad); `senales` con nombre visible y `senales_total` constante (pregunta P6 abierta);
+  `turnos` = mensajes del visitante; `idioma` `es`/`en`/`null`.
+- `metricas_diarias` y la ventana de recálculo antes de la purga (tareas 2.1, pregunta P4) para que
+  `/resumen` siga dando cifras de meses con la lista ya purgada; `uso` para respuestas y costo.
+- Caddy (`/console/*`, con `/admin/*` en 404), variables `CONSOLE_*` del `.env` y despliegue (7.1).
+
+### Qué falta
+
+- Tareas del motor 1.1 a 3.2 y 7.1; sin ellas no se puede probar contra la API real. Cuando exista,
+  repetir la revisión manual con cookies reales (`Secure`/`SameSite=Strict` entre `aiworks.lat` y
+  `api.aiworks.lat`) y en Safari y Firefox.
+- Prueba con un lector de pantalla y con una persona; revisión de `prefers-reduced-motion: reduce` en
+  pantalla.
+- Preguntas abiertas P1 a P7 sin respuesta (orden, tema, límites, purga, `/privacidad`, señales,
+  costo). La consola no guarda datos nuevos del visitante, así que no se tocó `/privacidad`.
+- Corregir el spec y la tabla de contraste según las desviaciones 1 y de la revisión.
