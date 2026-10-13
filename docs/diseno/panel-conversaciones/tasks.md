@@ -83,7 +83,7 @@ grupo se proponen commits semánticos.
   - **Pruebas:** `MonthSummary.test.tsx` y `DailyChart.test.tsx` con los escenarios **[landing]** de
     «Resumen mensual» (cifras, cambio de mes, regla, estados).
 
-- [ ] 5.2 Bandeja con filtros, selección, «Cargar más» y teclado (design 6.2 punto 3 y 6.4).
+- [x] 5.2 Bandeja con filtros, selección, «Cargar más» y teclado (design 6.2 punto 3 y 6.4).
   - **Crear:** `components/InboxFilters.tsx`, `components/Inbox.tsx`, `components/InboxRow.tsx`,
     `hooks/useInboxKeyboard.ts`; montarlos en `ConsoleScreen`.
   - **Aceptación:** con el simulado, 50 filas del mes (45 + las 5 especiales) en tres cargas (20 + 20 + 10); filtros

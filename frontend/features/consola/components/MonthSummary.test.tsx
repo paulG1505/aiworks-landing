@@ -146,6 +146,12 @@ describe('MonthSummary inside the console', () => {
 
     expect(await screen.findByRole('heading', { name: 'Resumen de septiembre 2026' })).toBeInTheDocument();
     expect(api.getSummary).toHaveBeenLastCalledWith({ month: '2026-09', tenantId: undefined, channel: undefined }, expect.any(AbortSignal));
+    await waitFor(() =>
+      expect(api.listConversations).toHaveBeenLastCalledWith(
+        expect.objectContaining({ month: '2026-09' }),
+        expect.any(AbortSignal),
+      ),
+    );
     expect(window.location.search).toContain('mes=2026-09');
   });
 });
