@@ -48,6 +48,28 @@ cd frontend && npm run dev                # en otra terminal
   da 404 en la demo. Para un build estático contra otro puerto:
   `NEXT_PUBLIC_API_URL=http://127.0.0.1:8787 npm run build`.
 
+## Consola de conversaciones (`/consola`, change `panel-conversaciones`)
+
+- Ruta estática con login (usuario, clave y TOTP) contra `/console/api/*` del motor; sin enlaces,
+  `noindex`, fuera del sitemap y sin encabezado, pie ni chat. Código en
+  `frontend/features/consola/`; diseño en `docs/diseno/panel-conversaciones/`.
+- Probar sin la API real (comparte el puerto 8000 con el simulado del chat; no se usan a la vez):
+
+```bash
+node scripts/mock-console-api.mjs         # http://127.0.0.1:8000/console/api
+cd frontend && npm run dev                # en otra terminal
+# abrir http://127.0.0.1:3000/consola (no localhost: la cookie no viajaría)
+# entrar con demo / consola-demo / 123456
+```
+
+  Atajos: usuario `bloqueado` da 429 al instante; 5 fallos bloquean 60 s; `MOCK_IDLE_SECONDS=60`
+  caduca la sesión por inactividad; `MOCK_DISABLED=1` apaga la consola (404); `MOCK_EMPTY=1` no
+  trae datos. Mes actual con datos, mes anterior con cifras y lista vacía, hace dos meses `/resumen`
+  da 500, hace tres tarda 20 s; `tenant=demo-limite` da 429. Conversaciones `c_caduca` (primera
+  lectura 401), `c_falla` (500), `c_lenta` (20 s), `c_purgada` (404) y `c_numero` (número completo).
+- Pruebas: `cd frontend && npm test` (Vitest + jsdom + Testing Library); el CI las corre antes de
+  construir. Comprobaciones sobre el build: `scripts/verify-landing.sh`.
+
 ## Reglas
 
 - Rama + PR; nunca commit directo a `master` (regla de la raíz `aiworks/CLAUDE.md`).
