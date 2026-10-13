@@ -25,6 +25,9 @@ interface InboxProps extends Filters {
   selectedId?: string;
   onSelect: (id: string) => void;
   onFiltersChange: (patch: Partial<Omit<Filters, 'month'>>) => void;
+  /** Row to focus as soon as the list is on screen again (after leaving the reader on mobile). */
+  restoreFocusId?: string;
+  onFocusRestored?: () => void;
   ref?: Ref<InboxHandle>;
 }
 
@@ -40,7 +43,8 @@ type Loaded =
   | { filters: Filters; reloads: number; error: ConsoleError };
 
 export function Inbox({
-  month, tenantId, channel, readyOnly, tenants, selectedId, onSelect, onFiltersChange, ref,
+  month, tenantId, channel, readyOnly, tenants, selectedId, onSelect, onFiltersChange,
+  restoreFocusId, onFocusRestored, ref,
 }: InboxProps) {
   const api = useConsoleApi();
   const filters = useMemo<Filters>(() => ({ month, tenantId, channel, readyOnly }), [month, tenantId, channel, readyOnly]);
@@ -79,6 +83,13 @@ export function Inbox({
     focusAfterAppend.current = null;
     rows.current.get(id)?.focus();
   }, [loaded]);
+
+  const listReady = current !== null && 'items' in current;
+  useEffect(() => {
+    if (!restoreFocusId || !listReady) return;
+    rows.current.get(restoreFocusId)?.focus();
+    onFocusRestored?.();
+  }, [restoreFocusId, listReady, onFocusRestored]);
 
   const loadMore = useCallback(async () => {
     if (!current || 'error' in current || !current.nextCursor || current.more === 'loading') return;
