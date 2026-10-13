@@ -188,10 +188,7 @@ describe('Nombres accesibles', () => {
 
     const controls = container.querySelectorAll<HTMLElement>('button, input, select, [tabindex]');
     expect(controls.length).toBeGreaterThan(8);
-    for (const control of controls) {
-      const name = control.getAttribute('aria-label') ?? control.getAttribute('aria-labelledby') ?? (control as HTMLInputElement).labels?.[0]?.textContent ?? control.textContent;
-      expect(name?.trim(), control.outerHTML.slice(0, 120)).toBeTruthy();
-    }
+    for (const control of controls) expect(control).toHaveAccessibleName();
     expect(screen.getByRole('combobox', { name: 'Tenant' })).toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'Canal' })).toBeInTheDocument();
     expect(screen.getByRole('combobox', { name: 'Mes' })).toBeInTheDocument();

@@ -108,7 +108,7 @@ grupo se proponen commits semánticos.
     **[landing]** de «Detalle de una conversación» e «Interfaz de la consola» (escritorio, móvil y
     volver), más «401 a mitad de sesión» y «Vuelta tras caducar» de punta a punta con `fakeApi`.
 
-- [ ] 6.2 Revisión de marca y accesibilidad (design 7).
+- [x] 6.2 Revisión de marca y accesibilidad (design 7).
   - **Crear:** `features/consola/brand.test.ts` (escenario «Revisión estática») y una prueba de
     «Nombres accesibles» sobre la consola montada con datos.
   - **Aceptación:** las pruebas pasan; revisión manual con teclado solo (login → bandeja → lector →
