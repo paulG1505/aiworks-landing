@@ -35,7 +35,7 @@ grupo se proponen commits semánticos.
 > centralizado en `features/consola/copy.ts`. Cada tarea termina con `npm run lint`, `npm test` y
 > `npm run build` en verde, y `scripts/verify-landing.sh` sin fallos.
 
-- [ ] 4.1 Ruta, cliente, guardia, login, servidor simulado y herramientas de prueba.
+- [x] 4.1 Ruta, cliente, guardia, login, servidor simulado y herramientas de prueba.
   - **Crear:**
     - `frontend/vitest.config.mts`, `frontend/vitest.setup.ts` y los scripts `test` / `test:watch`
       (design 8.1); paso `npm test` en `.github/workflows/deploy.yml` antes de «Build».

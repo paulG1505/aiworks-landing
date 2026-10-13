@@ -76,6 +76,26 @@ file_exists "og-image.png"  "og-image.png exists"
 file_exists "icon-192.png"  "icon-192.png exists"
 file_exists "icon-512.png"  "icon-512.png exists"
 
+heading "Requirement: hidden console"
+CONSOLE="$OUT/consola.html"
+if [ -f "$CONSOLE" ]; then
+  ok "consola.html exists"
+  grep -q '<meta name="robots"[^>]*noindex' "$CONSOLE" && ok "consola.html declares noindex" || bad "consola.html has no noindex robots meta"
+  grep -q 'rel="canonical"' "$CONSOLE" && bad "consola.html has a canonical link" || ok "consola.html has no canonical link"
+  grep -q 'og:title' "$CONSOLE" && bad "consola.html has og:title" || ok "consola.html has no og:title"
+  grep -q 'Comprobando sesión' "$CONSOLE" && ok "consola.html only ships the session check" || bad "consola.html lacks the session check text"
+  for leak in "Pregúntenos" "contacto@aiworks.lat" "Servicios"; do
+    grep -qF "$leak" "$CONSOLE" && bad "consola.html contains '$leak' (site chrome leaked)" || ok "consola.html has no '$leak'"
+  done
+else
+  bad "consola.html is missing"
+fi
+grep -q '/consola' "$OUT/sitemap.xml" 2>/dev/null && bad "sitemap.xml lists /consola" || ok "sitemap.xml does not list /consola"
+for page in index.html privacidad.html demo.html; do
+  grep -q 'href="/consola"' "$OUT/$page" 2>/dev/null && bad "$page links to /consola" || ok "$page does not link to /consola"
+done
+grep -q '/consola' "$OUT/robots.txt" 2>/dev/null && bad "robots.txt mentions /consola" || ok "robots.txt does not mention /consola"
+
 heading "Bundle weight"
 if [ -f "$OUT/videos/landing.mp4" ]; then
   bad "the 60 MB video is still in the build"
