@@ -1,9 +1,5 @@
 import { CONTACT_INFO } from '@/shared/constants';
-
-export const API_URL = (
-  process.env.NEXT_PUBLIC_API_URL ??
-  (process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'https://api.aiworks.lat')
-).replace(/\/+$/, '');
+import { API_URL } from '@/shared/lib/apiUrl';
 
 export const MAX_CHARS = 1000;
 export const TIMEOUT_MS = 20_000;
