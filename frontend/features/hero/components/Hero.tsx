@@ -2,7 +2,7 @@
 
 import { Container } from '@/shared/components/ui/Container';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { useUIStore } from '@/shared/store/useUIStore';
 import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
 import { OperationsLog } from './OperationsLog';
@@ -37,7 +37,7 @@ export function Hero() {
           <div className="enter-reveal flex flex-col gap-6 sm:gap-10" style={delay(420)}>
             <p className="measure mt-2 text-[1.125rem] text-tinta-media lg:text-[1.3125rem]">{t.hero.subtitle}</p>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-3">
               <button
                 id="assistant-cta"
                 type="button"
@@ -52,11 +52,18 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${t.hero.cta.whatsapp} ${newTabNotice(locale)}`}
-                className="group inline-flex items-center gap-2 self-center p-2 text-base font-medium text-tinta sm:self-auto sm:p-0 sm:text-[1.0625rem]"
+                className="group inline-flex min-h-11 items-center gap-2 self-center whitespace-nowrap p-2 text-base font-medium text-tinta sm:self-auto sm:p-0 sm:text-[1.0625rem]"
               >
                 <span className="link">{t.hero.cta.whatsapp}</span>
                 <ArrowUpRight
                   className="size-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
+              </a>
+              <a href="/demo" className="group inline-flex min-h-11 items-center gap-2 self-center whitespace-nowrap p-2 text-base font-medium text-tinta sm:self-auto sm:p-0 sm:text-[1.0625rem]">
+                <span className="link">{t.hero.cta.demo}</span>
+                <ArrowRight
+                  className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
                   aria-hidden="true"
                 />
               </a>

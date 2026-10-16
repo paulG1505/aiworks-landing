@@ -6,6 +6,7 @@ export const en = {
       processes: "Processes",
       howWeWork: "How we work",
       why: "Why AIworks",
+      demos: "Demos",
       faq: "Questions",
       contact: "Contact",
     },
@@ -20,6 +21,7 @@ export const en = {
     cta: {
       primary: "Try our assistant",
       whatsapp: "Message us on WhatsApp",
+      demo: "See a live demo",
     },
   },
   log: {
@@ -216,6 +218,11 @@ export const en = {
         },
       ],
     },
+  },
+  demos: {
+    eyebrow: "Live demos",
+    title: { before: "Try it", highlight: "yourself." },
+    intro: "Pick a sector and talk to an assistant like the one your business would have. The companies are examples.",
   },
   faq: {
     eyebrow: "Frequently asked questions",
