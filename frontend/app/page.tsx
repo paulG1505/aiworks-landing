@@ -22,6 +22,11 @@ const Why = dynamic(
   { loading: () => null }
 );
 
+const DemosSection = dynamic(
+  () => import('@/features/demo/components/DemosSection').then((mod) => ({ default: mod.DemosSection })),
+  { loading: () => null }
+);
+
 const Faq = dynamic(
   () => import('@/features/faq/components/Faq').then((mod) => ({ default: mod.Faq })),
   { loading: () => null }
@@ -41,6 +46,7 @@ export default function Home() {
       <Processes />
       <HowWeWork />
       <Why />
+      <DemosSection />
       <Faq />
       <FinalCta />
     </>

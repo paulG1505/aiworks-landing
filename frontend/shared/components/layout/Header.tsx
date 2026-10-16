@@ -36,6 +36,7 @@ export function Header() {
     { label: t.header.nav.processes, href: '/#procesos' },
     { label: t.header.nav.howWeWork, href: '/#proceso' },
     { label: t.header.nav.why, href: '/#porque' },
+    { label: t.header.nav.demos, href: '/#demos' },
     { label: t.header.nav.faq, href: '/#preguntas' },
   ];
 
@@ -78,7 +79,7 @@ export function Header() {
             </Link>
 
             <div className="flex items-center gap-7">
-              <ul className="hidden items-center gap-7 text-[0.9375rem] lg:flex">
+              <ul className="hidden items-center gap-5 whitespace-nowrap text-[0.9375rem] lg:flex xl:gap-7">
                 {navLinks.map((link) => (
                   <li key={link.href}>
                     <a
@@ -100,7 +101,7 @@ export function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={whatsappAriaLabel}
-                  className="action action-outline hidden lg:inline-flex"
+                  className="action action-outline hidden xl:inline-flex"
                 >
                   {t.header.cta}
                 </a>
@@ -131,7 +132,7 @@ export function Header() {
             {isMenuOpen && (
               <m.div
                 id="mobile-menu"
-                className="overflow-hidden lg:hidden"
+                className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto lg:hidden"
                 variants={PANEL_VARIANTS}
                 initial="closed"
                 animate="open"
