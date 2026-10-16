@@ -2,7 +2,7 @@ import type { Locale } from '@/shared/lib/i18n/translations';
 
 export interface ChatCopy {
   title: string;
-  label: string;
+  status: string;
   close: string;
   welcome: string;
   suggestions: [string, string, string];
@@ -22,12 +22,21 @@ export interface ChatCopy {
   footerPrices: string;
   footerClosing: string;
   characters: (n: number, max: number) => string;
+  retry: string;
+  bookCall: string;
+  remaining: (n: number) => string;
+  ended: {
+    placeholder: string;
+    limit: string;
+    resting: string;
+    expired: string;
+  };
 }
 
 export const CHAT_COPY: Record<Locale, ChatCopy> = {
   es: {
     title: 'AIworks',
-    label: 'Asistente · IA',
+    status: 'Asistente de IA · en línea',
     close: 'Cerrar el chat',
     welcome:
       'Hola, soy el asistente de AIworks. Le cuento qué construimos, cuánto cuesta y, si quiere, le ayudo a agendar una llamada.',
@@ -52,11 +61,21 @@ export const CHAT_COPY: Record<Locale, ChatCopy> = {
     messageOnWhatsapp: 'Escríbanos allí',
     footerPrices: 'Los valores oficiales van en la proforma.',
     footerClosing: 'Este asistente lo construimos nosotros.',
-    characters: (n, max) => `${n} de ${max} characters`,
+    characters: (n, max) => `${n} de ${max} caracteres`,
+    retry: 'Reintentar',
+    bookCall: 'Agendar diagnóstico de 15 minutos',
+    remaining: (n) => (n === 1 ? 'Le queda 1 mensaje de esta demo' : `Le quedan ${n} mensajes de esta demo`),
+    ended: {
+      placeholder: 'Esta demo terminó',
+      limit:
+        'Esta es una demostración y ya usó sus mensajes. Para seguir, hablemos 15 minutos y le cuento cómo funcionaría en su negocio.',
+      resting: 'Esta demo está descansando por hoy. Vuelva mañana o escríbanos por WhatsApp.',
+      expired: 'Esta demo ya no está disponible. Escríbanos por WhatsApp y le preparamos una nueva.',
+    },
   },
   en: {
     title: 'AIworks',
-    label: 'Assistant · AI',
+    status: 'AI assistant · online',
     close: 'Close the chat',
     welcome:
       "Hi, I'm the AIworks assistant. I can tell you what we build, what it costs and, if you like, help you book a call.",
@@ -81,14 +100,32 @@ export const CHAT_COPY: Record<Locale, ChatCopy> = {
     footerPrices: 'Official prices are in the quote.',
     footerClosing: 'We built this assistant ourselves.',
     characters: (n, max) => `${n} of ${max} characters`,
+    retry: 'Try again',
+    bookCall: 'Book a 15-minute assessment',
+    remaining: (n) => (n === 1 ? '1 message left in this demo' : `${n} messages left in this demo`),
+    ended: {
+      placeholder: 'This demo has ended',
+      limit:
+        "This is a demonstration and you've used its messages. To keep going, let's talk for 15 minutes and I'll show you how it would work in your business.",
+      resting: 'This demo is resting for today. Come back tomorrow or message us on WhatsApp.',
+      expired: 'This demo is no longer available. Message us on WhatsApp and we will set up a new one.',
+    },
   },
 };
 
 export const DEMO_COPY: Record<
   Locale,
-  { welcome: (business: string) => string; suggestions: [string, string, string] }
+  {
+    welcome: (business: string) => string;
+    prospectWelcome: (business: string) => string;
+    prospectStatus: string;
+    suggestions: [string, string, string];
+  }
 > = {
   es: {
+    prospectWelcome: (business) =>
+      `Soy un asistente de demostración de AIworks que responde con la información pública de ${business}. ¿En qué le puedo ayudar?`,
+    prospectStatus: 'Asistente de IA · demostración',
     welcome: (business) => `Hola, le habla el asistente de ${business}. ¿En qué le puedo ayudar?`,
     suggestions: [
       '¿Qué productos o servicios ofrecen?',
@@ -97,6 +134,9 @@ export const DEMO_COPY: Record<
     ],
   },
   en: {
+    prospectWelcome: (business) =>
+      `I am an AIworks demo assistant that answers with ${business}'s public information. How can I help you?`,
+    prospectStatus: 'AI assistant · demo',
     welcome: (business) => `Hi, this is the ${business} assistant. How can I help you?`,
     suggestions: [
       'What products or services do you offer?',

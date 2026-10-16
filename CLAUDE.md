@@ -32,7 +32,7 @@ npm run build   # genera frontend/out, lo mismo que publica el CI
 ## Chat de la web (change `chatbot-web-e9`)
 
 - Botón y panel en `frontend/shared/components/ui/chat/`; el panel es un chunk aparte que
-  solo se descarga al hacer clic. La demo de un prospecto es `/demo#<código>`.
+  solo se descarga al hacer clic. La demo de un prospecto es `/demo#<nombre>-<sufijo>`; `/demo` sin hash muestra la galería de demos de sector.
 - La única variable pública es `NEXT_PUBLIC_API_URL` (por defecto `http://127.0.0.1:8000` en
   desarrollo y `https://api.aiworks.lat` en el build). Se fija al construir, no al ejecutar.
 - Probar sin la API real, con el servidor simulado (Node puro):
@@ -40,7 +40,7 @@ npm run build   # genera frontend/out, lo mismo que publica el CI
 ```bash
 node scripts/mock-chat-api.mjs            # http://127.0.0.1:8000
 cd frontend && npm run dev                # en otra terminal
-# abrir http://localhost:3000/demo#abc123def456 para la demo
+# abrir http://localhost:3000/demo#tienda-ejemplo-k3m9x2 para la demo
 ```
 
   Atajos en el mensaje: `agendar` devuelve la acción de WhatsApp con código, `limite` un 429,

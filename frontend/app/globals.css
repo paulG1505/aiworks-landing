@@ -428,10 +428,18 @@ section[id] {
 
 .typing-dot {
   display: block;
-  width: 5px;
-  height: 5px;
-  background: var(--c-media);
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--tinta-media);
   opacity: 0.7;
+}
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--regla-arena) transparent;
+}
+.chat-field {
+  caret-color: var(--marca);
 }
 @keyframes typing {
   0%, 80%, 100% { opacity: 0.2; }

@@ -27,17 +27,20 @@ frontend/
 │   ├── why/                     # 04 Por qué AIworks + carrusel de ejemplos
 │   ├── faq/                     # 05 FAQ (acordeón accesible)
 │   ├── final-cta/               # 06 Cierre: WhatsApp + correo
-│   ├── demo/                    # Página /demo#<código>
+│   ├── demo/                    # Página /demo#<slug> (sin hash: galería)
+│   │   ├── data/                # sectorDemos.ts (solo slugs sector-*)
+│   │   ├── lib/                 # demoView, demoPhase (puros, con tests)
+│   │   └── components/          # DemoAssistant, DemoGallery, DemoNotice…
 │   └── legal/                   # Página de privacidad
 │
 ├── shared/
 │   ├── components/
-│   │   ├── ui/                 # Container, SectionHeading, WhatsAppLogo, chat/ (ChatLauncher, ChatPanel, Conversation)
+│   │   ├── ui/                 # Container, SectionHeading, WhatsAppLogo, chat/ (ChatLauncher, ChatPanel, Conversation, useConversation, launcherState, endedReply, chatOutcome)
 │   │   ├── layout/             # Header, Footer, LanguageSelector, ThemeToggle, ScrollProgressBar
 │   │   ├── providers/          # StoreRehydrate, MotionProvider, ScrollToAnchor
 │   │   └── seo/                # StructuredData (JSON-LD)
 │   ├── hooks/                   # useReveal, useIntersectionObserver, useMediaQuery…
-│   ├── lib/                     # i18n (es/en), theme.ts, whatsapp.ts, utils.ts
+│   ├── lib/                     # i18n (es/en), theme.ts, whatsapp.ts, demoSlug.ts, publicUrl.ts, utils.ts
 │   ├── store/                   # Zustand: idioma, UI
 │   ├── types/ · constants/
 │
@@ -185,6 +188,7 @@ npm run lint
 - `build` - Build for production
 - `start` - Start production server
 - `lint` - Run ESLint
+- `test` - Run unit tests (`node --test`, Node >= 24)
 
 ## Convenciones de código
 
@@ -196,6 +200,8 @@ npm run lint
 - Se mantienen en español por contrato externo: rutas públicas y anclas (`/privacidad`,
   `#servicios`, `#ejemplos`…), campos JSON de la API (`sesion_id`, `mensaje`…), tokens de
   `globals.css` (`--papel`, `--tinta`, `--marca`…) y claves de `localStorage`.
+
+- **Módulos puros testeados con `node --test`**: se importan con extensión `.ts` y rutas relativas, sin el alias `@/` (Node no lo resuelve); solo `import type` puede usar el alias.
 
 ## 🎨 Styling Conventions
 
