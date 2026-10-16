@@ -1,87 +1,45 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Container } from '@/shared/components/ui/Container';
-import { Conversation } from '@/shared/components/ui/chat/Conversation';
-import { fetchTenantInfo, type TenantInfo } from '@/shared/components/ui/chat/api';
-import { DEMO_COPY } from '@/shared/components/ui/chat/copy';
+import { ChatIdentity } from '@/shared/components/ui/chat/ChatIdentity';
+import { Conversation, type DemoConversationOptions } from '@/shared/components/ui/chat/Conversation';
+import { DEMO_MAX_CHARS, fetchTenantInfo } from '@/shared/components/ui/chat/api';
+import type { EndedKind } from '@/shared/components/ui/chat/endedReply';
+import { CHAT_COPY, DEMO_COPY } from '@/shared/components/ui/chat/copy';
 import { CONTACT_INFO } from '@/shared/constants';
 import { useTranslation } from '@/shared/hooks/useTranslation';
-import { newTabNotice } from '@/shared/lib/whatsapp';
-import type { Locale } from '@/shared/lib/i18n/translations';
-
-type DemoState =
-  | { phase: 'loading' }
-  | { phase: 'ok'; code: string; info: TenantInfo }
-  | { phase: 'unavailable' }
-  | { phase: 'error' };
-
-const VALID_CODE = /^[a-z0-9]{6,40}$/i;
-
-const COPY = {
-  es: {
-    banner: (expires: string | null) =>
-      `Demo · así respondería su asistente de WhatsApp${expires ? ` · vence el ${expires}` : ''}`,
-    loading: 'Preparando su demo…',
-    unavailable: 'Esta demo ya no está disponible',
-    unavailableText: 'Escríbanos por WhatsApp y le preparamos una nueva.',
-    error: 'No pudimos cargar la demo',
-    errorText: 'Intente de nuevo en unos minutos o escríbanos por WhatsApp.',
-    whatsapp: 'Escribirnos por WhatsApp',
-    price: 'Instalación USD 300 + IVA (precio de fundador) · planes desde USD 45 + IVA al mes',
-    cta: 'Hablar por WhatsApp',
-    ctaTitle: 'Si le gustó',
-    message: (business: string) =>
-      `Hola, vi la demo del asistente de ${business} y quiero saber cómo instalarlo en mi negocio.`,
-    genericMessage: 'Hola, quisiera una demo de un asistente de WhatsApp para mi negocio.',
-  },
-  en: {
-    banner: (expires: string | null) =>
-      `Demo · how your WhatsApp assistant would answer${expires ? ` · expires ${expires}` : ''}`,
-    loading: 'Preparing your demo…',
-    unavailable: 'This demo is no longer available',
-    unavailableText: "Message us on WhatsApp and we'll set up a new one.",
-    error: "We couldn't load the demo",
-    errorText: 'Try again in a few minutes or message us on WhatsApp.',
-    whatsapp: 'Message us on WhatsApp',
-    price: 'Setup USD 300 + VAT (founder price) · plans from USD 45 + VAT per month',
-    cta: 'Talk on WhatsApp',
-    ctaTitle: 'If you liked it',
-    message: (business: string) =>
-      `Hi, I saw the ${business} assistant demo and I'd like to know how to set it up for my business.`,
-    genericMessage: "Hi, I'd like a demo of a WhatsApp assistant for my business.",
-  },
-} satisfies Record<Locale, unknown>;
-
-function shortDate(iso: string | null): string | null {
-  const m = iso?.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  return m ? `${m[3]}/${m[2]}` : null;
-}
-
-function readCode(): string | null {
-  const c = window.location.hash.replace(/^#/, '').trim();
-  return VALID_CODE.test(c) ? c : null;
-}
+import { demoTenantId, parseDemoHash } from '@/shared/lib/demoSlug';
+import { bookingUrl, buildBookingMessage, buildTakedownMessage, formatExpiry, pickSuggestions, shouldShowBookingBar, shouldShowDisclaimer } from '../lib/demoView';
+import { findSectorDemo, isDemoSector } from '../data/sectorDemos';
+import { DEMO_PAGE_COPY } from '../copy';
+import { DemoBelowFold, DemoCompactHeader, DemoContextPanel, type DemoHeading } from './DemoContext';
+import { phaseForHash, phaseFromInfo, phaseOnEnded, type DemoState } from '../lib/demoPhase';
+import { DemoGallery } from './DemoGallery';
+import { DemoNotice } from './DemoNotice';
+import { StickyBookingBar } from './StickyBookingBar';
 
 export function DemoAssistant() {
   const { locale } = useTranslation();
-  const t = COPY[locale];
-  const [view, setState] = useState<DemoState>({ phase: 'loading' });
+  const t = DEMO_PAGE_COPY[locale];
+  const [view, setView] = useState<DemoState>({ phase: 'loading' });
   const [attempt, setAttempt] = useState(0);
+  const [userMessages, setUserMessages] = useState(0);
+  const [endedKind, setEndedKind] = useState<EndedKind | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
     const load = async () => {
-      const code = readCode();
-      if (!code) {
-        setState({ phase: 'unavailable' });
-        return;
-      }
-      setState({ phase: 'loading' });
-      const r = await fetchTenantInfo(`demo-${code}`, controller.signal);
+      setUserMessages(0);
+      setEndedKind(null);
+      const hash = parseDemoHash(window.location.hash);
+      const immediate = phaseForHash(hash);
+      if (immediate) return setView(immediate);
+      if (hash.kind !== 'slug') return;
+      setView({ phase: 'loading' });
+      const result = await fetchTenantInfo(demoTenantId(hash.slug), controller.signal);
       if (controller.signal.aborted) return;
-      if (r.status === 'ok') setState({ phase: 'ok', code, info: r.info });
-      else setState({ phase: r.status === 'unavailable' ? 'unavailable' : 'error' });
+      setView(phaseFromInfo(hash.slug, result));
     };
     void load();
     const onHashChange = () => setAttempt((n) => n + 1);
@@ -92,73 +50,112 @@ export function DemoAssistant() {
     };
   }, [attempt]);
 
-  const link = (text: string) =>
-    `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
+  const handleProgress = useCallback<NonNullable<DemoConversationOptions['onProgress']>>(
+    ({ userMessages: count, ended }) => {
+      setUserMessages(count);
+      setEndedKind(ended);
+      setView((v) => phaseOnEnded(v, ended));
+    },
+    [],
+  );
+
+  const isConversation = view.phase === 'ok' || view.phase === 'resting';
+  const conversation = isConversation ? view : null;
+  const slug = conversation?.slug ?? '';
+  const info = conversation?.info ?? null;
+  const sectorDemo = findSectorDemo(slug);
+  const isSectorExample = info?.type === 'demo_sector';
+  const sectorKey = info && isDemoSector(info.sector) ? info.sector : (sectorDemo?.sector ?? null);
+
+  const whatsappHref = (message: string) => bookingUrl(CONTACT_INFO.whatsapp, message);
+  const genericHref = whatsappHref(t.genericMessage);
+
+  const bookingHref = useMemo(() => {
+    if (!info) return '';
+    const subject = isSectorExample ? t.sectorMessageSubject(info.businessName) : info.businessName;
+    return bookingUrl(CONTACT_INFO.whatsapp, buildBookingMessage(locale, subject, slug));
+  }, [info, isSectorExample, locale, slug, t]);
+
+  const heading: DemoHeading | null = info
+    ? {
+        name: info.businessName,
+        isSectorExample,
+        sectorLabel: sectorKey ? t.sectorLabel[sectorKey] : null,
+        expires: formatExpiry(info.expires),
+        resting: view.phase === 'resting',
+        source: info.source,
+        consulted: info.consulted,
+        showDisclaimer: shouldShowDisclaimer(info.type),
+        takedownHref: whatsappHref(buildTakedownMessage(locale, info.businessName, slug)),
+      }
+    : null;
+
+  const demoOptions: DemoConversationOptions = { maxChars: DEMO_MAX_CHARS, bookingHref, onProgress: handleProgress };
 
   return (
-    <div className="pb-24 pt-28 lg:pb-32 lg:pt-36">
-      <Container>
-        <div className="mx-auto flex max-w-[680px] flex-col">
-          {view.phase === 'loading' && (
-            <p role="status" className="eyebrow">
-              {t.loading}
-            </p>
-          )}
+    <div className={isConversation ? 'pt-[4.25rem] lg:pb-32 lg:pt-36' : 'pb-24 pt-28 lg:pb-32 lg:pt-36'}>
+      {view.phase === 'loading' && (
+        <Container>
+          <p role="status" className="eyebrow">
+            {t.loading}
+          </p>
+        </Container>
+      )}
 
-          {(view.phase === 'unavailable' || view.phase === 'error') && (
-            <div className="flex flex-col items-start gap-5">
-              <p className="eyebrow">Demo</p>
-              <h1 className="heading-3">{view.phase === 'error' ? t.error : t.unavailable}</h1>
-              <p className="text-tinta-media">
-                {view.phase === 'error' ? t.errorText : t.unavailableText}
-              </p>
-              <a
-                href={link(t.genericMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${t.whatsapp} ${newTabNotice(locale)}`}
-                className="action action-primary mt-2"
-              >
-                {t.whatsapp}
-              </a>
-            </div>
-          )}
+      {view.phase === 'gallery' && (
+        <Container>
+          <DemoGallery askOwnHref={whatsappHref(t.gallery.askOwnMessage)} locale={locale} />
+        </Container>
+      )}
 
-          {view.phase === 'ok' && (
-            <>
-              <p className="eyebrow eyebrow-marker border-y border-regla py-3.5">
-                {t.banner(shortDate(view.info.expires))}
-              </p>
-              <h1 className="heading mt-10 break-words">{view.info.businessName}</h1>
+      {(view.phase === 'unavailable' || view.phase === 'error') && (
+        <Container>
+          <DemoNotice
+            kind={view.phase}
+            href={genericHref}
+            locale={locale}
+            onRetry={() => setAttempt((n) => n + 1)}
+          />
+        </Container>
+      )}
 
-              <div className="mt-10 flex h-[min(38rem,75dvh)] flex-col overflow-hidden rounded-lg border border-[var(--regla-arena)]">
+      {conversation && info && heading && (
+        <Container>
+          <div className="lg:grid lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
+            <aside className="hidden lg:sticky lg:top-32 lg:block lg:self-start">
+              <DemoContextPanel heading={heading} bookingHref={bookingHref} locale={locale} />
+            </aside>
+
+            <div className="-mx-5 flex h-[calc(100dvh-4.25rem)] flex-col sm:-mx-8 lg:mx-0 lg:h-[min(46rem,calc(100dvh-11rem))]">
+              <div className="lg:hidden">
+                <DemoCompactHeader heading={heading} locale={locale} />
+              </div>
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-y border-[var(--regla-arena)] bg-papel lg:rounded-[4px] lg:border">
+                <div className="border-b border-regla px-4 py-3 sm:px-5">
+                  <ChatIdentity name={info.businessName} statusLabel={isSectorExample ? CHAT_COPY[locale].status : DEMO_COPY[locale].prospectStatus} />
+                </div>
                 <Conversation
-                  key={view.code}
-                  tenant={`demo-${view.code}`}
-                  welcome={DEMO_COPY[locale].welcome(view.info.businessName)}
-                  suggestions={DEMO_COPY[locale].suggestions}
+                  key={slug}
+                  tenant={demoTenantId(slug)}
+                  welcome={
+                    isSectorExample
+                      ? DEMO_COPY[locale].welcome(info.businessName)
+                      : DEMO_COPY[locale].prospectWelcome(info.businessName)
+                  }
+                  suggestions={pickSuggestions(info.suggestions, DEMO_COPY[locale].suggestions)}
                   showFooter={false}
                   whatsappFallback={false}
+                  demo={demoOptions}
                 />
               </div>
-
-              <div className="mt-14 flex flex-col items-start gap-5 border-t border-regla pt-8">
-                <p className="eyebrow">{t.ctaTitle}</p>
-                <p className="max-w-[48ch] text-[1.1875rem] leading-snug text-tinta">{t.price}</p>
-                <a
-                  href={link(t.message(view.info.businessName))}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${t.cta} ${newTabNotice(locale)}`}
-                  className="action action-primary"
-                >
-                  {t.cta}
-                </a>
-              </div>
-            </>
-          )}
-        </div>
-      </Container>
+              {shouldShowBookingBar(userMessages, endedKind) && <StickyBookingBar href={bookingHref} locale={locale} />}
+            </div>
+          </div>
+          <div className="-mx-5 sm:-mx-8 lg:mx-0">
+            <DemoBelowFold bookingHref={bookingHref} locale={locale} />
+          </div>
+        </Container>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from '@/shared/hooks/useTranslation';
+import { ChatIdentity } from './ChatIdentity';
 import { Conversation } from './Conversation';
 import { CHAT_COPY } from './copy';
 
@@ -60,25 +61,20 @@ export default function ChatPanel({ isOpen, onClose }: Props) {
       aria-labelledby={titleId}
       hidden={!isOpen}
       onKeyDown={handleKeyDown}
-      className="chat-panel fixed inset-0 z-[70] flex h-dvh flex-col bg-papel text-tinta lg:inset-auto lg:bottom-6 lg:right-6 lg:h-[min(41rem,calc(100dvh-3rem))] lg:w-[400px] lg:overflow-hidden lg:rounded-lg lg:border lg:border-[var(--regla-arena)]"
+      className="chat-panel fixed inset-0 z-[70] flex h-dvh flex-col bg-papel text-tinta lg:inset-auto lg:bottom-6 lg:right-6 lg:h-[min(41rem,calc(100dvh-3rem))] lg:w-[400px] lg:overflow-hidden lg:rounded-[4px] lg:border lg:border-[var(--regla-arena)]"
     >
-      <header className="flex items-start justify-between gap-4 px-5 pb-4 pt-5">
-        <div>
-          <h2 id={titleId} className="text-[1.5rem] leading-none">
-            {copy.title}
-          </h2>
-          <p className="eyebrow eyebrow-marker mt-2.5 !text-[0.6875rem]">{copy.label}</p>
-        </div>
+      <header className="flex items-center justify-between gap-4 px-4 py-3 sm:px-5">
+        <ChatIdentity name={copy.title} statusLabel={copy.status} nameId={titleId} />
         <button
           type="button"
           onClick={onClose}
           aria-label={copy.close}
-          className="-mr-2 -mt-1 cursor-pointer rounded-full p-2 text-tinta-media transition-colors duration-150 hover:text-tinta"
+          className="-mr-2 grid size-11 shrink-0 cursor-pointer place-items-center rounded-full text-tinta-media transition-colors duration-150 hover:text-tinta"
         >
           <X className="size-5" aria-hidden="true" />
         </button>
       </header>
-      <div className="mx-5 border-t border-regla" />
+      <div className="border-t border-regla" />
       <Conversation tenant="aiworks" autoFocus={isOpen} />
     </div>
   );
