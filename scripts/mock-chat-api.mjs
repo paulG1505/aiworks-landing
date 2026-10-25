@@ -118,8 +118,8 @@ function replyText(message, language, tenant) {
   }
   if (/cuesta|precio|cost|price/.test(m)) {
     return en
-      ? 'The WhatsApp assistant has a one-time setup of USD 300 + VAT (founder price) and plans from USD 45 + VAT per month. Official values go in the quote.'
-      : 'El asistente de WhatsApp tiene una instalación de USD 300 + IVA (precio de fundador) y planes desde USD 45 + IVA al mes. Los valores oficiales van en la proforma.';
+      ? 'The WhatsApp assistant has a one-time setup of USD 169 + VAT (founder price) and plans from USD 49 + VAT per month. Official values go in the quote.'
+      : 'El asistente de WhatsApp tiene una instalación de USD 169 + IVA (precio de fundador) y planes desde USD 49 + IVA al mes. Los valores oficiales van en la proforma.';
   }
   if (/medida|custom/.test(m)) {
     return en
