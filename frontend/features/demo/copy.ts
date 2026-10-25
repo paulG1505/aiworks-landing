@@ -72,7 +72,7 @@ export const DEMO_PAGE_COPY: Record<Locale, DemoPageCopy> = {
     book: 'Agendar diagnóstico de 15 minutos',
     bookShort: 'Agendar 15 min',
     bookNote: 'Sin costo. Le respondemos por WhatsApp.',
-    price: 'Instalación USD 300 + IVA (precio de fundador) · planes desde USD 45 + IVA al mes',
+    price: 'Instalación USD 169 + IVA (precio de fundador) · planes desde USD 49 + IVA al mes',
     sectorMessageSubject: (business) => `${business} (empresa de ejemplo)`,
     disclaimer: {
       line: (name) => `Demostración independiente de AIworks. No es un canal oficial de ${name} ni está afiliada a ellos.`,
@@ -128,7 +128,7 @@ export const DEMO_PAGE_COPY: Record<Locale, DemoPageCopy> = {
     book: 'Book a 15-minute assessment',
     bookShort: 'Book 15 min',
     bookNote: 'No cost. We reply on WhatsApp.',
-    price: 'Setup USD 300 + VAT (founder price) · plans from USD 45 + VAT per month',
+    price: 'Setup USD 169 + VAT (founder price) · plans from USD 49 + VAT per month',
     sectorMessageSubject: (business) => `${business} (example company)`,
     disclaimer: {
       line: (name) => `Independent AIworks demo. It is not an official channel of ${name} and is not affiliated with them.`,
