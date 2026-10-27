@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/#procesos`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${SITE_URL}/#proceso`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/#porque`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${SITE_URL}/#precios`, lastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/#preguntas`, lastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/#contacto`, lastModified, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${SITE_URL}/privacidad`, lastModified, changeFrequency: 'yearly', priority: 0.3 },

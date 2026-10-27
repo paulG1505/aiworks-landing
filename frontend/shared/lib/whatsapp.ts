@@ -1,4 +1,4 @@
-import { CONTACT_INFO } from '@/shared/constants';
+import { CONTACT_INFO } from '../constants/index.ts';
 import type { Locale } from '@/shared/lib/i18n/translations';
 
 const GENERIC_MESSAGE: Record<Locale, string> = {
@@ -18,7 +18,11 @@ const NEW_TAB_NOTICE: Record<Locale, string> = {
 
 export function whatsappLink(locale: Locale, topic?: string): string {
   const message = topic ? TOPIC_MESSAGE[locale](topic) : GENERIC_MESSAGE[locale];
-  return `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(message)}`;
+  return whatsappTextLink(message);
+}
+
+export function whatsappTextLink(text: string): string {
+  return `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 
 export function newTabNotice(locale: Locale): string {

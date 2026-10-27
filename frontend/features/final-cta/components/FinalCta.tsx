@@ -19,7 +19,7 @@ export function FinalCta() {
         <div className="flex flex-col items-start gap-6">
           <p className="eyebrow reveal" style={delay(300)}>
             <span>
-              <span className="tabular">07</span> — {t.cta.eyebrow}
+              <span className="tabular">08</span> — {t.cta.eyebrow}
             </span>
           </p>
 

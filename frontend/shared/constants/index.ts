@@ -1,4 +1,4 @@
-import { ContactInfo } from '@/shared/types';
+import type { ContactInfo } from '@/shared/types';
 
 export const CONTACT_INFO: ContactInfo = {
   email: 'contacto@aiworks.lat',

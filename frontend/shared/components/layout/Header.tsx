@@ -11,19 +11,7 @@ import { ScrollProgressBar } from '@/shared/components/layout/ScrollProgressBar'
 import { useUIStore } from '@/shared/store/useUIStore';
 import { useTranslation } from '@/shared/hooks/useTranslation';
 import { whatsappLink, newTabNotice } from '@/shared/lib/whatsapp';
-
-const PANEL_VARIANTS = {
-  closed: { height: 0, opacity: 0 },
-  isOpen: {
-    height: 'auto',
-    opacity: 1,
-    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1], when: 'beforeChildren', staggerChildren: 0.04 },
-  },
-} as const;
-const ITEM_VARIANTS = {
-  closed: { opacity: 0, y: -8 },
-  isOpen: { opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } },
-} as const;
+import { ITEM_VARIANTS, MENU_STATE, PANEL_VARIANTS } from '@/shared/components/layout/mobileMenuMotion';
 
 export function Header() {
   const isMenuOpen = useUIStore((state) => state.isMenuOpen);
@@ -37,6 +25,7 @@ export function Header() {
     { label: t.header.nav.howWeWork, href: '/#proceso' },
     { label: t.header.nav.why, href: '/#porque' },
     { label: t.header.nav.demos, href: '/#demos' },
+    { label: t.header.nav.pricing, href: '/#precios' },
     { label: t.header.nav.faq, href: '/#preguntas' },
   ];
 
@@ -134,9 +123,9 @@ export function Header() {
                 id="mobile-menu"
                 className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto lg:hidden"
                 variants={PANEL_VARIANTS}
-                initial="closed"
-                animate="open"
-                exit="closed"
+                initial={MENU_STATE.closed}
+                animate={MENU_STATE.open}
+                exit={MENU_STATE.closed}
               >
                 <ul className="mt-4 flex flex-col border-t border-regla pb-2 pt-2">
                   {navLinks.map((link) => (

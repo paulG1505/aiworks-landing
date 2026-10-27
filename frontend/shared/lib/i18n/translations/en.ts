@@ -7,6 +7,7 @@ export const en = {
       howWeWork: "How we work",
       why: "Why AIworks",
       demos: "Demos",
+      pricing: "Pricing",
       faq: "Questions",
       contact: "Contact",
     },
@@ -224,6 +225,38 @@ export const en = {
     title: { before: "Try it", highlight: "yourself." },
     intro: "Pick a sector and talk to an assistant like the one your business would have. The companies are examples.",
   },
+  pricing: {
+    eyebrow: "Pricing",
+    title: { before: "A fixed price for the assistant.", highlight: "Everything else, built to fit." },
+    intro: "One-time setup and a monthly plan. A custom system is quoted for your process.",
+    items: [
+      {
+        name: "Setup",
+        amount: "USD 169 + VAT",
+        detail: "Founder price for the first 10 companies. Afterwards, USD 600 + VAT. One-time payment; ready in 15 business days.",
+      },
+      {
+        name: "Basic plan",
+        amount: "USD 49 + VAT per month",
+        detail: "WhatsApp only, up to 250 conversations a month. Includes Meta's messages.",
+      },
+      {
+        name: "Growth plan",
+        amount: "USD 89 + VAT per month",
+        detail: "WhatsApp up to 750 conversations a month, plus the chat on your website. Includes Meta's messages.",
+      },
+    ],
+    custom: {
+      name: "Custom system",
+      amount: "Quoted for your process",
+      detail: "In 2 business days we show you a working prototype of your own process, a first step with a cost that is credited to the project if you sign within 30 days. The full system usually takes about 45 days.",
+      cta: "Let's talk about your process",
+      message: "Hi, I'd like to see a prototype of a custom system for my process.",
+    },
+    note: "3-month minimum. If you go over your plan's conversations, the assistant keeps working: you only pay what Meta charges on top, at Meta's rate and with no surcharge from us.",
+    cta: "Get my assistant",
+    ctaMessage: "Hi, I'd like the WhatsApp assistant for my business.",
+  },
   faq: {
     eyebrow: "Frequently asked questions",
     title: { before: "What people", highlight: "usually ask us." },
@@ -231,12 +264,12 @@ export const en = {
       {
         question: "What does it cost?",
         answer:
-          "It depends on the process and on how much has to be connected. In the 15-minute assessment we give you a concrete range for your case, with no obligation.",
+          "The WhatsApp assistant has a fixed price: a founder setup of USD 169 + VAT and plans from USD 49 + VAT per month (see Pricing). A custom system depends on your process: in 2 business days we show you a working prototype and give you a fixed scope, price and timeline. The 15-minute call is free.",
       },
       {
         question: "How long does it take?",
         answer:
-          "Discovery usually takes one to two weeks. After that, the first working version on your data is usually weeks away rather than months, because we deliver in parts.",
+          "The WhatsApp assistant is up and running in 15 business days. For a custom system, in 2 business days we show you a working prototype of your own process and the full system usually takes about 45 days.",
       },
       {
         question: "What if the AI gets it wrong?",
@@ -254,7 +287,7 @@ export const en = {
     eyebrow: "Contact",
     title: { before: "Start by finding out", highlight: "what is costing you most." },
     description:
-      "In 15 minutes you will know which process is costing you the most and whether it can be automated. No cost, no obligation.",
+      "In 15 minutes we look at which process costs you the most and whether to build, automate or add AI. The call is free.",
     whatsapp: "Message us on WhatsApp",
     emailLabel: "or email us at",
   },
