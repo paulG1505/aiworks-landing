@@ -76,6 +76,19 @@ file_exists "og-image.png"  "og-image.png exists"
 file_exists "icon-192.png"  "icon-192.png exists"
 file_exists "icon-512.png"  "icon-512.png exists"
 
+heading "Requirement: public pricing"
+present "USD 169" "founder setup price USD 169 is present"
+in_html 'id="precios"' "pricing section is rendered in the HTML"
+in_html "Se cotiza según su proceso" "custom system row is rendered without a figure"
+absent "USD 149" "old offer USD 149 is gone"
+absent "USD 300" "old offer USD 300 is gone"
+absent "USD 45"  "old offer USD 45 is gone"
+# Leading space: a bare "2.500" also matches SVG path data such as "-2.5004".
+absent " 2.500"  "no 2.500 figure"
+absent " 4.000"  "no 4.000 figure"
+absent "150-200" "no 150-200 range"
+absent "10.000"  "no 10.000 figure"
+
 heading "Bundle weight"
 if [ -f "$OUT/videos/landing.mp4" ]; then
   bad "the 60 MB video is still in the build"

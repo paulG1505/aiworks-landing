@@ -38,54 +38,34 @@ export function StructuredData() {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Qué construimos',
-      itemListElement: es.services.items.map((item) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: item.title,
-          description: item.description,
+      itemListElement: [
+        ...es.services.items.map((item) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: item.title,
+            description: item.description,
+          },
+        })),
+        {
+          '@type': 'Offer',
+          itemOffered: { '@type': 'Service', name: 'Asistente de WhatsApp' },
+          price: '169',
+          priceCurrency: 'USD',
+          description: 'Instalación de fundador, más IVA',
         },
-      })),
+      ],
     },
   };
 
   const faq = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: '¿Cuánto cuesta?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Depende del proceso y de cuánto haya que conectar. En el diagnóstico de 15 minutos le damos un rango concreto para su caso, sin compromiso.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Cuánto demora?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'El descubrimiento suele tomar entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Qué pasa si la IA se equivoca?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Por eso no decide sola en lo que importa. Los pasos sensibles pasan por una persona antes de ejecutarse, y cada decisión queda registrada con su hora, así se puede ver qué hizo el sistema y corregirlo.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: '¿Qué pasa con los datos de mi empresa?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Se quedan donde usted decida, y acordamos confidencialidad al iniciar el proyecto. Trabajamos bajo la Ley Orgánica de Protección de Datos Personales del Ecuador, y en el diagnóstico no necesitamos datos reales para decirle si el proceso se puede automatizar.',
-        },
-      },
-    ],
+    mainEntity: es.faq.items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
   };
 
   return (

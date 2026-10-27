@@ -25,8 +25,9 @@ frontend/
 │   ├── processes/               # 02 Procesos que se automatizan (3 filas)
 │   ├── how-we-work/             # 03 Cómo trabajamos (3 fases + cinta de 15 tecnologías)
 │   ├── why/                     # 04 Por qué AIworks + carrusel de ejemplos
-│   ├── faq/                     # 06 FAQ (acordeón accesible)
-│   ├── final-cta/               # 07 Cierre: WhatsApp + correo
+│   ├── pricing/                 # 06 Precios (3 filas del asistente + fila «Sistema a medida»)
+│   ├── faq/                     # 07 FAQ (acordeón accesible)
+│   ├── final-cta/               # 08 Cierre: WhatsApp + correo
 │   ├── demo/                    # Página /demo#<slug> (sin hash: galería)
 │   │   ├── data/                # sectorDemos.ts (solo slugs sector-*)
 │   │   ├── lib/                 # demoView, demoPhase (puros, con tests)

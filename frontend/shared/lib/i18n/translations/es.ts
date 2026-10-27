@@ -7,6 +7,7 @@ export const es = {
       howWeWork: "Cómo trabajamos",
       why: "Por qué AIworks",
       demos: "Demos",
+      pricing: "Precios",
       faq: "Preguntas",
       contact: "Contacto",
     },
@@ -224,6 +225,38 @@ export const es = {
     title: { before: "Pruébelo", highlight: "usted mismo." },
     intro: "Elija un sector y converse con un asistente como el que tendría su negocio. Las empresas son de ejemplo.",
   },
+  pricing: {
+    eyebrow: "Precios",
+    title: { before: "Precio fijo para el asistente.", highlight: "Lo demás, a su medida." },
+    intro: "Instalación una sola vez y un plan al mes. El sistema a medida se cotiza según su proceso.",
+    items: [
+      {
+        name: "Instalación",
+        amount: "USD 169 + IVA",
+        detail: "Precio de fundador para las primeras 10 empresas. Después, USD 600 + IVA. Pago único; listo en 15 días hábiles.",
+      },
+      {
+        name: "Plan Básico",
+        amount: "USD 49 + IVA al mes",
+        detail: "Solo WhatsApp, hasta 250 conversaciones al mes. Incluye los mensajes de Meta.",
+      },
+      {
+        name: "Plan Crecimiento",
+        amount: "USD 89 + IVA al mes",
+        detail: "WhatsApp hasta 750 conversaciones al mes, más el chat en su página web. Incluye los mensajes de Meta.",
+      },
+    ],
+    custom: {
+      name: "Sistema a medida",
+      amount: "Se cotiza según su proceso",
+      detail: "En 2 días hábiles le mostramos un prototipo funcionando con su propio proceso, un primer paso con costo que se descuenta del proyecto si contrata dentro de 30 días. El sistema completo suele tomar unos 45 días.",
+      cta: "Hablemos de su proceso",
+      message: "Hola, quiero ver un prototipo de un sistema a medida para mi proceso.",
+    },
+    note: "Permanencia de 3 meses. Si se pasa de las conversaciones del plan, el asistente no se corta: solo se cobra lo que Meta cobre por encima, a su valor y sin recargo nuestro.",
+    cta: "Quiero mi asistente",
+    ctaMessage: "Hola, quiero el asistente de WhatsApp para mi negocio.",
+  },
   faq: {
     eyebrow: "Preguntas frecuentes",
     title: { before: "Lo que suelen", highlight: "preguntarnos." },
@@ -231,12 +264,12 @@ export const es = {
       {
         question: "¿Cuánto cuesta?",
         answer:
-          "Depende del proceso y de cuánto haya que conectar. En el diagnóstico de 15 minutos le damos un rango concreto para su caso, sin compromiso.",
+          "El asistente de WhatsApp tiene precio fijo: instalación de fundador de USD 169 + IVA y planes desde USD 49 + IVA al mes (vea Precios). Un sistema a su medida depende de su proceso: en 2 días hábiles le mostramos un prototipo funcionando y le damos el alcance, el precio y el plazo cerrados. La llamada de 15 minutos no tiene costo.",
       },
       {
         question: "¿Cuánto demora?",
         answer:
-          "El descubrimiento suele tomar entre una y dos semanas. Después, la primera versión funcionando sobre sus datos suele estar en semanas, no en meses, porque entregamos por partes.",
+          "El asistente de WhatsApp queda funcionando en 15 días hábiles. En un sistema a su medida, en 2 días hábiles le mostramos un prototipo funcionando con su propio proceso y el sistema completo suele tomar unos 45 días.",
       },
       {
         question: "¿Qué pasa si la IA se equivoca?",
@@ -254,7 +287,7 @@ export const es = {
     eyebrow: "Contacto",
     title: { before: "Empiece por saber", highlight: "qué le está costando más." },
     description:
-      "En 15 minutos sabe qué proceso le está costando más y si se puede automatizar. Sin costo ni compromiso.",
+      "En 15 minutos vemos qué proceso le está costando más y si conviene construir, automatizar o implementar IA. La llamada no tiene costo.",
     whatsapp: "Hablar por WhatsApp",
     emailLabel: "o escríbanos a",
   },

@@ -27,6 +27,11 @@ const DemosSection = dynamic(
   { loading: () => null }
 );
 
+const Pricing = dynamic(
+  () => import('@/features/pricing/components/Pricing').then((mod) => ({ default: mod.Pricing })),
+  { loading: () => null }
+);
+
 const Faq = dynamic(
   () => import('@/features/faq/components/Faq').then((mod) => ({ default: mod.Faq })),
   { loading: () => null }
@@ -47,6 +52,7 @@ export default function Home() {
       <HowWeWork />
       <Why />
       <DemosSection />
+      <Pricing />
       <Faq />
       <FinalCta />
     </>

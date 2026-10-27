@@ -14,7 +14,7 @@ export function Faq() {
     <section id="preguntas" className="section bg-arena [--c-regla:var(--regla-arena)]">
       <Container className="lg:grid lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
         <SectionHeading
-          number="06"
+          number="07"
           eyebrow={t.faq.eyebrow}
           title={t.faq.title}
           className="lg:sticky lg:top-28 lg:self-start"

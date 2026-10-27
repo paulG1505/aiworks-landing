@@ -32,6 +32,7 @@ export function Footer() {
         { label: t.header.nav.howWeWork, href: '/#proceso' },
         { label: t.header.nav.why, href: '/#porque' },
         { label: t.footer.examples, href: '/#ejemplos' },
+        { label: t.header.nav.pricing, href: '/#precios' },
         { label: t.header.nav.faq, href: '/#preguntas' },
       ],
     },
