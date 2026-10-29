@@ -29,7 +29,7 @@ Si tu resultado es distinto, para y avísale a Paul antes de seguir.
 - Un commit por tarea, con el formato `tipo(alcance): resumen` (por ejemplo `test(wa): ...`). Antes de cada commit, `/pg-implement` te lo propone y tú esperas el visto bueno de Paul.
 - **No toques**: `shared/lib/waChannels.ts`, `shared/components/ui/WaRedirect.tsx`, `app/wa/`, `package.json`, `package-lock.json` ni ninguna otra cosa que no esté en la lista de la tarea. Si crees que hace falta, anótalo y pregúntale a Paul.
 
-## 1. Arreglar el tipo en `waChannels.test.ts` para que pase `tsc`
+## [x] 1. Arreglar el tipo en `waChannels.test.ts` para que pase `tsc`
 
 - **Archivo:** `frontend/shared/lib/waChannels.test.ts` (solo este).
 - **El problema:** `channelLink(...)` devuelve `string | null`, y `new URL(...)` no acepta `null`. El test lo hace en dos lugares: el que recorre los canales (línea 11) y el que prueba sin canal (línea 18).
@@ -51,7 +51,7 @@ Si tu resultado es distinto, para y avísale a Paul antes de seguir.
   3. `npm run lint` → sin errores.
 - **Terminado cuando:** `npx tsc --noEmit` no imprime nada y `npm test` sigue en 83 pruebas verdes. En `git diff` solo aparece `waChannels.test.ts`.
 
-## 2. Agregar el test de `__proto__` y `constructor`
+## [x] 2. Agregar el test de `__proto__` y `constructor`
 
 - **Archivo:** `frontend/shared/lib/waChannels.test.ts` (el mismo de la tarea 1; agrega el test **al final**).
 - **Por qué existe:** `channelLink` decide si un canal existe con `Object.hasOwn(WA_CHANNELS, slug)`. Si alguien lo «simplificara» a `slug in WA_CHANNELS`, nombres heredados como `__proto__` o `constructor` contarían como canales válidos y la ruta `/wa/constructor` abriría un enlace roto en lugar de dar 404. Este test vigila eso.
@@ -72,7 +72,7 @@ Si tu resultado es distinto, para y avísale a Paul antes de seguir.
 - **Prueba (desde `frontend/`):** `npm test`, `npx tsc --noEmit`, `npm run lint`.
 - **Terminado cuando:** viste fallar el test con el cambio temporal, lo deshiciste, y ahora `npm test` pasa con 84 pruebas (83 + la nueva), `tsc` y `lint` sin errores. En `git diff` **no** aparece `waChannels.ts`.
 
-## 3. Documentar `/wa` en `frontend/CLAUDE.md`
+## [x] 3. Documentar `/wa` en `frontend/CLAUDE.md`
 
 - **Archivo:** `frontend/CLAUDE.md` (solo este). Es un documento, va en español.
 - **Qué cambiar:** en el árbol «Directory Structure» (la caja de código del principio) agrega estas tres cosas, con el mismo estilo y alineación de las líneas vecinas:

@@ -15,6 +15,8 @@ frontend/
 │   ├── layout.tsx               # Layout raíz: fuentes, script de tema, header/footer
 │   ├── page.tsx                 # Inicio (secciones con next/dynamic)
 │   ├── privacidad/page.tsx      # Política de privacidad (LOPDP)
+│   ├── wa/page.tsx              # Redirección a WhatsApp con el mensaje genérico (`/wa`)
+│   ├── wa/[channel]/page.tsx    # Redirecciones fijas a WhatsApp por canal (`/wa/ig`, `/wa/fb`, `/wa/volante`)
 │   ├── globals.css              # Tokens, tema claro/oscuro, clases del sistema, movimiento
 │   ├── icon.svg / favicon.ico / apple-icon.png
 │   ├── manifest.ts · sitemap.ts
@@ -36,12 +38,12 @@ frontend/
 │
 ├── shared/
 │   ├── components/
-│   │   ├── ui/                 # Container, SectionHeading, WhatsAppLogo, chat/ (ChatLauncher, ChatPanel, Conversation, useConversation, launcherState, endedReply, chatOutcome)
+│   │   ├── ui/                 # Container, SectionHeading, WhatsAppLogo, WaRedirect, chat/ (ChatLauncher, ChatPanel, Conversation, useConversation, launcherState, endedReply, chatOutcome)
 │   │   ├── layout/             # Header, Footer, LanguageSelector, ThemeToggle, ScrollProgressBar
 │   │   ├── providers/          # StoreRehydrate, MotionProvider, ScrollToAnchor
 │   │   └── seo/                # StructuredData (JSON-LD)
 │   ├── hooks/                   # useReveal, useIntersectionObserver, useMediaQuery…
-│   ├── lib/                     # i18n (es/en), theme.ts, whatsapp.ts, demoSlug.ts, publicUrl.ts, utils.ts
+│   ├── lib/                     # i18n (es/en), theme.ts, whatsapp.ts, waChannels.ts, demoSlug.ts, publicUrl.ts, utils.ts
 │   ├── store/                   # Zustand: idioma, UI
 │   ├── types/ · constants/
 │
@@ -132,6 +134,17 @@ Los tokens y su contraste calculado están comentados al inicio de `app/globals.
   cada animación nueva va dentro de `@media (prefers-reduced-motion: no-preference)`.
 - Solo `transform` y `opacity`. Desplazamientos de hover < 2 px. Todo movimiento que dure
   más de 5 s debe poder pausarse (la cinta de tecnologías tiene su botón).
+
+## Rutas /wa
+
+- Son enlaces cortos a WhatsApp para Instagram, Facebook y volantes: abren el chat del negocio
+  con un mensaje inicial que dice de dónde viene la persona.
+- `/wa` usa el mensaje genérico; `/wa/ig`, `/wa/fb` y `/wa/volante` usan el de su canal.
+- Los canales y sus mensajes viven en `WA_CHANNELS` (`shared/lib/waChannels.ts`). Para agregar uno,
+  se agrega ahí y la ruta se genera sola.
+- Un canal que no existe da 404 (`dynamicParams = false` en `app/wa/[channel]/page.tsx`).
+- Las páginas llevan `noindex` y no están en `app/sitemap.ts`: no deben aparecer en buscadores.
+- Las pruebas del enlace están en `shared/lib/waChannels.test.ts`.
 
 ## 📝 Development Guidelines
 
