@@ -314,7 +314,7 @@ export const es = {
     back: "Volver al inicio",
     privacy: {
       title: "Política de privacidad",
-      updated: "Última actualización: 8 de octubre de 2026",
+      updated: "Última actualización: 28 de octubre de 2026",
       intro:
         "Esta política explica qué datos personales recibe AIworks a través de este sitio, para qué los usa y cómo puede ejercer sus derechos según la Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP).",
       sections: [
@@ -330,6 +330,13 @@ export const es = {
             "Este sitio tiene un asistente de chat. Si usted lo usa, guardamos la conversación durante 30 días para mejorar las respuestas y después la borramos. No guardamos su dirección IP en claro: solo una huella que cambia cada día y que sirve para limitar abusos.",
             "Si usted pide una llamada, la empresa y el cargo que indique pasan a nuestro registro comercial. Su número de teléfono solo nos llega si usted nos escribe por WhatsApp. Por correo recibimos lo que decida enviarnos: su dirección y el contenido de su mensaje.",
             "El sitio no usa cookies de seguimiento ni herramientas de analítica. Su navegador guarda dos preferencias locales —idioma y modo claro u oscuro— y, mientras la pestaña esté abierta, un identificador de la sesión del chat. Nada de eso sirve para identificarle.",
+          ],
+        },
+        {
+          title: "Citas en las demostraciones",
+          paragraphs: [
+            "Algunas demostraciones de este sitio permiten reservar, cambiar y cancelar una cita de prueba. En ellas el asistente le pide solo su nombre y un teléfono de contacto; no le pide síntomas, cédula ni datos médicos, y le sugerimos usar datos inventados.",
+            "Esos datos, junto con el servicio, la fecha y la hora, se guardan en un calendario de AIworks en Google (Google LLC, en Estados Unidos) y en nuestro servidor, y se borran todas las noches. Una demostración no genera ninguna cita real ni se comunica a ninguna clínica.",
           ],
         },
         {
