@@ -314,7 +314,7 @@ export const en = {
     back: "Back to home",
     privacy: {
       title: "Privacy policy",
-      updated: "Last updated: October 8, 2026",
+      updated: "Last updated: October 28, 2026",
       intro:
         "This policy explains which personal data AIworks receives through this website, what it is used for, and how you can exercise your rights under Ecuador's Organic Law on Personal Data Protection (LOPDP).",
       sections: [
@@ -330,6 +330,13 @@ export const en = {
             "This website has a chat assistant. If you use it, we keep the conversation for 30 days to improve the answers and then delete it. We do not store your IP address in plain form: only a fingerprint that changes every day and is used to limit abuse.",
             "If you ask for a call, the company and job title you give us go into our sales records. Your phone number only reaches us if you message us on WhatsApp. By email we receive what you choose to send us: your address and the content of your message.",
             "The website uses no tracking cookies or analytics tools. Your browser stores two local preferences — language and light or dark mode — and, while the tab stays open, a chat session identifier. None of it can identify you.",
+          ],
+        },
+        {
+          title: "Appointments in the demonstrations",
+          paragraphs: [
+            "Some demonstrations on this site let you book, change and cancel a test appointment. In them the assistant asks only for your name and a contact phone number; it does not ask for symptoms, ID numbers or medical data, and we suggest using made-up details.",
+            "That data, together with the service, date and time, is kept in an AIworks calendar on Google (Google LLC, in the United States) and on our server, and is deleted every night. A demonstration creates no real appointment and is not sent to any clinic.",
           ],
         },
         {
