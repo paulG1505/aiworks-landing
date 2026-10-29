@@ -8,14 +8,18 @@ test('channelSlugs lists the generic route plus every channel', () => {
 
 test('channelLink opens the business number with the channel message', () => {
   for (const slug of channelSlugs()) {
-    const url = new URL(channelLink(slug));
+    const link = channelLink(slug);
+    assert.ok(link);
+    const url = new URL(link);
     assert.equal(url.origin + url.pathname, 'https://wa.me/593978923586');
     assert.equal(url.searchParams.get('text'), WA_CHANNELS[slug]);
   }
 });
 
 test('channelLink without a slug uses the generic message', () => {
-  const url = new URL(channelLink());
+  const link = channelLink();
+  assert.ok(link);
+  const url = new URL(link);
   assert.match(url.searchParams.get('text') ?? '', /^Hola, vengo de la web de AIworks/);
 });
 
@@ -27,4 +31,10 @@ test('each channel message names where the lead comes from', () => {
   assert.match(WA_CHANNELS.ig, /Instagram/);
   assert.match(WA_CHANNELS.fb, /Facebook/);
   assert.match(WA_CHANNELS.volante, /volante/);
+});
+
+test('channelLink returns null for names inherited from Object.prototype', () => {
+  for (const slug of ['__proto__', 'constructor', 'toString', 'hasOwnProperty']) {
+    assert.equal(channelLink(slug), null);
+  }
 });
